@@ -1,0 +1,7 @@
+main: risingdeathx2.spigot.classkit.App
+name: wolf-core
+version: 0.1
+api-version: 1.19
+commands:
+  class:
+    description: Class Management
