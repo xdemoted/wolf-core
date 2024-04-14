@@ -108,13 +108,4 @@ public class App extends JavaPlugin implements PluginMessageListener, Listener {
             if (msg != null) Bukkit.broadcastMessage(msg);
         }
     }
-    @EventHandler
-    public void PhysicsUpdate(BlockPhysicsEvent event) {
-        Vector3d pos = new Vector3d(event.getBlock().getX(), event.getBlock().getY(), event.getBlock().getZ());
-        if (pos.x > pos1.x && pos.x < pos2.x && pos.z < pos1.y && pos.z > pos2.y)
-        event.setCancelled(true);
-    }
-    public void log(String str) {
-        getLogger().info(str);
-    }
 }
