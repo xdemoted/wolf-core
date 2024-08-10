@@ -1,7 +1,70 @@
-main: risingdeathx2.spigot.classkit.App
+main: risingdeathx2.spigot.wolfcore.core
 name: wolf-core
 version: 0.1
-api-version: 1.19
+api-version: 1.20
 commands:
-  class:
-    description: Class Management
+  db:
+    description: Database Management
+  help:
+    description: Help Command
+  mute:
+    description: Mute Command
+  lag:
+    description: Lag Command
+  delhome:
+    description: Delete Home Command
+  sethome:
+    description: Set Home Command
+  home:
+    description: Home Command
+  kickall:
+    description: Kick All Command
+  kick:
+    description: Kick Command
+  whois:
+    description: Whois Command
+  tptoggle:
+    description: Teleport Toggle Command
+  gamemode:
+    description: Gamemode Command
+    aliases: [gamemode, gm, gmc, gms, gma, gmsp]
+  teleport:
+    description: Teleport Command
+    aliases: [tp, tpall, tphere, tpohere]
+  tpa:
+    description: Teleport Ask Command
+  tpahere:
+    description: Teleport Ask Here Command
+  tpaccept:
+    description: Teleport Accept Command
+  tpdeny:
+    description: Teleport Deny Command
+  tppos:
+    description: Teleport Position Command
+  setwarp:
+    description: Set Warp Command
+  delwarp:
+    description: Delete Warp Command
+  warp:
+    description: Warp Command
+    aliases: [warps]
+  warpinfo:
+    description: Warp Info Command
+  ban:
+    description: Ban Command
+  unban:
+    description: Unban Command
+  banip:
+    description: Ban IP Command
+  unbanip:
+    description: Unban IP Command
+  banlist:
+    description: Ban List Command
+  tempban:
+    description: Temp Ban Command
+  tempbanip:
+    description: Temp Ban IP Command
+  unmute:
+    description: Unmute Command
+  tempmute:
+    description: Temp Mute Command

@@ -1,4 +1,7 @@
-classes:
-  miner:
-    material: DIAMOND_PICKAXE
-    
+version: 0
+database:
+  host: replace # host of your database
+  port: replace # default port for MariaDB and MySQL
+  database: replace # name of your database
+  user: replace  # username of your database
+  password: replace # password of your database
