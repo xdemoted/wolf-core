@@ -16,9 +16,11 @@ import java.util.ArrayList;
 
 public class utils {
     core core;
+
     public utils(core core) {
         this.core = core;
     }
+
     public static HashMap<String, String> colorCodes = new HashMap<String, String>();
     {
         colorCodes.put("0", "000000");
@@ -38,9 +40,10 @@ public class utils {
         colorCodes.put("e", "FFFF55");
         colorCodes.put("f", "FFFFFF");
     }
+
     @SuppressWarnings("unchecked")
     public Collection<Player> getTargets(String target) {
-        core.getLogger().info('"'+target+'"');
+        core.getLogger().info('"' + target + '"');
         core.getLogger().info(String.valueOf(target.equalsIgnoreCase("*")));
         if (target.equalsIgnoreCase("*")) {
             return (Collection<Player>) core.getServer().getOnlinePlayers();
@@ -53,6 +56,7 @@ public class utils {
             return targetList;
         }
     }
+
     public Player getTarget(String target) {
         Collection<? extends Player> players = core.getServer().getOnlinePlayers();
         if (target.length() < 3)
@@ -63,13 +67,16 @@ public class utils {
         }
         return null;
     }
+
     public void sendPlayer(Player player, String text) {
         sendColorText(core.adventure().player(player), text);
     }
+
     public static void sendColorText(Audience audience, String text) {
         text = colorizeText(text);
         audience.sendMessage(parseColors(text));
     }
+
     public static String colorizeText(String text) {
         String[] textChar = text.split("");
         for (int i = 0; i < textChar.length; i++) {
@@ -87,6 +94,7 @@ public class utils {
         text = text.replaceAll("<g#([0-9a-fA-F]{6})>", "<g¶$1>");
         return text.replaceAll("<#([0-9a-fA-F]{6})>", "<¶$1>");
     }
+
     public static String nullCheck(String text) {
         if (text == null) {
             return "";
@@ -94,21 +102,25 @@ public class utils {
             return text;
         }
     }
+
     public static int[] toRGB(String hex) {
-        int r = Integer.parseInt(hex.substring(0, 2), 16);
-        int g = Integer.parseInt(hex.substring(2, 4), 16);
-        int b = Integer.parseInt(hex.substring(4, 6), 16);
+        int rgb = Integer.parseInt(hex, 16);
+        int r = (rgb >> 16) & 0xFF;
+        int g = (rgb >> 8) & 0xFF;
+        int b = rgb & 0xFF;
         return new int[] { r, g, b };
     }
+
     public static String toHex(int[] rgb) {
         return String.format("%02x%02x%02x", rgb[0], rgb[1], rgb[2]);
     }
-    public static String[] getMetaData(CachedPermissionData data,Player player) {
+
+    public static String[] getMetaData(CachedPermissionData data, Player player) {
         Map<String, Boolean> permissionMap = data.getPermissionMap();
-        String[] returnData = {"",""};
-        Integer[] weight = {0,0};
+        String[] returnData = { "", "" };
+        Integer[] weight = { 0, 0 };
         permissionMap.forEach((k, v) -> {
-            if (k.startsWith("wolf-co.chatprefix")&&v) {
+            if (k.startsWith("wolf-co.chatprefix") && v) {
                 String[] parts = k.split("\\.");
                 Integer kweight = 0;
                 try {
@@ -123,7 +135,7 @@ public class utils {
                         returnData[0] += parts[i];
                     }
                 }
-            } else if (k.startsWith("wolf-co.chatsuffix")&&v) {
+            } else if (k.startsWith("wolf-co.chatsuffix") && v) {
                 String[] parts = k.split("\\.");
                 Integer kweight = 0;
                 try {
@@ -142,6 +154,7 @@ public class utils {
         });
         return returnData;
     }
+
     public static Component parseColors(String message) {
         TextColor color = TextColor.fromHexString("#ffffff");
         String gradientStart = null;
@@ -217,9 +230,11 @@ public class utils {
                             component = component.append(Component.text(" "));
                             continue;
                         }
-                        component = append(component, TextColor.fromHexString("#"+utils.toHex(currentRGB)), bold, italic, underlined, strikethrough, obfuscated, current);
+                        component = append(component, TextColor.fromHexString("#" + utils.toHex(currentRGB)), bold,
+                                italic, underlined, strikethrough, obfuscated, current);
                         for (int k = 0; k < startRGB.length; k++) {
-                            currentRGB[k] = Math.round(((endRGB[k] - startRGB[k]) / gradientChars.length)*j + startRGB[k]);
+                            currentRGB[k] = Math
+                                    .round(((endRGB[k] - startRGB[k]) / gradientChars.length) * j + startRGB[k]);
                         }
                     }
                     color = TextColor.fromHexString("#" + utils.toHex(currentRGB));
@@ -233,9 +248,11 @@ public class utils {
         }
         return append(component, color, bold, italic, underlined, strikethrough, obfuscated, current);
     }
-    public static Component append(Component component, TextColor color, Boolean bold, Boolean italic, Boolean underlined, Boolean strikethrough, Boolean obfuscated, String text) {
+
+    public static Component append(Component component, TextColor color, Boolean bold, Boolean italic,
+            Boolean underlined, Boolean strikethrough, Boolean obfuscated, String text) {
         Component builder = Component.text(text)
-            .color(color);
+                .color(color);
         if (bold) {
             builder = builder.decorate(TextDecoration.BOLD);
         }
