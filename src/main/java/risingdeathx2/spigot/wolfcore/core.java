@@ -27,7 +27,7 @@ public class core extends JavaPlugin implements Listener {
     public LuckPerms lp;
     private BukkitAudiences adventure;
     public YamlDocument config;
-    public static String prefix = "♆ ";
+    static public String prefix = "♆ ";
 
     public @NonNull BukkitAudiences adventure() {
         if (this.adventure == null) {
