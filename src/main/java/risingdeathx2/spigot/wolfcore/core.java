@@ -33,6 +33,7 @@ public class core extends JavaPlugin implements Listener {
     public utils utils = new utils(this);
     private BukkitAudiences adventure;
     public YamlDocument config;
+    public YamlDocument warps;
     public HashMap<UUID,player> players = new HashMap<UUID,player>();
     static public String prefix = "♆ ";
 
@@ -52,6 +53,7 @@ public class core extends JavaPlugin implements Listener {
         }
         adventure();
         config = getConfig("config.yml");
+        warps = getConfig("warps.yml");
         this.getLogger().info("[Wolf-Core] Plugin enabled");
         new command(this);
         getServer().getPluginManager().registerEvents(this, this);

@@ -1,5 +1,7 @@
 package risingdeathx2.spigot.wolfcore;
 
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,6 +18,7 @@ import risingdeathx2.spigot.wolfcore.commands.teleport;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class command implements CommandExecutor {
     core plugin;
@@ -122,6 +125,51 @@ public class command implements CommandExecutor {
                     utils.sendColorText(audience, "<#ffaa00>No requests to deny.");
                 }
             }    break;
+            case "setwarp": {
+                if (args.length == 1) {
+                    plugin.warps.set(args[0]+ ".x", player.getLocation().getX());
+                    plugin.warps.set(args[0]+ ".y", player.getLocation().getY());
+                    plugin.warps.set(args[0]+ ".z", player.getLocation().getZ());
+                    plugin.warps.set(args[0]+ ".world", player.getWorld().getUID().toString());
+                    try {
+                        plugin.warps.save();
+                    } catch (Exception e) {
+                        utils.sendColorText(audience, "<#ffaa00>Failed to save warps.yml.");
+                    }
+                    utils.sendColorText(audience, "<#ffaa00>Warp <#ffff00>" + args[0] + "<#ffaa00> set.");
+                } else {
+                    utils.sendColorText(audience, "<#ffaa00>Usage: <#ffffff>/setwarp <#ffff00><name>");
+                }
+            }   break;
+            case "warps": {
+                    utils.sendColorText(audience, "<#ffaa00>Warps:");
+                    for (String key : plugin.warps.getRoutesAsStrings(false)) {
+                        utils.sendColorText(audience, "<#ffaa00> - <#ffff00>" + key);
+                    }
+            }   break;
+            case "warp": {
+                if (args.length == 1) {
+                    if (plugin.warps.get(args[0]) != null) {
+                        World world = plugin.getServer().getWorld(UUID.fromString(plugin.warps.getString(args[0]+ ".world")));
+                        if (world != null) {
+                            double X = plugin.warps.getDouble(args[0]+ ".x");
+                            double Y = plugin.warps.getDouble(args[0]+ ".y");
+                            double Z = plugin.warps.getDouble(args[0]+ ".z");
+                            player.teleport(new Location(world, X, Y, Z));
+                            utils.sendColorText(audience, "<#ffaa00>Teleported to <#ffff00>" + args[0]);
+                        } else {
+                            utils.sendColorText(audience, "<#ffaa00>World no longer exists for warp <#ffff00>" + args[0]);
+                        }
+                    } else {
+                        utils.sendColorText(audience, "<#ffaa00>Warp <#ffff00>" + args[0] + "<#ffaa00> not found.");
+                    }
+                } else {
+                    utils.sendColorText(audience, "<#ffaa00>Usage: <#ffffff>/warp <#ffff00><name>\n<#ffaa00>Warps:");
+                    for (String key : plugin.warps.getRoutesAsStrings(false)) {
+                        utils.sendColorText(audience, "<#ffaa00> - <#ffff00>" + key);
+                    }
+                }
+            }   break;
             default:
                 break;
         }
