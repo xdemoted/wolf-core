@@ -170,6 +170,23 @@ public class command implements CommandExecutor {
                     }
                 }
             }   break;
+            case "delwarp": {
+                if (args.length == 1) {
+                    if (plugin.warps.get(args[0]) != null) {
+                        plugin.warps.remove(args[0]);
+                        try {
+                            plugin.warps.save();
+                        } catch (Exception e) {
+                            utils.sendColorText(audience, "<#ffaa00>Failed to save warps.yml.");
+                        }
+                        utils.sendColorText(audience, "<#ffaa00>Warp <#ffff00>" + args[0] + "<#ffaa00> deleted.");
+                    } else {
+                        utils.sendColorText(audience, "<#ffaa00>Warp <#ffff00>" + args[0] + "<#ffaa00> not found.");
+                    }
+                } else {
+                    utils.sendColorText(audience, "<#ffaa00>Usage: <#ffffff>/delwarp <#ffff00><name>");
+                }
+            }   break;
             default:
                 break;
         }
