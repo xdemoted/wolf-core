@@ -1,7 +1,5 @@
 package risingdeathx2.spigot.wolfcore;
 
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,7 +17,6 @@ import risingdeathx2.spigot.wolfcore.commands.warps;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 public class command implements CommandExecutor {
     core plugin;
