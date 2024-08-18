@@ -41,15 +41,9 @@ commands:
     description: Teleport Deny Command
   tppos:
     description: Teleport Position Command
-  setwarp:
-    description: Set Warp Command
-  delwarp:
-    description: Delete Warp Command
   warp:
     description: Warp Command
-    aliases: [warps]
-  warpinfo:
-    description: Warp Info Command
+    aliases: [warps,warpinfo,setwarp,delwarp]
   ban:
     description: Ban Command
   unban:

@@ -30,6 +30,7 @@ public class playerManager implements Listener {
             player.kickPlayer("§4§lError: §cPlayer data not found, please contact an administrator.");
             return;
         }
+        data.set("timestamp.login", System.currentTimeMillis());
         players.put(player.getUniqueId(), new PlayerData(player, data));
     }
 
@@ -37,6 +38,7 @@ public class playerManager implements Listener {
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         YamlDocument data = players.get(player.getUniqueId()).data;
+        data.set("timestamp.logout", System.currentTimeMillis());
         try {
             data.save();
         } catch (Exception e) {

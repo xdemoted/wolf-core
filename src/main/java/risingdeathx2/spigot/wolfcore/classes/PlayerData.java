@@ -19,6 +19,11 @@ public class PlayerData {
         public float pitch;
         public UUID world;
     }
+    public class timestamp {
+        public long logout;
+        public long login;
+        public long mute;
+    }
 
     public YamlDocument data;
     public Player host;
@@ -29,7 +34,7 @@ public class PlayerData {
     public boolean muted;
 
     public String ipaddress;
-    
+
     public Map<String,home> home = new HashMap<>();
 
     ArrayList<request> requests = new ArrayList<request>();
@@ -54,6 +59,12 @@ public class PlayerData {
                 home.world = UUID.fromString(data.getString("home." + key + ".world"));
                 this.home.put(key, home);
             }
+        }
+        if (data.contains("timestamp")) {
+            timestamp timestamp = new timestamp();
+            timestamp.login = data.getLong("timestamp.login", (long) 0);
+            timestamp.logout = data.getLong("timestamp.logout", (long) 0);
+            timestamp.mute = data.getLong("timestamp.mute", (long) 0);
         }
     }
     public request sendRequest(Player sender, String type) {

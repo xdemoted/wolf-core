@@ -14,6 +14,7 @@ import risingdeathx2.spigot.wolfcore.classes.request;
 import risingdeathx2.spigot.wolfcore.commands.db;
 import risingdeathx2.spigot.wolfcore.commands.gamemode;
 import risingdeathx2.spigot.wolfcore.commands.teleport;
+import risingdeathx2.spigot.wolfcore.commands.warps;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,10 +49,7 @@ public class command implements CommandExecutor {
         commands.add("tpdeny");
         commands.add("teleport");
         commands.add("tppos");
-        commands.add("setwarp");
-        commands.add("delwarp");
         commands.add("warp");
-        commands.add("warpinfo");
         commands.add("ban");
         commands.add("unban");
         commands.add("banlist");
@@ -125,68 +123,9 @@ public class command implements CommandExecutor {
                     utils.sendColorText(audience, "<#ffaa00>No requests to deny.");
                 }
             }    break;
-            case "setwarp": {
-                if (args.length == 1) {
-                    plugin.warps.set(args[0]+ ".x", player.getLocation().getX());
-                    plugin.warps.set(args[0]+ ".y", player.getLocation().getY());
-                    plugin.warps.set(args[0]+ ".z", player.getLocation().getZ());
-                    plugin.warps.set(args[0]+ ".world", player.getWorld().getUID().toString());
-                    try {
-                        plugin.warps.save();
-                    } catch (Exception e) {
-                        utils.sendColorText(audience, "<#ffaa00>Failed to save warps.yml.");
-                    }
-                    utils.sendColorText(audience, "<#ffaa00>Warp <#ffff00>" + args[0] + "<#ffaa00> set.");
-                } else {
-                    utils.sendColorText(audience, "<#ffaa00>Usage: <#ffffff>/setwarp <#ffff00><name>");
-                }
-            }   break;
-            case "warps": {
-                    utils.sendColorText(audience, "<#ffaa00>Warps:");
-                    for (String key : plugin.warps.getRoutesAsStrings(false)) {
-                        utils.sendColorText(audience, "<#ffaa00> - <#ffff00>" + key);
-                    }
-            }   break;
             case "warp": {
-                if (args.length == 1) {
-                    if (plugin.warps.get(args[0]) != null) {
-                        World world = plugin.getServer().getWorld(UUID.fromString(plugin.warps.getString(args[0]+ ".world")));
-                        if (world != null) {
-                            double X = plugin.warps.getDouble(args[0]+ ".x");
-                            double Y = plugin.warps.getDouble(args[0]+ ".y");
-                            double Z = plugin.warps.getDouble(args[0]+ ".z");
-                            player.teleport(new Location(world, X, Y, Z));
-                            utils.sendColorText(audience, "<#ffaa00>Teleported to <#ffff00>" + args[0]);
-                        } else {
-                            utils.sendColorText(audience, "<#ffaa00>World no longer exists for warp <#ffff00>" + args[0]);
-                        }
-                    } else {
-                        utils.sendColorText(audience, "<#ffaa00>Warp <#ffff00>" + args[0] + "<#ffaa00> not found.");
-                    }
-                } else {
-                    utils.sendColorText(audience, "<#ffaa00>Usage: <#ffffff>/warp <#ffff00><name>\n<#ffaa00>Warps:");
-                    for (String key : plugin.warps.getRoutesAsStrings(false)) {
-                        utils.sendColorText(audience, "<#ffaa00> - <#ffff00>" + key);
-                    }
-                }
-            }   break;
-            case "delwarp": {
-                if (args.length == 1) {
-                    if (plugin.warps.get(args[0]) != null) {
-                        plugin.warps.remove(args[0]);
-                        try {
-                            plugin.warps.save();
-                        } catch (Exception e) {
-                            utils.sendColorText(audience, "<#ffaa00>Failed to save warps.yml.");
-                        }
-                        utils.sendColorText(audience, "<#ffaa00>Warp <#ffff00>" + args[0] + "<#ffaa00> deleted.");
-                    } else {
-                        utils.sendColorText(audience, "<#ffaa00>Warp <#ffff00>" + args[0] + "<#ffaa00> not found.");
-                    }
-                } else {
-                    utils.sendColorText(audience, "<#ffaa00>Usage: <#ffffff>/delwarp <#ffff00><name>");
-                }
-            }   break;
+                new warps(plugin, player, alias, args, audience);
+            }    break;
             default:
                 break;
         }
