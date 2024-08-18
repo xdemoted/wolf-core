@@ -9,7 +9,7 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 
 import net.kyori.adventure.audience.Audience;
-import risingdeathx2.spigot.wolfcore.classes.player;
+import risingdeathx2.spigot.wolfcore.classes.PlayerData;
 import risingdeathx2.spigot.wolfcore.classes.request;
 import risingdeathx2.spigot.wolfcore.commands.db;
 import risingdeathx2.spigot.wolfcore.commands.gamemode;
@@ -91,7 +91,7 @@ public class command implements CommandExecutor {
                             utils.sendColorText(audience, "<#ffaa00>You can't teleport to yourself.");
                             return false;
                         }
-                        player host = plugin.players.get(target.getUniqueId());
+                        PlayerData host = plugin.players.get(target.getUniqueId());
                         host.sendRequest(player, cname);
                         utils.sendColorText(audience, "<#ffaa00>Request sent to <#aa0000>" + target.getName()+"<#ffaa00>.\nRequest will expire in <#ff5555>30<#ffaa00> seconds.");
                         utils.sendColorText(plugin.adventure().player(target), "<#aa0000>"+player.getName()+"<#ffaa00> has requested " + messageAlias.get(cname) + ".\n<#ffaa00>Use <#ffff00>/tpaccept<#ffaa00> to accept or <#ffff00>/tpdeny<#ffaa00> to deny.\nRequest will expire in <#ff5555>30<#ffaa00> seconds.");
@@ -103,7 +103,7 @@ public class command implements CommandExecutor {
                 }
                 break;
             case "tpaccept": {
-                player target = plugin.players.get(player.getUniqueId());
+                PlayerData target = plugin.players.get(player.getUniqueId());
                 request request = target.acceptLastRequest();
                 if (request != null) {
                     if (request.type.equals("tpa")) {
@@ -117,7 +117,7 @@ public class command implements CommandExecutor {
                 }
             }    break;
             case "tpdeny": {
-                player host = plugin.players.get(player.getUniqueId());
+                PlayerData host = plugin.players.get(player.getUniqueId());
                 boolean success = host.denyLastRequest();
                 if (success) {
                     utils.sendColorText(audience, "<#ffaa00>Request denied.");
