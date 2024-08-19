@@ -1,0 +1,26 @@
+version: 2
+warp:
+  success: "<#ffaa00>Teleported to <#ffff00>%0%"
+  set: "<#ffaa00>Warp <#ffff00>%0% <#ffaa00>set."
+  deleted: "<#ffaa00>Warp <#ffff00>%0%<#ffaa00> deleted."
+  notfound: "<#ffaa00>Warp <#ffff00>%0%<#ffaa00> not found."
+  invalidworld: "<#ffaa00>World <#ffff00>%0%<#ffaa00> not found for warp %1%."
+teleport:
+  self: "♆ <#ffaa00>You can't teleport to yourself."
+  success: "♆ <#00ff00>Teleported to <#ffff00>%0%"
+  multisuccess: "♆ <#00ff00>Teleported <#ffff00>%0% <#00ff00>players to <#ffff00>%1%"
+  othersuccess: "♆ <#00ff00>Teleported <#ffff00>%0% <#00ff00>to <#ffff00>%1%"
+  heresuccess: "♆ <#00ff00>Teleported <#ffff00>%0% <#00ff00>to <#ffff00>you"
+gamemode:
+  multisuccess: "♆ <#00ff00>Set <#ffff00>%0% <#00ff00>players' gamemode to <#ffff00>%1%"
+  othersuccess: "♆ <#00ff00>Set <#ffff00>%0%<#00ff00>'s gamemode to <#ffff00>%1%"
+  selfsuccess: "♆ <#55ff55>Set your gamemode to <#ffff00>%0%"
+  invalid: "♆ <#ff5555>Invalid gamemode."
+  invalidworld: "♆ <#ff0000>World not found."
+  usage: "♆ <#ffaa00>Usage: <#ff5555>/gm <creative|survival|spectator|adventure> [target]"
+generic:
+  usage: "♆ <#ffaa00>Usage: <#ffffff>/%0% <%1%>"
+  playernotfound: "♆ <#ff0000>Player not found."
+  failedsave: "<#ffaa00>Failed to save %0%."
+chat:
+  reserved: "§4§lError: §cThe \"¶\" character is reserved for internal use."

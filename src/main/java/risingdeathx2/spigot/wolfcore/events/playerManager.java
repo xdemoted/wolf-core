@@ -1,12 +1,12 @@
 package risingdeathx2.spigot.wolfcore.events;
 
-import java.net.http.WebSocket.Listener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import dev.dejvokep.boostedyaml.YamlDocument;

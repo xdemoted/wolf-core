@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 import risingdeathx2.spigot.wolfcore.core;
 import risingdeathx2.spigot.wolfcore.utils;
@@ -47,29 +48,29 @@ public class gamemode {
                         target = utils.getTargets(args[1]);
                     }
                 } else {
-                    utils.sendPlayer(player, risingdeathx2.spigot.wolfcore.core.prefix + "<#ff5555>Invalid gamemode.");
+                    utils.sendPlayer(player, core.getMessage("gamemode.invalid"));
                     return;
                 }
             } else {
-                utils.sendPlayer(player, risingdeathx2.spigot.wolfcore.core.prefix + "<#ff5555>/gm <creative|survival|spectator|adventure> [target]");
+                utils.sendPlayer(player, core.getMessage("gamemode.usage"));
                 return;
             }
         }
         if (target == null||target.isEmpty()) {
-            utils.sendPlayer(player, risingdeathx2.spigot.wolfcore.core.prefix + "<#ff5555>Invalid target.");
+            utils.sendPlayer(player, core.getMessage("generic.playernotfound"));
             return;
         }
         for (Player p : target) {
             p.setGameMode(mode);
         }
         if (target.size() == 1&&target.contains(player)) {
-            utils.sendPlayer(player, risingdeathx2.spigot.wolfcore.core.prefix + "<#55ff55>Set gamemode to " + mode.toString().toLowerCase() + ".");
+            utils.sendPlayer(player, core.getMessage("gamemode.selfsuccess", List.of(mode.toString().toLowerCase())));
         } else if (target.size() == 1) {
             for (Player p : target) {
-                utils.sendPlayer(player, risingdeathx2.spigot.wolfcore.core.prefix + "<#55ff55>Set " + p.getName() + "'s gamemode to " + mode.toString().toLowerCase() + ".");
+                utils.sendPlayer(player, core.getMessage("gamemode.othersuccess",List.of(p.getName(),mode.toString().toLowerCase())));
             }
         } else {
-            utils.sendPlayer(player, risingdeathx2.spigot.wolfcore.core.prefix + "<#55ff55>Set " + target.size() + " players' gamemode to " + mode.toString().toLowerCase() + ".");
+            utils.sendPlayer(player, core.getMessage("gamemode.multisuccess",List.of(String.valueOf(target.size()),mode.toString().toLowerCase())));
         }
     }
 }

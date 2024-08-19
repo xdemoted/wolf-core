@@ -1,9 +1,8 @@
 package risingdeathx2.spigot.wolfcore.events;
 
-import java.net.http.WebSocket.Listener;
-
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import com.google.common.io.ByteArrayDataOutput;
@@ -36,7 +35,7 @@ public class chat implements Listener {
         // Color & Null Check
         if (message != null) {
             if (message.contains("¶")) {
-                player.sendMessage("§4§lError: §cThe \"¶\" character is reserved for internal use.");
+                player.sendMessage(core.getMessage("chat.reserved"));
             } else {
                 message = risingdeathx2.spigot.wolfcore.utils.colorizeText(
                     risingdeathx2.spigot.wolfcore.utils.nullCheck(lpmetaData.getPrefix()) + player.getName() + risingdeathx2.spigot.wolfcore.utils.nullCheck(lpmetaData.getSuffix()) + " <#555555>»<#aaaaaa> " + risingdeathx2.spigot.wolfcore.utils.nullCheck(chatPrefix))

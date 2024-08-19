@@ -1,7 +1,9 @@
 package risingdeathx2.spigot.wolfcore.commands;
 
 import org.bukkit.entity.Player;
+
 import java.util.Collection;
+import java.util.List;
 
 import risingdeathx2.spigot.wolfcore.core;
 import risingdeathx2.spigot.wolfcore.utils;
@@ -23,13 +25,18 @@ public class teleport {
             runAlias();
             return;
         }
+        // Commands (teleport, tp)
         if (args.length == 1) {
             Player target = utils.getTarget(args[0]);
+            if (target == player) {
+                utils.sendPlayer(player, core.getMessage("teleport.self"));
+                return;
+            }
             if (target != null) {
                 player.teleport(target);
-                utils.sendPlayer(player, core.prefix + "Teleported to " + target.getName());
+                utils.sendPlayer(player, core.getMessage("teleport.success",List.of(target.getName())));
             } else {
-                utils.sendPlayer(player, core.prefix + "<#ff0000>Player not found");
+                utils.sendPlayer(player, core.getMessage("generic.playernotfound"));
             }
             return;
         } else if (args.length == 2) {
@@ -41,17 +48,16 @@ public class teleport {
                 }
                 if ((target.size() - 1) > 1) {
                     utils.sendPlayer(player,
-                            core.prefix + "Teleported " + (target.size() - 1) + " players to " + target2.getName());
+                            core.getMessage("teleporrt.multisuccess",List.of(String.valueOf(target.size()-1),target2.getName())));
                 } else {
-                    utils.sendPlayer(player, core.prefix + "Teleported " + target.iterator().next().getName()
-                            + " to " + target2.getName());
+                    utils.sendPlayer(player, core.getMessage("teleport.othersuccess",List.of(target.iterator().next().getName(),target2.getName())));
                 }
             } else {
-                utils.sendPlayer(player, core.prefix + "<#ff0000>Player not found");
+                utils.sendPlayer(player, core.getMessage("generic.playernotfound"));
             }
             return;
         }
-        utils.sendPlayer(player, core.prefix + "<#ff0000>Usage:<#ff5555> /" + alias + " <player> [player]");
+        utils.sendPlayer(player, core.getMessage("generic.usage", List.of(alias,"player")));
     }
     
     @SuppressWarnings("static-access")
@@ -64,16 +70,16 @@ public class teleport {
                     for (Player p : player.getServer().getOnlinePlayers()) {
                         p.teleport(target);
                     }
-                    utils.sendPlayer(player, core.prefix + "Teleported " + (player.getServer().getOnlinePlayers().size() - 1) + " players to you");
+                    utils.sendPlayer(player, core.getMessage("teleport.multisuccess",List.of(String.valueOf(player.getServer().getOnlinePlayers().size() - 1),"you")));
                 } else {
-                    utils.sendPlayer(player, core.prefix + "<#ff0000>Player not found");
+                    utils.sendPlayer(player, core.getMessage("generic.playernotfound"));
                 }
                 return;
             } else {
                 for (Player p : player.getServer().getOnlinePlayers()) {
                     p.teleport(player);
                 }
-                utils.sendPlayer(player, core.prefix + "Teleported all players to you");
+                utils.sendPlayer(player, core.getMessage("teleport.multisuccess",List.of("all","you")));
                 return;
             }
         } else if (alias.equalsIgnoreCase("tphere")) {
@@ -81,13 +87,13 @@ public class teleport {
                 Player target = utils.getTarget(args[0]);
                 if (target != null) {
                     target.teleport(player);
-                    utils.sendPlayer(player, core.prefix + "Teleported " + target.getName() + " to you");
+                    utils.sendPlayer(player, core.getMessage("teleport.heresuccess",List.of(target.getName())));
                 } else {
-                    utils.sendPlayer(player, core.prefix + "<#ff0000>Player not found");
+                    utils.sendPlayer(player, core.getMessage("generic.playernotfound"));
                 }
                 return;
             } else {
-                utils.sendPlayer(player, core.prefix + "<#ff0000>Usage:<#ff5555> /" + alias + " <player>");
+                utils.sendPlayer(player, core.getMessage("generic.usage", List.of(alias,"player")));
                 return;
             }
         }
