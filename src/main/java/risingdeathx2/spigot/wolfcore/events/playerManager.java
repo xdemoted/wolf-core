@@ -37,7 +37,12 @@ public class playerManager implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        YamlDocument data = players.get(player.getUniqueId()).data;
+        PlayerData PlayerData = players.get(player.getUniqueId());
+        if (PlayerData == null) {
+            core.getLogger().warning("[Wolf-Core] Player left without data: " + player.getName());
+            return;
+        }
+        YamlDocument data = PlayerData.data;
         data.set("timestamp.logout", System.currentTimeMillis());
         try {
             data.save();
@@ -47,5 +52,9 @@ public class playerManager implements Listener {
         if (players.remove(player.getUniqueId()) == null) {
             core.getLogger().warning("[Wolf-Core] Player left without data: " + player.getName());
         }
+    }
+
+    public PlayerData getPlayerData(Player player) {
+        return players.get(player.getUniqueId());
     }
 }

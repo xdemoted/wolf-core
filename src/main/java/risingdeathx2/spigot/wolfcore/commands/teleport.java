@@ -1,101 +1,75 @@
 package risingdeathx2.spigot.wolfcore.commands;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Collection;
+import net.kyori.adventure.audience.Audience;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import risingdeathx2.spigot.wolfcore.core;
 import risingdeathx2.spigot.wolfcore.utils;
+import risingdeathx2.spigot.wolfcore.classes.Argument;
+import risingdeathx2.spigot.wolfcore.classes.ArgumentType;
+import risingdeathx2.spigot.wolfcore.classes.Command;
+import risingdeathx2.spigot.wolfcore.classes.CoreCommandExecutor;
 
-public class teleport {
-    public core core;
-    public Player player;
-    public String alias;
-    public String[] args;
-    @SuppressWarnings("static-access")
-    public teleport(core core, Player player, String alias, String[] args) {
-        utils utils = new utils(core);
-        this.core = core;
-        this.player = player;
-        this.alias = alias;
-        this.args = args;
-        // Alias Management
-        if (!(alias.equalsIgnoreCase("teleport") || alias.equalsIgnoreCase("tp"))) {
-            runAlias();
-            return;
-        }
-        // Commands (teleport, tp)
-        if (args.length == 1) {
-            Player target = utils.getTarget(args[0]);
-            if (target == player) {
-                utils.sendPlayer(player, core.getMessage("teleport.self"));
-                return;
+public class teleport implements CoreCommandExecutor {
+    public Command getCommand() {
+        return new Command("teleport", new ArrayList<Argument>() {
+            {
+                add(new Argument("player", ArgumentType.PLAYER, false));
+                add(new Argument("player", ArgumentType.PLAYER, true));
             }
-            if (target != null) {
-                player.teleport(target);
-                utils.sendPlayer(player, core.getMessage("teleport.success",List.of(target.getName())));
-            } else {
-                utils.sendPlayer(player, core.getMessage("generic.playernotfound"));
-            }
-            return;
-        } else if (args.length == 2) {
-            Collection<Player> target = utils.getTargets(args[0]);
-            Player target2 = utils.getTarget(args[1]);
-            if (target != null && !target.isEmpty() && target2 != null) {
-                for (Player p : target) {
-                    p.teleport(target2);
-                }
-                if ((target.size() - 1) > 1) {
-                    utils.sendPlayer(player,
-                            core.getMessage("teleporrt.multisuccess",List.of(String.valueOf(target.size()-1),target2.getName())));
-                } else {
-                    utils.sendPlayer(player, core.getMessage("teleport.othersuccess",List.of(target.iterator().next().getName(),target2.getName())));
-                }
-            } else {
-                utils.sendPlayer(player, core.getMessage("generic.playernotfound"));
-            }
-            return;
-        }
-        utils.sendPlayer(player, core.getMessage("generic.usage", List.of(alias,"player")));
+        });
     }
-    
-    @SuppressWarnings("static-access")
-    public void runAlias() {
-        utils utils = new utils(core);
-        if (alias.equalsIgnoreCase("tpall")) {
-            if (args.length == 1) {
-                Player target = utils.getTarget(args[0]);
-                if (target != null) {
-                    for (Player p : player.getServer().getOnlinePlayers()) {
-                        p.teleport(target);
-                    }
-                    utils.sendPlayer(player, core.getMessage("teleport.multisuccess",List.of(String.valueOf(player.getServer().getOnlinePlayers().size() - 1),"you")));
-                } else {
-                    utils.sendPlayer(player, core.getMessage("generic.playernotfound"));
-                }
-                return;
-            } else {
-                for (Player p : player.getServer().getOnlinePlayers()) {
-                    p.teleport(player);
-                }
-                utils.sendPlayer(player, core.getMessage("teleport.multisuccess",List.of("all","you")));
-                return;
+
+    core core;
+
+    public teleport(core core) {
+        this.core = core;
+    }
+
+    @Override
+    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
+        Boolean console = false;
+        Audience senderAudience = core.adventure().sender(sender);
+        if (!(sender instanceof Player)) {
+            console = true;
+        }
+        if (console && args.length == 1) {
+            utils.sendColorText(senderAudience, core.getMessage("generic.consoleargs", List.of("2")));
+            return false;
+        } else if (args.length == 1) {
+            Player player1 = getCommand().options.get(0).getExclusivePlayer(core, args[0]);
+            if (player1 == null) {
+                utils.sendColorText(senderAudience, core.getMessage("generic.playernotfound"));
+                return false;
+            } else if (player1.getUniqueId() == ((Player) sender).getUniqueId()) {
+                utils.sendColorText(senderAudience, core.getMessage("teleport.self"));
+                return false;
             }
-        } else if (alias.equalsIgnoreCase("tphere")) {
-            if (args.length == 1) {
-                Player target = utils.getTarget(args[0]);
-                if (target != null) {
-                    target.teleport(player);
-                    utils.sendPlayer(player, core.getMessage("teleport.heresuccess",List.of(target.getName())));
-                } else {
-                    utils.sendPlayer(player, core.getMessage("generic.playernotfound"));
-                }
-                return;
+            ((Player) sender).teleport(player1);
+            utils.sendColorText(senderAudience, core.getMessage("teleport.success", List.of(player1.getName())));
+        } else if (args.length == 2) {
+            List<Player> players = getCommand().options.get(0).getPlayer(core, args[0]);
+            Player player2 = getCommand().options.get(1).getExclusivePlayer(core, args[1]);
+            if (players == null || player2 == null) {
+                utils.sendColorText(senderAudience, core.getMessage("generic.playernotfound"));
+                return false;
+            }
+            for (Player player : players) {
+                player.teleport(player2);
+            }
+            if (players.size() > 1) {
+                utils.sendColorText(senderAudience, core.getMessage("teleport.multisuccess", List.of(String.valueOf(players.size()), player2.getName())));
+                return true;
             } else {
-                utils.sendPlayer(player, core.getMessage("generic.usage", List.of(alias,"player")));
-                return;
+                utils.sendColorText(senderAudience, core.getMessage("teleport.othersuccess", List.of(players.get(0).getName(),player2.getName())));
+                return true;
             }
         }
+        return true;
     }
 }

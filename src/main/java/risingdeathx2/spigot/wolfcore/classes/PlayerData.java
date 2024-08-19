@@ -1,6 +1,5 @@
 package risingdeathx2.spigot.wolfcore.classes;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -35,9 +34,9 @@ public class PlayerData {
 
     public String ipaddress;
 
-    public Map<String,home> home = new HashMap<>();
+    public Map<String,home> homes = new HashMap<>();
 
-    ArrayList<request> requests = new ArrayList<request>();
+    public request lastRequest;
     public PlayerData(Player host, YamlDocument data) {
         this.host = host;
         this.data = data;
@@ -57,7 +56,7 @@ public class PlayerData {
                 home.yaw = data.getFloat("home." + key + ".yaw", (float) 0.0);
                 home.pitch = data.getFloat("home." + key + ".pitch", (float) 0.0);
                 home.world = UUID.fromString(data.getString("home." + key + ".world"));
-                this.home.put(key, home);
+                this.homes.put(key, home);
             }
         }
         if (data.contains("timestamp")) {
@@ -71,30 +70,20 @@ public class PlayerData {
         // The host is the player sending the request, the target is this instance of the player
         request request = new request();
         request.host = sender;
-        request.target = this.host;
         request.type = type;
         request.startTime = System.currentTimeMillis();
-        requests.add(request);
-        return request;
+        lastRequest = request;
+        return lastRequest;
     }
-    public boolean denyLastRequest() {
-        if (requests.size() == 0) {
-            return false;
-        }
-        requests.remove(requests.size() - 1);
-        return true;
+    public void denyLastRequest() {
+        lastRequest = null;
     }
     public request acceptLastRequest() {
-        if (requests.size() == 0) {
+        if (System.currentTimeMillis() - lastRequest.startTime > 30000) {
+            lastRequest = null;
             return null;
         }
-        request request = requests.get(requests.size() - 1);
-        if (System.currentTimeMillis() - request.startTime > 30000) {
-            requests = new ArrayList<request>();
-            return null;
-        }
-        requests.remove(requests.size() - 1);
-        return request;
+        return lastRequest;
     }
 
 }

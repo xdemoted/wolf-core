@@ -3,10 +3,7 @@ package risingdeathx2.spigot.wolfcore;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
-import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
@@ -18,7 +15,6 @@ import dev.dejvokep.boostedyaml.settings.updater.UpdaterSettings;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
-import risingdeathx2.spigot.wolfcore.classes.PlayerData;
 import risingdeathx2.spigot.wolfcore.events.chat;
 import risingdeathx2.spigot.wolfcore.events.playerManager;
 
@@ -29,7 +25,8 @@ public class core extends JavaPlugin implements Listener {
     public YamlDocument config;
     public YamlDocument warps;
     public YamlDocument messages;
-    public HashMap<UUID, PlayerData> players = new HashMap<UUID, PlayerData>();
+    public CommandLoader commandLoader;
+    public playerManager playerManager;
     static public String prefix = "♆ ";
 
     public @NonNull BukkitAudiences adventure() {
@@ -51,10 +48,12 @@ public class core extends JavaPlugin implements Listener {
         config = getConfig("config.yml");
         warps = getConfig("warps.yml");
         this.getLogger().info("[Wolf-Core] Plugin enabled");
-        new command(this);
+        commandLoader = new CommandLoader(this);
+        commandLoader.loadCommands();
+        playerManager = new playerManager(this);
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(this, this);
-        pm.registerEvents((Listener) new playerManager(this), this);
+        pm.registerEvents((Listener) playerManager, this);
         pm.registerEvents((Listener) new chat(this), this);
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "core:main");
     }

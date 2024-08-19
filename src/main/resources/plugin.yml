@@ -27,18 +27,28 @@ commands:
     description: Teleport Toggle Command
   gamemode:
     description: Gamemode Command
-    aliases: [gamemode, gm, gmc, gms, gma, gmsp]
+    aliases: [gm]
+  gms:
+    description: Gamemode Alias
+    aliases: [gmc, gma, gmsp]
   teleport:
     description: Teleport Command
-    aliases: [tp, tpall, tphere, tpohere]
-  tpa:
+    aliases: [tp]
+  teleportall:
+    description: Teleport All Command
+    aliases: [tpall]
+  teleporthere:
+    description: Teleport Here Command
+    aliases: [tphere]
+  teleportask:
     description: Teleport Ask Command
-  tpahere:
-    description: Teleport Ask Here Command
-  tpaccept:
+    aliases: [tpa,tpahere,teleportaskhere]
+  teleportaccept:
     description: Teleport Accept Command
-  tpdeny:
+    aliases: [tpaccept]
+  teleportdeny:
     description: Teleport Deny Command
+    aliases: [tpdeny]
   tppos:
     description: Teleport Position Command
   warp:
