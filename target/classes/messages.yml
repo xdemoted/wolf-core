@@ -1,4 +1,10 @@
 version: 3
+home:
+  notfound: "♆ <#ffaa00>Home <#ffff00>%0% <#ffaa00>not found."
+  set: "♆ <#00ff00>Home <#ffff00>%0% <#00ff00>set."
+  deleted: "♆ <#00ff00>Home <#ffff00>%0% <#00ff00>deleted."
+  teleport: "♆ <#00ff00>Teleported to home <#ffff00>%0%."
+  invalidworld: "♆ <#ffaa00>World <#ffff00>%0% <#ffaa00>not found for home <#ffff00>%1%."
 warp:
   success: "<#ffaa00>Warping to <#ffff00>%0%"
   othersuccess: "<#ffaa00>Warping %1% to <#ffff00>%0%"

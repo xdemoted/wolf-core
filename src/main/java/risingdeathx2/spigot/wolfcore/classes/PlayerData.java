@@ -9,15 +9,6 @@ import org.bukkit.entity.Player;
 import dev.dejvokep.boostedyaml.YamlDocument;
 
 public class PlayerData {
-    public class home {
-        public String name;
-        public double x;
-        public double y;
-        public double z;
-        public float yaw;
-        public float pitch;
-        public UUID world;
-    }
     public class timestamp {
         public long logout;
         public long login;
@@ -34,7 +25,7 @@ public class PlayerData {
 
     public String ipaddress;
 
-    public Map<String,home> homes = new HashMap<>();
+    public Map<String,Home> homes = new HashMap<>();
 
     public request lastRequest;
     public PlayerData(Player host, YamlDocument data) {
@@ -48,14 +39,13 @@ public class PlayerData {
 
         if (data.contains("home")) {
             for (String key : data.getSection("home").getRoutesAsStrings(false)) {
-                home home = new home();
-                home.name = key;
-                home.x = data.getDouble("home." + key + ".x", 0.0);
-                home.y = data.getDouble("home." + key + ".y", 0.0);
-                home.z = data.getDouble("home." + key + ".z", 0.0);
-                home.yaw = data.getFloat("home." + key + ".yaw", (float) 0.0);
-                home.pitch = data.getFloat("home." + key + ".pitch", (float) 0.0);
-                home.world = UUID.fromString(data.getString("home." + key + ".world"));
+                double x = data.getDouble("home." + key + ".x", 0.0);
+                double y = data.getDouble("home." + key + ".y", 0.0);
+                double z = data.getDouble("home." + key + ".z", 0.0);
+                float yaw = data.getFloat("home." + key + ".yaw", (float) 0.0);
+                float pitch = data.getFloat("home." + key + ".pitch", (float) 0.0);
+                UUID world = UUID.fromString(data.getString("home." + key + ".world"));
+                Home home = new Home(key, x, y, z, yaw, pitch, world);
                 this.homes.put(key, home);
             }
         }

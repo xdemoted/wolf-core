@@ -106,4 +106,11 @@ public class Argument {
         }
         return null;
     }
+    public Home getHome(core core, String arg, PlayerData playerData) {
+        if (playerData.homes.containsKey(arg)) {
+            Home home = playerData.homes.get(arg);
+            return home;
+        }
+        return null;
+    }
 }

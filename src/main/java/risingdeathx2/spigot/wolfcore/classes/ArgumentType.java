@@ -4,6 +4,7 @@ public class ArgumentType {
     public static final ArgumentType STRING = new ArgumentType();
     public static final ArgumentType GAMEMODE = new ArgumentType();
     public static final ArgumentType WARP = new ArgumentType();
+    public static final ArgumentType HOME = new ArgumentType();
     public static final ArgumentType DOUBLE = new ArgumentType();
     public static final ArgumentType BOOLEAN = new ArgumentType();
     public static final ArgumentType PLAYER = new ArgumentType();
