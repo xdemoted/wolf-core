@@ -8,8 +8,6 @@ import org.bukkit.entity.Player;
 
 import risingdeathx2.spigot.wolfcore.core;
 import risingdeathx2.spigot.wolfcore.utils;
-import risingdeathx2.spigot.wolfcore.classes.Argument;
-import risingdeathx2.spigot.wolfcore.classes.ArgumentType;
 import risingdeathx2.spigot.wolfcore.classes.Command;
 import risingdeathx2.spigot.wolfcore.classes.CoreCommandExecutor;
 import risingdeathx2.spigot.wolfcore.classes.PlayerData;
@@ -18,11 +16,7 @@ public class teleportdeny implements CoreCommandExecutor {
 
     @Override
     public Command getCommand() {
-        return new Command("teleportdeny", new ArrayList<>() {
-            {
-                add(new Argument("player", ArgumentType.PLAYER, true));
-            }
-        });
+        return new Command("teleportdeny", new ArrayList<>());
     }
 
     core core;

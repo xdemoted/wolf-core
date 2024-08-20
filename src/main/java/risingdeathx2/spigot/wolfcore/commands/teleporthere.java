@@ -18,7 +18,7 @@ public class teleporthere implements CoreCommandExecutor {
     @Override
     public Command getCommand() {
         return new Command("teleporthere", new ArrayList<>() {{
-            add(new Argument("player", ArgumentType.PLAYER, true));
+            add(new Argument("player", ArgumentType.PLAYER, false));
         }});
     }
     core core;

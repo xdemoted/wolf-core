@@ -1,10 +1,13 @@
 version: 3
 warp:
-  success: "<#ffaa00>Teleported to <#ffff00>%0%"
+  success: "<#ffaa00>Warping to <#ffff00>%0%"
+  othersuccess: "<#ffaa00>Warping %1% to <#ffff00>%0%"
   set: "<#ffaa00>Warp <#ffff00>%0% <#ffaa00>set."
   deleted: "<#ffaa00>Warp <#ffff00>%0%<#ffaa00> deleted."
   notfound: "<#ffaa00>Warp <#ffff00>%0%<#ffaa00> not found."
   invalidworld: "<#ffaa00>World <#ffff00>%0%<#ffaa00> not found for warp %1%."
+  exists: "<#ffaa00>Warp <#ffff00>%0%<#ffaa00> already exists."
+  info: "<#ffaa00>Warp <#ffff00>%0%<#ffaa00> is in world <#ffff00>%1%<#ffaa00> at <#ffff00>%2%<#ffaa00>, <#ffff00>%3%<#ffaa00>, <#ffff00>%4%<#ffaa00>."
 teleport:
   self: "♆ <#ffaa00>You can't teleport to yourself."
   success: "♆ <#00ff00>Teleported to <#ffff00>%0%"
@@ -18,7 +21,6 @@ gamemode:
   othersuccess: "♆ <#00ff00>Set <#ffff00>%0%<#00ff00>'s gamemode to <#ffff00>%1%"
   selfsuccess: "♆ <#55ff55>Set your gamemode to <#ffff00>%0%"
   invalid: "♆ <#ff5555>Invalid gamemode."
-  invalidworld: "♆ <#ff0000>World not found."
   usage: "♆ <#ffaa00>Usage: <#ff5555>/gm <creative|survival|spectator|adventure> [target]"
 teleportask:
   norequest: "♆ <#ffaa00>You have no pending teleport requests."
@@ -31,6 +33,7 @@ teleportask:
   received: "♆ <#00ff00>%0% <#00ff00>requested to teleport to you. <#00ff00>Use <#ffff00>/tpaccept <#00ff00>or <#ff0000>/tpdeny"
 generic:
   usage: "♆ <#ffaa00>Usage: <#ffffff>/%0% <%1%>"
+  alphanumeric: "♆ <#ffaa00>Argument <#ffff00>%0% <#ffaa00>must be alphanumeric."
   invaliddata: "♆ <#ff0000>Invalid data."
   playernotfound: "♆ <#ff0000>Player not found."
   failedsave: "<#ffaa00>Failed to save %0%."

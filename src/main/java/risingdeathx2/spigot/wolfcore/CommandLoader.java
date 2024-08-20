@@ -6,14 +6,19 @@ import org.bukkit.command.PluginCommand;
 
 import risingdeathx2.spigot.wolfcore.classes.Command;
 import risingdeathx2.spigot.wolfcore.classes.CoreCommandExecutor;
+import risingdeathx2.spigot.wolfcore.commands.delwarp;
 import risingdeathx2.spigot.wolfcore.commands.gamemode;
 import risingdeathx2.spigot.wolfcore.commands.gamemodeAlias;
+import risingdeathx2.spigot.wolfcore.commands.setwarp;
 import risingdeathx2.spigot.wolfcore.commands.teleport;
 import risingdeathx2.spigot.wolfcore.commands.teleportaccept;
 import risingdeathx2.spigot.wolfcore.commands.teleportall;
 import risingdeathx2.spigot.wolfcore.commands.teleportask;
 import risingdeathx2.spigot.wolfcore.commands.teleportdeny;
 import risingdeathx2.spigot.wolfcore.commands.teleporthere;
+import risingdeathx2.spigot.wolfcore.commands.warp;
+import risingdeathx2.spigot.wolfcore.commands.warpinfo;
+import risingdeathx2.spigot.wolfcore.commands.warps;
 
 public class CommandLoader {
     public core core;
@@ -32,6 +37,11 @@ public class CommandLoader {
         register(new teleportaccept(core));
         register(new teleportask(core));
         register(new teleportdeny(core));
+        register(new warp(core));
+        register(new setwarp(core));
+        register(new warps(core));
+        register(new delwarp(core));
+        register(new warpinfo(core));
     }
 
     public void register(CoreCommandExecutor executor) {
