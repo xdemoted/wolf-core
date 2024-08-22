@@ -17,7 +17,7 @@ import java.util.List;
 public class delhome implements CoreCommandExecutor {
     @Override
     public Command getCommand() {
-        return new Command("delhome", new ArrayList<>() {{
+        return new Command("delhome","wolfcore.delhome", new ArrayList<>() {{
             add(new Argument("home", ArgumentType.STRING, true));
         }});
     }

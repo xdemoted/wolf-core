@@ -21,7 +21,7 @@ import risingdeathx2.spigot.wolfcore.classes.PlayerData;
 public class home implements CoreCommandExecutor {
     @Override
     public Command getCommand() {
-        return new Command("home", new ArrayList<>() {{
+        return new Command("home","wolfcore.home", new ArrayList<>() {{
             add(new Argument("home", ArgumentType.HOME, true));
         }});
     }

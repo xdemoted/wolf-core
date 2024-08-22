@@ -17,7 +17,7 @@ import risingdeathx2.spigot.wolfcore.classes.CoreCommandExecutor;
 
 public class teleport implements CoreCommandExecutor {
     public Command getCommand() {
-        return new Command("teleport", new ArrayList<Argument>() {
+        return new Command("teleport","wolfcore.teleport", new ArrayList<Argument>() {
             {
                 add(new Argument("player", ArgumentType.PLAYER, false));
                 add(new Argument("player", ArgumentType.PLAYER, true));

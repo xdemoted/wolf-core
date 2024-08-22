@@ -11,6 +11,7 @@ import risingdeathx2.spigot.wolfcore.commands.delwarp;
 import risingdeathx2.spigot.wolfcore.commands.gamemode;
 import risingdeathx2.spigot.wolfcore.commands.gamemodeAlias;
 import risingdeathx2.spigot.wolfcore.commands.home;
+import risingdeathx2.spigot.wolfcore.commands.max;
 import risingdeathx2.spigot.wolfcore.commands.sethome;
 import risingdeathx2.spigot.wolfcore.commands.setwarp;
 import risingdeathx2.spigot.wolfcore.commands.teleport;
@@ -48,6 +49,7 @@ public class CommandLoader {
         register(new sethome(core));
         register(new delhome(core));
         register(new home(core));
+        register(new max(core));
     }
 
     public void register(CoreCommandExecutor executor) {

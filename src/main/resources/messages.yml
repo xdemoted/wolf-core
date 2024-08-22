@@ -5,6 +5,7 @@ home:
   deleted: "♆ <#00ff00>Home <#ffff00>%0% <#00ff00>deleted."
   teleport: "♆ <#00ff00>Teleported to home <#ffff00>%0%."
   invalidworld: "♆ <#ffaa00>World <#ffff00>%0% <#ffaa00>not found for home <#ffff00>%1%."
+  limit: "♆ <#ffaa00>You can't set more than <#ffff00>%0% <#ffaa00>homes."
 warp:
   success: "<#ffaa00>Warping to <#ffff00>%0%"
   othersuccess: "<#ffaa00>Warping %1% to <#ffff00>%0%"
@@ -45,5 +46,6 @@ generic:
   failedsave: "<#ffaa00>Failed to save %0%."
   consoleargs: "<#ffaa00>This command requires %0% argument(s)."
   noconsole: "<#ffaa00>This command can only be executed by players."
+  nopermission: "<#ffaa00>You do not have permission to use this command."
 chat:
   reserved: "§4§lError: §cThe \"¶\" character is reserved for internal use."

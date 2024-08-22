@@ -17,7 +17,7 @@ public class teleporthere implements CoreCommandExecutor {
 
     @Override
     public Command getCommand() {
-        return new Command("teleporthere", new ArrayList<>() {{
+        return new Command("teleporthere","wolfcore.tphere", new ArrayList<>() {{
             add(new Argument("player", ArgumentType.PLAYER, false));
         }});
     }

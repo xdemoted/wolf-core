@@ -14,7 +14,7 @@ import risingdeathx2.spigot.wolfcore.classes.CoreCommandExecutor;
 public class delwarp implements CoreCommandExecutor {
     @Override
     public Command getCommand() {
-        return new Command("delwarp", new ArrayList<>() {{
+        return new Command("delwarp","wolfcore.delwarp", new ArrayList<>() {{
             new Argument("warp", ArgumentType.WARP, true);
         }});
     }

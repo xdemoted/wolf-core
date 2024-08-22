@@ -17,7 +17,7 @@ public class setwarp implements CoreCommandExecutor {
 
     @Override
     public Command getCommand() {
-        return new Command("setwarp", new ArrayList<>() {{
+        return new Command("setwarp","wolfcore.setwarp", new ArrayList<>() {{
             add(new Argument("warp", ArgumentType.STRING, false));
         }});
     }

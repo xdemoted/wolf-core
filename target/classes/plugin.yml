@@ -21,6 +21,8 @@ commands:
     description: Kick All Command
   kick:
     description: Kick Command
+  max:
+    description: Max Command
   whois:
     description: Whois Command
   tptoggle:

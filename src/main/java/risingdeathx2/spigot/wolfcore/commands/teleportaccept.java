@@ -13,7 +13,7 @@ import risingdeathx2.spigot.wolfcore.classes.PlayerData;
 
 public class teleportaccept implements CoreCommandExecutor {
     public Command getCommand() {
-        return new Command("teleportaccept", new ArrayList<>());
+        return new Command("teleportaccept","wolfcore.tpaccept", new ArrayList<>());
     }
 
     core core;

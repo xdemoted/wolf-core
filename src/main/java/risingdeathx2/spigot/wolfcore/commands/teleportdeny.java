@@ -16,7 +16,7 @@ public class teleportdeny implements CoreCommandExecutor {
 
     @Override
     public Command getCommand() {
-        return new Command("teleportdeny", new ArrayList<>());
+        return new Command("teleportdeny","wolfcore.tpdeny", new ArrayList<>());
     }
 
     core core;

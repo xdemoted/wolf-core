@@ -11,7 +11,7 @@ import risingdeathx2.spigot.wolfcore.classes.CoreCommandExecutor;
 public class warps implements CoreCommandExecutor {
     @Override
     public Command getCommand() {
-        return new Command("warps", new ArrayList<>());
+        return new Command("warps","wolfcore.warp", new ArrayList<>());
     }
 
     core core;

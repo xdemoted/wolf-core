@@ -28,7 +28,7 @@ public class gamemodeAlias implements CoreCommandExecutor {
         }
     };
     public Command getCommand() {
-        return new Command("gms", new ArrayList<Argument>() {
+        return new Command("gms","wolfcore.gamemode", new ArrayList<Argument>() {
             {
                 add(new Argument("player", ArgumentType.PLAYER, true));
             }

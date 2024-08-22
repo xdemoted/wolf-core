@@ -18,7 +18,7 @@ import risingdeathx2.spigot.wolfcore.classes.CoreCommandExecutor;
 
 public class gamemode implements CoreCommandExecutor {
     public Command getCommand() {
-        return new Command("gamemode", new ArrayList<Argument>() {
+        return new Command("gamemode","wolfcore.gamemode", new ArrayList<Argument>() {
             {
                 add(new Argument("gamemode", ArgumentType.GAMEMODE, false));
                 add(new Argument("player", ArgumentType.PLAYER, true));

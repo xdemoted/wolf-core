@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
@@ -75,5 +76,22 @@ public class PlayerData {
         }
         return lastRequest;
     }
-
+    public YamlDocument save() {
+        for (String key : homes.keySet()) {
+            Home home = homes.get(key);
+            data.set("home." + key + ".x", home.x);
+            data.set("home." + key + ".y", home.y);
+            data.set("home." + key + ".z", home.z);
+            data.set("home." + key + ".yaw", home.yaw);
+            data.set("home." + key + ".pitch", home.pitch);
+            data.set("home." + key + ".world", home.world.toString());
+        }
+        data.set("teleportEnabled", this.teleportEnabled);
+        data.set("ipaddress", this.ipaddress);
+        Location lastPosition = host.getLocation();
+        data.set("lastPosition.x", lastPosition.getX());
+        data.set("lastPosition.y", lastPosition.getY());
+        data.set("lastPosition.z", lastPosition.getZ());
+        return data;
+    }
 }

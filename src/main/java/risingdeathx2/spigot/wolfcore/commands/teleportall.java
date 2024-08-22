@@ -17,7 +17,7 @@ public class teleportall implements CoreCommandExecutor {
 
     @Override
     public Command getCommand() {
-        return new Command("teleportall", new ArrayList<>() {{
+        return new Command("teleportall","wolfcore.tpall", new ArrayList<>() {{
             add(new Argument("player", ArgumentType.PLAYER, true));
         }});
     }

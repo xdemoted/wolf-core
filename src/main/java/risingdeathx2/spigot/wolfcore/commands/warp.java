@@ -19,7 +19,7 @@ import risingdeathx2.spigot.wolfcore.classes.Warp;
 public class warp implements CoreCommandExecutor {
     @Override
     public Command getCommand() {
-        return new Command("warp", new ArrayList<>() {
+        return new Command("warp","wolfcore.warp", new ArrayList<>() {
             {
                 add(new Argument("warp", ArgumentType.WARP, false));
                 add(new Argument("player", ArgumentType.PLAYER, true));

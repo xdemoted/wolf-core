@@ -1,5 +1,6 @@
 package risingdeathx2.spigot.wolfcore.events;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -19,11 +20,20 @@ public class playerManager implements Listener {
 
     public playerManager(core core) {
         this.core = core;
+        Collection<? extends Player> onlinePlayers = core.getServer().getOnlinePlayers();
+        if (onlinePlayers.size() > 0) {
+            for (Player player : onlinePlayers) {
+                onJoin(player);
+            }
+        }
     }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
+        onJoin(event.getPlayer());
+    }
+
+    public void onJoin(Player player) {
         YamlDocument data = core.getConfig(player.getUniqueId().toString(), core.getDataFolder().toPath().resolve("userdata"));
         if (data == null) {
             core.getLogger().warning("[Wolf-Core] Player data not found for " + player.getName());

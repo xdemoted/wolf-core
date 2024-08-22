@@ -24,7 +24,7 @@ public class teleportask implements CoreCommandExecutor {
     }};
     @Override
     public Command getCommand() {
-        return new Command("teleportask", new ArrayList<>() {{
+        return new Command("teleportask","wolfcore.tpa", new ArrayList<>() {{
             add(new Argument("player", ArgumentType.PLAYER, false));
         }});
     }
