@@ -15,7 +15,7 @@ public class delwarp implements CoreCommandExecutor {
     @Override
     public Command getCommand() {
         return new Command("delwarp","wolfcore.delwarp", new ArrayList<>() {{
-            new Argument("warp", ArgumentType.WARP, true);
+            new Argument("warp", ArgumentType.WARP, false);
         }});
     }
 

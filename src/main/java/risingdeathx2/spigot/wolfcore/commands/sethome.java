@@ -52,7 +52,7 @@ public class sethome implements CoreCommandExecutor {
         }
         PlayerData playerData = core.playerManager.getPlayerData((Player) sender);
         if (playerData != null) {
-            if (playerData.homes.size() > PermissionHandler.getNumberValue("wolfcore.sethome", user).intValue()) {
+            if (playerData.homes.size() == PermissionHandler.getNumberValue("wolfcore.sethome", user).intValue()) {
                 utils.sendColorText(audience, core.getMessage("home.limit", List.of(PermissionHandler.getNumberValue("wolfcore.sethome", user).toString())));
                 return true;
             }

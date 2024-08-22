@@ -84,6 +84,8 @@ public class gamemodeAlias implements CoreCommandExecutor {
                     player.setGameMode(mode);
                 }
                 return true;
+            } else {
+                utils.sendColorText(core.adventure().sender(sender), core.getMessage("generic.playernotfound"));
             }
         }
         sender.sendMessage("A player must be specified.");

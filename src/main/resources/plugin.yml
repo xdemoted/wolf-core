@@ -55,7 +55,14 @@ commands:
     description: Teleport Position Command
   warp:
     description: Warp Command
-    aliases: [warps,warpinfo,setwarp,delwarp]
+  warps:
+    description: Warps List
+  warpinfo:
+    description: Warp Info Command
+  setwarp:
+    description: Set Warp Command
+  delwarp:
+    description: Delete Warp Command
   ban:
     description: Ban Command
   unban:

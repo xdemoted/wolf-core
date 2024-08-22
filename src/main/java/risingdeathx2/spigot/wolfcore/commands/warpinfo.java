@@ -17,7 +17,7 @@ public class warpinfo implements CoreCommandExecutor {
     @Override
     public Command getCommand() {
         return new Command("warpinfo","wolfcore.warpinfo", new ArrayList<>() {{
-            new Argument("warp", ArgumentType.WARP, true);
+            new Argument("warp", ArgumentType.WARP, false);
         }});
     }
 

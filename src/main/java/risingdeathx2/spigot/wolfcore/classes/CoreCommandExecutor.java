@@ -39,6 +39,8 @@ public interface CoreCommandExecutor extends CommandExecutor {
             }
         };
         core core = risingdeathx2.spigot.wolfcore.core.getPlugin(core.class);
+        core.getLogger().info("Command: " + command.name);
+        core.getLogger().info("Command: " + command.node);
         command.options.forEach(option -> {
             core.getLogger().info("Option: " + option.name);
             core.getLogger().info("Optional: " + option.optional);
