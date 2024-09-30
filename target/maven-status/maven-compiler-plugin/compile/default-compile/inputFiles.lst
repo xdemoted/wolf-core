@@ -14,14 +14,18 @@ C:\Users\Adam\OneDrive\Documents\workspace\wolf-core\src\main\java\risingdeathx2
 C:\Users\Adam\OneDrive\Documents\workspace\wolf-core\src\main\java\risingdeathx2\spigot\wolfcore\commands\warp.java
 C:\Users\Adam\OneDrive\Documents\workspace\wolf-core\src\main\java\risingdeathx2\spigot\wolfcore\core.java
 C:\Users\Adam\OneDrive\Documents\workspace\wolf-core\src\main\java\risingdeathx2\spigot\wolfcore\classes\ArgumentType.java
+C:\Users\Adam\OneDrive\Documents\workspace\wolf-core\src\main\java\risingdeathx2\spigot\wolfcore\commands\seen.java
 C:\Users\Adam\OneDrive\Documents\workspace\wolf-core\src\main\java\risingdeathx2\spigot\wolfcore\events\chat.java
 C:\Users\Adam\OneDrive\Documents\workspace\wolf-core\src\main\java\risingdeathx2\spigot\wolfcore\classes\PlayerData.java
 C:\Users\Adam\OneDrive\Documents\workspace\wolf-core\src\main\java\risingdeathx2\spigot\wolfcore\commands\warpinfo.java
 C:\Users\Adam\OneDrive\Documents\workspace\wolf-core\src\main\java\risingdeathx2\spigot\wolfcore\classes\request.java
 C:\Users\Adam\OneDrive\Documents\workspace\wolf-core\src\main\java\risingdeathx2\spigot\wolfcore\CommandLoader.java
 C:\Users\Adam\OneDrive\Documents\workspace\wolf-core\src\main\java\risingdeathx2\spigot\wolfcore\commands\teleportask.java
+C:\Users\Adam\OneDrive\Documents\workspace\wolf-core\src\main\java\risingdeathx2\spigot\wolfcore\commands\CoreCommandExecutor.java
 C:\Users\Adam\OneDrive\Documents\workspace\wolf-core\src\main\java\risingdeathx2\spigot\wolfcore\utilities\PermissionHandler.java
 C:\Users\Adam\OneDrive\Documents\workspace\wolf-core\src\main\java\risingdeathx2\spigot\wolfcore\commands\delwarp.java
+C:\Users\Adam\OneDrive\Documents\workspace\wolf-core\src\main\java\risingdeathx2\spigot\wolfcore\commands\legacy.java
+C:\Users\Adam\OneDrive\Documents\workspace\wolf-core\src\main\java\risingdeathx2\spigot\wolfcore\command.java
 C:\Users\Adam\OneDrive\Documents\workspace\wolf-core\src\main\java\risingdeathx2\spigot\wolfcore\commands\home.java
 C:\Users\Adam\OneDrive\Documents\workspace\wolf-core\src\main\java\risingdeathx2\spigot\wolfcore\commands\teleporthere.java
 C:\Users\Adam\OneDrive\Documents\workspace\wolf-core\src\main\java\risingdeathx2\spigot\wolfcore\commands\warps.java
@@ -30,4 +34,5 @@ C:\Users\Adam\OneDrive\Documents\workspace\wolf-core\src\main\java\risingdeathx2
 C:\Users\Adam\OneDrive\Documents\workspace\wolf-core\src\main\java\risingdeathx2\spigot\wolfcore\classes\Command.java
 C:\Users\Adam\OneDrive\Documents\workspace\wolf-core\src\main\java\risingdeathx2\spigot\wolfcore\commands\delhome.java
 C:\Users\Adam\OneDrive\Documents\workspace\wolf-core\src\main\java\risingdeathx2\spigot\wolfcore\classes\Argument.java
+C:\Users\Adam\OneDrive\Documents\workspace\wolf-core\src\main\java\risingdeathx2\spigot\wolfcore\commands\barrier.java
 C:\Users\Adam\OneDrive\Documents\workspace\wolf-core\src\main\java\risingdeathx2\spigot\wolfcore\commands\max.java

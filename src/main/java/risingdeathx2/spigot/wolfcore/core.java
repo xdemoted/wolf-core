@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -110,5 +111,10 @@ public class core extends JavaPlugin implements Listener {
             }
         }
         return messages;
+    }
+
+    public static void log(String log) {
+        Plugin plugin = core.getPlugin(core.class);
+        plugin.getLogger().info(log);
     }
 }

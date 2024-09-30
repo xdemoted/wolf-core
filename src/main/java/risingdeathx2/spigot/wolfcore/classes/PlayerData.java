@@ -21,16 +21,21 @@ public class PlayerData {
 
     public boolean afk;
     public boolean teleportEnabled;
-    public boolean godmode; 
+    public boolean godmode;
     public boolean muted;
 
     public String ipaddress;
+    public String username;
 
-    public Map<String,Home> homes = new HashMap<>();
+    public Map<String, Home> homes = new HashMap<>();
 
     public request lastRequest;
+
+    public timestamp timestamp = new timestamp();
+
     public PlayerData(Player host, YamlDocument data) {
         this.host = host;
+        this.username = host.getName();
         this.data = data;
         this.afk = false;
         this.teleportEnabled = true;
@@ -50,15 +55,14 @@ public class PlayerData {
                 this.homes.put(key, home);
             }
         }
-        if (data.contains("timestamp")) {
-            timestamp timestamp = new timestamp();
-            timestamp.login = data.getLong("timestamp.login", (long) 0);
-            timestamp.logout = data.getLong("timestamp.logout", (long) 0);
-            timestamp.mute = data.getLong("timestamp.mute", (long) 0);
-        }
+        timestamp.login = data.getLong("timestamp.login", (long) 0);
+        timestamp.logout = data.getLong("timestamp.logout", (long) 0);
+        timestamp.mute = data.getLong("timestamp.mute", (long) 0);
     }
+
     public request sendRequest(Player sender, String type) {
-        // The host is the player sending the request, the target is this instance of the player
+        // The host is the player sending the request, the target is this instance of
+        // the player
         request request = new request();
         request.host = sender;
         request.type = type;
@@ -66,9 +70,11 @@ public class PlayerData {
         lastRequest = request;
         return lastRequest;
     }
+
     public void denyLastRequest() {
         lastRequest = null;
     }
+
     public request acceptLastRequest() {
         if (System.currentTimeMillis() - lastRequest.startTime > 30000) {
             lastRequest = null;
@@ -76,6 +82,7 @@ public class PlayerData {
         }
         return lastRequest;
     }
+
     public YamlDocument save() {
         for (String key : homes.keySet()) {
             Home home = homes.get(key);
@@ -88,6 +95,7 @@ public class PlayerData {
         }
         data.set("teleportEnabled", this.teleportEnabled);
         data.set("ipaddress", this.ipaddress);
+        data.set("username", this.username);
         Location lastPosition = host.getLocation();
         data.set("lastPosition.x", lastPosition.getX());
         data.set("lastPosition.y", lastPosition.getY());
