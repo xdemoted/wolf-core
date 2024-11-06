@@ -1,0 +1,5 @@
+token: "Put token here"
+guild: "guildID"
+channel: "ChannelID"
+MaxNickLength: 16
+version: 2

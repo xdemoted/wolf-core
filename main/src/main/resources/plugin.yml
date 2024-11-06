@@ -1,0 +1,87 @@
+main: com.wolfco.main.core
+name: wolf-core
+version: 0.1
+api-version: 1.21
+commands:
+  ban:
+    description: Ban Command
+  banip:
+    description: Ban IP Command
+  banlist:
+    description: Ban List Command
+  database:
+    aliases: [ db ]
+    description: Database Management
+  delhome:
+    description: Delete Home Command
+  delwarp:
+    description: Delete Warp Command
+  gamemode:
+    aliases: [ gm ]
+    description: Gamemode Command
+  gms:
+    aliases: [ gmc, gma, gmsp ]
+    description: Gamemode Alias
+  help:
+    description: Help Command
+  home:
+    description: Home Command
+  kick:
+    description: Kick Command
+  kickall:
+    description: Kick All Command
+  lag:
+    description: Lag Command
+  max:
+    description: Max Command
+  mute:
+    description: Mute Command
+  sethome:
+    description: Set Home Command
+  setwarp:
+    description: Set Warp Command
+  teleport:
+    aliases: [ tp ]
+    description: Teleport Command
+  teleportaccept:
+    aliases: [ tpaccept ]
+    description: Teleport Accept Command
+  teleportall:
+    aliases: [ tpall ]
+    description: Teleport All Command
+  teleportask:
+    aliases: [ tpa, tpahere, teleportaskhere ]
+    description: Teleport Ask Command
+  teleportdeny:
+    aliases: [ tpdeny ]
+    description: Teleport Deny Command
+  teleporthere:
+    aliases: [ tphere ]
+    description: Teleport Here Command
+  tempban:
+    description: Temp Ban Command
+  tempbanip:
+    description: Temp Ban IP Command
+  tempmute:
+    description: Temp Mute Command
+  test:
+    description: Test Command
+  tppos:
+    description: Teleport Position Command
+  tptoggle:
+    description: Teleport Toggle Command
+  unban:
+    description: Unban Command
+  unbanip:
+    description: Unban IP Command
+  unmute:
+    description: Unmute Command
+  warp:
+    description: Warp Command
+  warpinfo:
+    description: Warp Info Command
+  warps:
+    description: Warps List
+  whois:
+    description: Whois Command
+
