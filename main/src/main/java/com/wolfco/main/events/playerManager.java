@@ -12,14 +12,14 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import dev.dejvokep.boostedyaml.YamlDocument;
 
-import com.wolfco.main.core;
+import com.wolfco.main.Core;
 import com.wolfco.main.classes.PlayerData;
 
-public class playerManager implements Listener {
+public class PlayerManager implements Listener {
     public Map<UUID, PlayerData> players = new HashMap<>();
-    public core core;
+    public Core core;
 
-    public playerManager(core core) {
+    public PlayerManager(Core core) {
         this.core = core;
         Collection<? extends Player> onlinePlayers = core.getServer().getOnlinePlayers();
         if (onlinePlayers.size() > 0) {

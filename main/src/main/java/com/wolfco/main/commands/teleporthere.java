@@ -1,4 +1,4 @@
-package com.wolfco.main.commands;
+spackage com.wolfco.main.commands;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,8 +6,9 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.wolfco.main.core;
-import com.wolfco.common.utils;
+import com.wolfco.main.Core;
+import com.wolfco.common.Utilities;
+import com.wolfco.common.classes.Argument;
 import com.wolfco.common.classes.ArgumentType;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommandExecutor;
@@ -16,18 +17,22 @@ public class teleporthere implements CoreCommandExecutor {
 
     @Override
     public Command getCommand() {
-        return new Command("teleporthere","wolfcore.tphere", new ArrayList<>() {{
-            add(new Argument("player", ArgumentType.PLAYER, false));
+        Command command = new Command("teleporthere");
+        command.setDescription("Teleport a player to you.");
+        command.setNode("wolfcore.teleporthere");
+        command.setArguments(new ArrayList<>() {{
+            add(new Argument(ArgumentType.OTHERPLAYER, true));
         }});
+        return command;
     }
 
     @Override
-    public core fetchCore() {
+    public Core fetchCore() {
         return core;
     }
     
-    core core;
-    public teleporthere(core core) {
+    Core core;
+    public teleporthere(Core core) {
         this.core = core;
     }
     @Override
@@ -35,14 +40,14 @@ public class teleporthere implements CoreCommandExecutor {
         if (sender instanceof Player) {
             Player player = getCommand().options.get(0).getExclusivePlayer(core, args[0]);
             if (player == null) {
-                utils.sendColorText(core.getAdventure().sender(sender), core.getMessage("generic.playernotfound"));
+                Utilities.sendColorText(core.getAdventure().sender(sender), core.getMessage("generic.playernotfound"));
                 return false;
             }
             player.teleport(((Player) sender));
-            utils.sendColorText(core.getAdventure().sender(sender), core.getMessage("teleporthere.success",List.of(player.getName())));
+            Utilities.sendColorText(core.getAdventure().sender(sender), core.getMessage("teleporthere.success",List.of(player.getName())));
             return true;
         } else {
-            utils.sendColorText(core.getAdventure().sender(sender), core.getMessage("generic.noconsole"));
+            Utilities.sendColorText(core.getAdventure().sender(sender), core.getMessage("generic.noconsole"));
             return false; 
         }
     } 

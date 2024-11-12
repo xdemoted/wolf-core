@@ -7,7 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.wolfco.common.utils;
+import com.wolfco.common.Utilities;
 
 public interface CoreCommandExecutor extends CommandExecutor, org.bukkit.command.TabCompleter {
 
@@ -64,13 +64,13 @@ public interface CoreCommandExecutor extends CommandExecutor, org.bukkit.command
     default boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
         String result = checkArgs(args, label);
         if (result != null) {
-            utils.sendColorText(fetchCore().getAdventure().sender(sender), result);
+            Utilities.sendColorText(fetchCore().getAdventure().sender(sender), result);
             return false;
         }
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (!player.hasPermission(getCommand().node)) {
-                utils.sendColorText(fetchCore().getAdventure().sender(sender), fetchCore().getMessage("generic.nopermission"));
+                Utilities.sendColorText(fetchCore().getAdventure().sender(sender), fetchCore().getMessage("generic.nopermission"));
                 return false;
             }
         }

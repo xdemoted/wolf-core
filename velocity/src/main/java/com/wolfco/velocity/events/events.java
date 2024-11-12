@@ -16,11 +16,12 @@ import com.velocitypowered.api.proxy.ServerConnection;
 import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 
-import com.wolfco.velocity.utils;
 import com.wolfco.velocity.wolfcore;
 import com.wolfco.velocity.JDA.JDAListener;
 import com.wolfco.velocity.modules.tablist;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 
 public class events {
     public wolfcore plugin;
@@ -42,8 +43,11 @@ public class events {
         ByteArrayDataInput in = ByteStreams.newDataInput(event.getData());
         String subChannel = in.readUTF();
         if (subChannel.equals("globalchat")) {
+            String formatting = in.readUTF();
             String message = in.readUTF();
-            plugin.broadcast(utils.parseColors(message));
+            Boolean color = in.readBoolean();
+            plugin.broadcast(MiniMessage.miniMessage().deserialize(formatting,
+                    (color ? Placeholder.parsed("message", message) : Placeholder.parsed("message", message))));
         }
     }
 
@@ -61,6 +65,7 @@ public class events {
         Component text = Component.text("§8[§aNetwork§8]§a " + player.getUsername() + " §eHas left the server.");
         plugin.broadcast(text);
     }
+
     @Subscribe
     public void onServerSwitch(ServerPostConnectEvent event) {
         Player player = event.getPlayer();
@@ -114,10 +119,12 @@ public class events {
     String toHex(int[] rgb) {
         return String.format("%02x%02x%02x", rgb[0], rgb[1], rgb[2]);
     }
+
     @Subscribe
     public void connect(ServerConnectedEvent event) {
         tablist.update(plugin);
     }
+
     @Subscribe
     public void disconnect(DisconnectEvent event) {
         tablist.update(plugin);

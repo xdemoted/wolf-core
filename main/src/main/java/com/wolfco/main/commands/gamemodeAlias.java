@@ -11,8 +11,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import net.kyori.adventure.audience.Audience;
-import com.wolfco.main.core;
-import com.wolfco.common.utils;
+import com.wolfco.main.Core;
+import com.wolfco.common.Utilities;
 import com.wolfco.common.classes.Argument;
 import com.wolfco.common.classes.ArgumentType;
 import com.wolfco.common.classes.Command;
@@ -36,24 +36,24 @@ public class gamemodeAlias implements CoreCommandExecutor {
     }
 
     @Override
-    public core fetchCore() {
+    public Core fetchCore() {
         return core;
     }
     
     CoreCommandExecutor executor;
-    core core;
-    public gamemodeAlias(@Nonnull core core) {
+    Core core;
+    public gamemodeAlias(@Nonnull Core core) {
         this.core = core;
     }
 
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args) {
         if (sender instanceof Player) {
-            Audience senderAudience = core.adventure().sender(sender);
+            Audience senderAudience = core.getAdventure().sender(sender);
             Player player = (Player) sender;
             GameMode mode = gamemodes.get(alias);
             if (mode == null) {
-                utils.sendColorText(senderAudience, core.getMessage("gamemode.invalid"));
+                Utilities.sendColorText(senderAudience, core.getMessage("gamemode.invalid"));
                 return false;
             }
             if (args.length == 1) {
@@ -63,20 +63,20 @@ public class gamemodeAlias implements CoreCommandExecutor {
                         target.setGameMode(mode);
                     }
                     if (players.size() > 1) {
-                        utils.sendColorText(senderAudience, core.getMessage("gamemode.multisuccess", List.of(String.valueOf(players.size()), mode.toString())));
+                        Utilities.sendColorText(senderAudience, core.getMessage("gamemode.multisuccess", List.of(String.valueOf(players.size()), mode.toString())));
                         return true;
                     } else if (players.contains(player)) {
-                        utils.sendColorText(senderAudience, core.getMessage("gamemode.selfsuccess", List.of(mode.toString())));
+                        Utilities.sendColorText(senderAudience, core.getMessage("gamemode.selfsuccess", List.of(mode.toString())));
                         return true;
                     }
-                    utils.sendColorText(senderAudience, core.getMessage("gamemode.othersuccess", List.of(mode.toString())));
+                    Utilities.sendColorText(senderAudience, core.getMessage("gamemode.othersuccess", List.of(mode.toString())));
                     return true;
                 } else {
-                    utils.sendColorText(senderAudience, core.getMessage("generic.playernotfound"));
+                    Utilities.sendColorText(senderAudience, core.getMessage("generic.playernotfound"));
                 }
             } else {
                 player.setGameMode(mode);
-                utils.sendColorText(senderAudience, core.getMessage("gamemode.selfsuccess", List.of(mode.toString())));
+                Utilities.sendColorText(senderAudience, core.getMessage("gamemode.selfsuccess", List.of(mode.toString())));
                 return false;
             }
         } else if (args.length == 1) {
@@ -84,7 +84,7 @@ public class gamemodeAlias implements CoreCommandExecutor {
             if (players != null) {
                 GameMode mode = gamemodes.get(alias);
                 if (mode == null) {
-                    utils.sendColorText(core.adventure().sender(sender), core.getMessage("gamemode.invalid"));
+                    Utilities.sendColorText(core.getAdventure().sender(sender), core.getMessage("gamemode.invalid"));
                     return false;
                 }
                 for (Player player : players) {
@@ -92,7 +92,7 @@ public class gamemodeAlias implements CoreCommandExecutor {
                 }
                 return true;
             } else {
-                utils.sendColorText(core.adventure().sender(sender), core.getMessage("generic.playernotfound"));
+                Utilities.sendColorText(core.getAdventure().sender(sender), core.getMessage("generic.playernotfound"));
             }
         }
         sender.sendMessage("A player must be specified.");

@@ -7,13 +7,13 @@ import org.bukkit.entity.Player;
 
 import net.kyori.adventure.audience.Audience;
 import net.luckperms.api.model.user.User;
-import com.wolfco.main.core;
-import com.wolfco.common.utils;
+import com.wolfco.main.Core;
+import com.wolfco.main.handlers.PermissionHandler;
+import com.wolfco.common.Utilities;
 import com.wolfco.common.classes.Argument;
 import com.wolfco.common.classes.ArgumentType;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommandExecutor;
-import com.wolfco.main.utilities.permissionHandler;
 
 public class max implements CoreCommandExecutor {
     @Override
@@ -24,23 +24,23 @@ public class max implements CoreCommandExecutor {
     }
 
     @Override
-    public core fetchCore() {
+    public Core fetchCore() {
         return core;
     }
 
-    core core;
-    public max(core core) {
+    Core core;
+    public max(Core core) {
         this.core = core;
     }
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args) {
-        Audience audience = core.adventure().sender(sender);
+        Audience audience = core.getAdventure().sender(sender);
         User user = core.lp.getUserManager().getUser(sender.getName());
         if (!(sender instanceof Player)) {
-            utils.sendColorText(audience, core.getMessage("generic.noconsole"));
+            Utilities.sendColorText(audience, core.getMessage("generic.noconsole"));
             return true;
         }
-        utils.sendColorText(audience, "Max is " + permissionHandler.getNumberValue(args[0], user));
+        Utilities.sendColorText(audience, "Max is " + PermissionHandler.getNumberValue(args[0], user));
         return true;
     }
     

@@ -8,13 +8,13 @@ import org.bukkit.entity.Player;
 import com.wolfco.common.classes.ArgumentInterface;
 import com.wolfco.common.classes.ArgumentType;
 import com.wolfco.common.classes.CorePlugin;
-import com.wolfco.main.core;
+import com.wolfco.main.Core;
 import com.wolfco.main.classes.PlayerData;
 
-public class HomeArg implements ArgumentInterface {
+public class HomeArgument implements ArgumentInterface {
     public boolean required = true;
 
-    public HomeArg(boolean required) {
+    public HomeArgument(boolean required) {
         
     }
 
@@ -36,11 +36,11 @@ public class HomeArg implements ArgumentInterface {
     @Override
     public List<String> getOptions(CorePlugin core, CommandSender sender,
             org.bukkit.command.Command bukkitCommand, String[] args) {
-        core plugin = (core) core;
+        Core plugin = (Core) core;
         
         if (!(sender instanceof Player)) List.of();
 
-        PlayerData playerData = plugin.playerManager.getPlayerData((Player) sender);
+        PlayerData playerData = plugin.PlayerManager.getPlayerData((Player) sender);
 
         return playerData.homes.keySet().stream().toList();
     }
@@ -48,11 +48,11 @@ public class HomeArg implements ArgumentInterface {
     @Override
     public Object getValue(CorePlugin core, CommandSender sender, org.bukkit.command.Command bukkitCommand,
             String searchValue) {
-        core plugin = (core) core;
+        Core plugin = (Core) core;
         
         if (!(sender instanceof Player)) return null;
 
-        PlayerData playerData = plugin.playerManager.getPlayerData((Player) sender);
+        PlayerData playerData = plugin.PlayerManager.getPlayerData((Player) sender);
 
         return playerData.homes.get(searchValue);
     }

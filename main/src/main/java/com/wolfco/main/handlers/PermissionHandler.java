@@ -1,4 +1,4 @@
-package com.wolfco.main.utilities;
+package com.wolfco.main.handlers;
 
 import java.util.Collection;
 
@@ -8,7 +8,7 @@ import net.luckperms.api.node.NodeType;
 import net.luckperms.api.node.types.PermissionNode;
 import net.luckperms.api.query.QueryOptions;
 
-public class permissionHandler {
+public class PermissionHandler {
     public static Number getNumberValue(String prefixNode, User user) {
         Collection<PermissionNode> nodes = user.resolveInheritedNodes(NodeType.PERMISSION,
                 QueryOptions.defaultContextualOptions());
@@ -33,7 +33,7 @@ public class permissionHandler {
 
     User user;
 
-    public permissionHandler(User user) {
+    public PermissionHandler(User user) {
         this.user = user;
     }
 

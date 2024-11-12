@@ -16,7 +16,7 @@ public class Command {
         this.name = name;
     }
 
-    public Command setOptions(List<ArgumentInterface> option) {
+    public Command setArguments(List<ArgumentInterface> option) {
         this.options = option;
 
         boolean required = true;
@@ -34,7 +34,7 @@ public class Command {
         return this;
     }
 
-    public Command addOption(ArgumentInterface option) {
+    public Command addArgument(ArgumentInterface option) {
         options.add(option);
         return this;
     }

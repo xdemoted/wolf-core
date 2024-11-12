@@ -10,23 +10,23 @@ import dev.dejvokep.boostedyaml.YamlDocument;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
-import com.wolfco.main.events.chat;
-import com.wolfco.main.events.playerManager;
-import com.wolfco.main.utilities.databaseHandler;
+import com.wolfco.main.events.ChatManager;
+import com.wolfco.main.events.PlayerManager;
+import com.wolfco.main.handlers.DatabaseHandler;
 import com.wolfco.main.commands.*;
-import com.wolfco.common.utils;
+import com.wolfco.common.Utilities;
 import com.wolfco.common.classes.CoreCommandExecutor;
 import com.wolfco.common.classes.CorePlugin;
-import com.wolfco.common.commandLoader;
+import com.wolfco.common.CommandLoader;
 
-public class core extends CorePlugin implements Listener {
+public class Core extends CorePlugin implements Listener {
     public LuckPerms lp;
-    public utils utils = new utils(this);
+    public Utilities utils = new Utilities(this);
     private BukkitAudiences adventure;
     public YamlDocument config;
     public YamlDocument warps;
-    public playerManager playerManager;
-    public databaseHandler db;
+    public PlayerManager PlayerManager;
+    public DatabaseHandler db;
 
     @Override
     public void onEnable() {
@@ -39,19 +39,19 @@ public class core extends CorePlugin implements Listener {
         config = getConfig("config.yml");
         warps = getConfig("warps.yml");
         try {
-            db = new databaseHandler(this);
+            db = new DatabaseHandler(this);
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        commandLoader commandLoader = new commandLoader(this);
+        CommandLoader commandLoader = new CommandLoader(this);
         commandLoader.registerAll(getCommands());
         this.getLogger().info("[Wolf-Core] Plugin enabled");
-        playerManager = new playerManager(this);
+        PlayerManager = new PlayerManager(this);
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(this, this);
-        pm.registerEvents((Listener) playerManager, this);
-        pm.registerEvents((Listener) new chat(this), this);
+        pm.registerEvents((Listener) PlayerManager, this);
+        pm.registerEvents((Listener) new ChatManager(this), this);
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "core:main");
     }
 

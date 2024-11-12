@@ -7,12 +7,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 
-public class argument implements ArgumentInterface{
+public class Argument implements ArgumentInterface{
     private ArgumentType type;
     private Boolean required;
     private String name;
 
-    public argument(ArgumentType type, Boolean required) {
+    public Argument(ArgumentType type, Boolean required) {
         this.type = type;
         this.required = required;
         this.name = type.toString();

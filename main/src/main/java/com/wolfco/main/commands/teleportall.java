@@ -6,8 +6,8 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.wolfco.main.core;
-import com.wolfco.common.utils;
+import com.wolfco.main.Core;
+import com.wolfco.common.Utilities;
 import com.wolfco.common.classes.Argument;
 import com.wolfco.common.classes.ArgumentType;
 import com.wolfco.common.classes.Command;
@@ -23,12 +23,12 @@ public class teleportall implements CoreCommandExecutor {
     }
 
     @Override
-    public core fetchCore() {
+    public Core fetchCore() {
         return core;
     }
     
-    core core;
-    public teleportall(core core) {
+    Core core;
+    public teleportall(Core core) {
         this.core = core;
     }
 
@@ -38,18 +38,18 @@ public class teleportall implements CoreCommandExecutor {
             core.getServer().getOnlinePlayers().forEach(player -> {
                 player.teleport(((org.bukkit.entity.Player) sender));
             });
-            utils.sendColorText(core.getAdventure().sender(sender), core.getMessage("teleportall.success",List.of("you")));
+            Utilities.sendColorText(core.getAdventure().sender(sender), core.getMessage("teleportall.success",List.of("you")));
             return true;
         } else if (args.length == 1) {
             Player player = getCommand().options.get(0).getExclusivePlayer(core, args[0]);
             if (player == null) {
-                utils.sendColorText(core.getAdventure().sender(sender), core.getMessage("generic.playernotfound"));
+                Utilities.sendColorText(core.getAdventure().sender(sender), core.getMessage("generic.playernotfound"));
                 return false;
             }
             core.getServer().getOnlinePlayers().forEach(p -> {
                 p.teleport(player);
             });
-            utils.sendColorText(core.getAdventure().sender(sender), core.getMessage("teleportall.success",List.of(player.getName())));
+            Utilities.sendColorText(core.getAdventure().sender(sender), core.getMessage("teleportall.success",List.of(player.getName())));
             return true;
         }
         return false;

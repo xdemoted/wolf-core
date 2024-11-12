@@ -7,16 +7,15 @@ import org.bukkit.command.CommandSender;
 import com.wolfco.common.classes.ArgumentInterface;
 import com.wolfco.common.classes.ArgumentType;
 import com.wolfco.common.classes.CorePlugin;
-import com.wolfco.main.core;
+import com.wolfco.main.Core;
 import com.wolfco.main.classes.Warp;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
  
-public class WarpArg implements ArgumentInterface{
+public class WarpArgument implements ArgumentInterface {
     private boolean required = true;
 
-    public WarpArg(boolean required) {
-        this.required = required;   
+    public WarpArgument(boolean required) { 
     }
 
     @Override
@@ -37,7 +36,7 @@ public class WarpArg implements ArgumentInterface{
     @Override
     public List<String> getOptions(CorePlugin core, CommandSender sender,
             org.bukkit.command.Command bukkitCommand, String[] args) {
-        core plugin = (core) core;
+        Core plugin = (Core) core;
 
         return plugin.warps.getRoutesAsStrings(false).stream().toList();
     }
@@ -45,7 +44,7 @@ public class WarpArg implements ArgumentInterface{
     @Override
     public Warp getValue(CorePlugin core, CommandSender sender, org.bukkit.command.Command bukkitCommand,
             String searchValue) {
-        core plugin = (core) core;
+        Core plugin = (Core) core;
         YamlDocument warps = plugin.warps;
         
         if (!warps.contains(searchValue)) return null;

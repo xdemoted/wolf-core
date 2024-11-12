@@ -5,11 +5,11 @@ import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
-public class subcommand implements ArgumentInterface {
+public class Subcommand implements ArgumentInterface {
     private HashMap<String, Command> subcommands = new HashMap<String, Command>();
     private boolean required;
 
-    public subcommand(boolean required) {
+    public Subcommand(boolean required) {
         this.required = required;
     }
 
@@ -25,7 +25,7 @@ public class subcommand implements ArgumentInterface {
         return ArgumentType.SUBCOMMAND.toString();
     }
 
-    public subcommand add(Command command) {
+    public Subcommand add(Command command) {
         subcommands.put(command.name, command);
         return this;
     }

@@ -1,4 +1,4 @@
-package com.wolfco.main.utilities;
+package com.wolfco.main.handlers;
 
 import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
 import com.mysql.cj.jdbc.MysqlDataSource;
@@ -19,13 +19,13 @@ import java.sql.ResultSet;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
-import com.wolfco.main.core;
+import com.wolfco.main.Core;
 
-public class databaseHandler {
+public class DatabaseHandler {
     private MysqlDataSource dataSource;
-    public core core;
+    public Core core;
 
-    public databaseHandler(core core) throws SQLException {
+    public DatabaseHandler(Core core) throws SQLException {
         this.core = core;
         String host = core.getConfig().getString("database.host");
         int port = core.getConfig().getInt("database.port");

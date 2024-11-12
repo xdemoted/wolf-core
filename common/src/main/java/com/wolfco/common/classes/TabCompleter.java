@@ -19,7 +19,7 @@ public class TabCompleter {
 
         if (args.length > command.options.size()) {
             if (command.options.getLast().getType() == ArgumentType.SUBCOMMAND) {
-                subcommand subcommand = (subcommand) command.options.getLast();
+                Subcommand subcommand = (Subcommand) command.options.getLast();
                 Command command2 = subcommand.get(args[command.options.size() - 1].toLowerCase());
 
                 if (command2 != null) {

@@ -7,9 +7,9 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.wolfco.main.core;
+import com.wolfco.main.Core;
 import com.wolfco.main.classes.PlayerData;
-import com.wolfco.common.utils;
+import com.wolfco.common.Utilities;
 import com.wolfco.common.classes.Argument;
 import com.wolfco.common.classes.ArgumentType;
 import com.wolfco.common.classes.Command;
@@ -35,45 +35,45 @@ public class teleportask implements CoreCommandExecutor {
     }
 
     @Override
-    public core fetchCore() {
+    public Core fetchCore() {
         return core;
     }
 
-    core core;
+    Core core;
 
-    public teleportask(core core) {
+    public teleportask(Core core) {
         this.core = core;
     }
 
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args) {
         if (!(sender instanceof Player)) {
-            utils.sendColorText(core.getAdventure().sender(sender), core.getMessage("generic.noconsole"));
+            Utilities.sendColorText(core.getAdventure().sender(sender), core.getMessage("generic.noconsole"));
             return false;
         }
         Player receiver = getCommand().options.get(0).getExclusivePlayer(core, args[0]);
         if (receiver == null) {
-            utils.sendColorText(core.getAdventure().sender(sender), core.getMessage("generic.playernotfound"));
+            Utilities.sendColorText(core.getAdventure().sender(sender), core.getMessage("generic.playernotfound"));
             return false;
         }
         PlayerData receiverData = core.playerManager.getPlayerData(receiver);
         if (receiverData == null) {
-            utils.sendColorText(core.getAdventure().sender(sender), core.getMessage("generic.playernotfound"));
+            Utilities.sendColorText(core.getAdventure().sender(sender), core.getMessage("generic.playernotfound"));
             return false;
         }
         if (receiverData.lastRequest.host == sender
                 && System.currentTimeMillis() - receiverData.lastRequest.startTime < 30000) {
-            utils.sendColorText(core.getAdventure().sender(sender), core.getMessage("teleportask.existing"));
+            Utilities.sendColorText(core.getAdventure().sender(sender), core.getMessage("teleportask.existing"));
             return false;
         } else {
             receiverData.sendRequest((Player) sender, requestTypes.get(command.getName()));
-            utils.sendColorText(core.getAdventure().sender(sender),
+            Utilities.sendColorText(core.getAdventure().sender(sender),
                     core.getMessage("teleportask.sent", List.of(receiver.getName())));
             if (receiverData.lastRequest.type.equalsIgnoreCase("tpa")) {
-                utils.sendColorText(core.getAdventure().sender(receiver),
+                Utilities.sendColorText(core.getAdventure().sender(receiver),
                         core.getMessage("teleportask.received", List.of(sender.getName())));
             } else if (receiverData.lastRequest.type.equalsIgnoreCase("tpahere")) {
-                utils.sendColorText(core.getAdventure().sender(receiver),
+                Utilities.sendColorText(core.getAdventure().sender(receiver),
                         core.getMessage("teleportask.receivedhere", List.of(sender.getName())));
             }
             return true;

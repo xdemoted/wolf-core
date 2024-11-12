@@ -6,8 +6,8 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.wolfco.main.core;
-import com.wolfco.common.utils;
+import com.wolfco.main.Core;
+import com.wolfco.common.Utilities;
 import com.wolfco.common.classes.Argument;
 import com.wolfco.common.classes.ArgumentType;
 import com.wolfco.common.classes.Command;
@@ -23,12 +23,12 @@ public class setwarp implements CoreCommandExecutor {
     }
 
     @Override
-    public core fetchCore() {
+    public Core fetchCore() {
         return core;
     }
     
-    core core;
-    public setwarp(core core) {
+    Core core;
+    public setwarp(Core core) {
         this.core = core;
     }
 
@@ -36,15 +36,15 @@ public class setwarp implements CoreCommandExecutor {
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args) {
         String warpName = args[0];
         if (!(sender instanceof Player)) {
-            utils.sendColorText(core.adventure().sender(sender), core.getMessage("generic.noconsole"));
+            Utilities.sendColorText(core.getAdventure().sender(sender), core.getMessage("generic.noconsole"));
             return false;
         }
         Player player = (Player) sender;
         if (!warpName.matches("^[a-zA-Z0-9]+$")) {
-            utils.sendColorText(core.adventure().sender(sender),core.getMessage("generic.alphanumeric", List.of("warp name")));
+            Utilities.sendColorText(core.getAdventure().sender(sender),core.getMessage("generic.alphanumeric", List.of("warp name")));
             return true;
         } else if (core.warps.contains(warpName)) {
-            utils.sendColorText(core.adventure().sender(sender),core.getMessage("warp.exists", List.of(warpName)));
+            Utilities.sendColorText(core.getAdventure().sender(sender),core.getMessage("warp.exists", List.of(warpName)));
             return true;
         }
         core.warps.set(warpName+".x",player.getLocation().getX());
@@ -55,7 +55,7 @@ public class setwarp implements CoreCommandExecutor {
             core.warps.save();
         } catch (Exception e) {
         }
-        utils.sendColorText(core.adventure().sender(sender),core.getMessage("warp.set", List.of(warpName)));
+        Utilities.sendColorText(core.getAdventure().sender(sender),core.getMessage("warp.set", List.of(warpName)));
         return true;
     }
     

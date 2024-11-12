@@ -10,12 +10,12 @@ import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommandExecutor;
 import com.wolfco.common.classes.CorePlugin;
 
-public class commandLoader {
+public class CommandLoader {
     public CorePlugin core;
     public HashMap<String, CoreCommandExecutor> commands = new HashMap<>();
     public List<CoreCommandExecutor> executors = new ArrayList<>();
 
-    public commandLoader(CorePlugin core) {
+    public CommandLoader(CorePlugin core) {
         this.core = core;
     }
 
