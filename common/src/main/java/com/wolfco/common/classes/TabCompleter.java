@@ -13,7 +13,7 @@ public class TabCompleter {
         this.core = core;
     }
 
-    public List<String> tabComplete(Command command, CommandSender sender, org.bukkit.command.Command bukkitCommand,
+    public List<String> runTabComplete(Command command, CommandSender sender, org.bukkit.command.Command bukkitCommand,
             String alias, String[] args) {
         List<String> result = new ArrayList<String>();
 
@@ -23,7 +23,7 @@ public class TabCompleter {
                 Command command2 = subcommand.get(args[command.options.size() - 1].toLowerCase());
 
                 if (command2 != null) {
-                    return tabComplete(command2, sender, bukkitCommand, alias, Arrays.copyOfRange(args, command.options.size(), args.length));
+                    return runTabComplete(command2, sender, bukkitCommand, alias, Arrays.copyOfRange(args, command.options.size(), args.length));
                 } else {
                     return result;
                 }
@@ -35,7 +35,7 @@ public class TabCompleter {
         ArgumentInterface argument = command.getArgument(args.length - 1);
         String lastArg = args[args.length - 1].toLowerCase();
 
-        argument.options(core, sender, bukkitCommand, args).forEach(option -> {
+        argument.getOptions(core, sender, bukkitCommand, args).forEach(option -> {
             if (option.toLowerCase().startsWith(lastArg)) {
                 result.add(option);
             }

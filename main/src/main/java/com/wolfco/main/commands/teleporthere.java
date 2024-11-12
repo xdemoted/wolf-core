@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 
 import com.wolfco.main.core;
 import com.wolfco.common.utils;
-import com.wolfco.common.classes.Argument;
 import com.wolfco.common.classes.ArgumentType;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommandExecutor;
@@ -36,14 +35,14 @@ public class teleporthere implements CoreCommandExecutor {
         if (sender instanceof Player) {
             Player player = getCommand().options.get(0).getExclusivePlayer(core, args[0]);
             if (player == null) {
-                utils.sendColorText(core.adventure().sender(sender), core.getMessage("generic.playernotfound"));
+                utils.sendColorText(core.getAdventure().sender(sender), core.getMessage("generic.playernotfound"));
                 return false;
             }
             player.teleport(((Player) sender));
-            utils.sendColorText(core.adventure().sender(sender), core.getMessage("teleporthere.success",List.of(player.getName())));
+            utils.sendColorText(core.getAdventure().sender(sender), core.getMessage("teleporthere.success",List.of(player.getName())));
             return true;
         } else {
-            utils.sendColorText(core.adventure().sender(sender), core.getMessage("generic.noconsole"));
+            utils.sendColorText(core.getAdventure().sender(sender), core.getMessage("generic.noconsole"));
             return false; 
         }
     } 

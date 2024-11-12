@@ -26,7 +26,7 @@ public abstract class CorePlugin extends JavaPlugin {
         commandLoader.registerAll(getCommands());
     }
 
-    public BukkitAudiences adventure() {
+    public BukkitAudiences getAdventure() {
         if (this.adventure == null) {
             this.adventure = BukkitAudiences.create(this);
         }
@@ -79,7 +79,7 @@ public abstract class CorePlugin extends JavaPlugin {
         return messages;
     }
 
-    public void instanceLog(String log) {
+    public void log(String log) {
         getLogger().info(log);
     }
 }

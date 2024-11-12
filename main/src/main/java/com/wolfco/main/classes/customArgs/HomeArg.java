@@ -34,7 +34,7 @@ public class HomeArg implements ArgumentInterface {
     }
 
     @Override
-    public List<String> options(CorePlugin core, CommandSender sender,
+    public List<String> getOptions(CorePlugin core, CommandSender sender,
             org.bukkit.command.Command bukkitCommand, String[] args) {
         core plugin = (core) core;
         

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
@@ -36,7 +35,7 @@ public class core extends CorePlugin implements Listener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        adventure();
+        getAdventure();
         config = getConfig("config.yml");
         warps = getConfig("warps.yml");
         try {
@@ -89,10 +88,5 @@ public class core extends CorePlugin implements Listener {
         list.add(new warpinfo(this));
         list.add(new warps(this));
         return list;
-    }
-
-    public static void log(String log) {
-        Plugin plugin = core.getPlugin(core.class);
-        plugin.getLogger().info(log);
     }
 }

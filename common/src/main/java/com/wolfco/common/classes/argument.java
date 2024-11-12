@@ -34,7 +34,7 @@ public class argument implements ArgumentInterface{
         return type;
     }
 
-    public List<String> options(CorePlugin core, CommandSender sender, // TODO - Add Exclusivity and * notation
+    public List<String> getOptions(CorePlugin core, CommandSender sender, // TODO - Add Exclusivity and * notation
             org.bukkit.command.Command bukkitCommand, String[] args) {
         switch (type) {
             case EXCLUSIVEPLAYER:

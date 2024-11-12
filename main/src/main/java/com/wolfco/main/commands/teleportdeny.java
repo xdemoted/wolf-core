@@ -35,21 +35,21 @@ public class teleportdeny implements CoreCommandExecutor {
         if (sender instanceof Player) {
             PlayerData playerData = core.playerManager.getPlayerData((Player) sender);
             if (playerData == null) {
-                utils.sendColorText(core.adventure().sender(sender), core.getMessage("generic.invaliddata"));
+                utils.sendColorText(core.getAdventure().sender(sender), core.getMessage("generic.invaliddata"));
                 return false;
             }
             if (playerData.lastRequest == null) {
-                utils.sendColorText(core.adventure().sender(sender), core.getMessage("teleportask.norequest"));
+                utils.sendColorText(core.getAdventure().sender(sender), core.getMessage("teleportask.norequest"));
                 return false;
             }
-            utils.sendColorText(core.adventure().sender(sender),
+            utils.sendColorText(core.getAdventure().sender(sender),
                     core.getMessage("teleportask.deny", List.of(playerData.lastRequest.host.getName())));
-            utils.sendColorText(core.adventure().sender(playerData.lastRequest.host),
+            utils.sendColorText(core.getAdventure().sender(playerData.lastRequest.host),
                     core.getMessage("teleportask.deny", List.of(sender.getName())));
             playerData.lastRequest = null;
             return true;
         } else {
-            utils.sendColorText(core.adventure().sender(sender), core.getMessage("generic.noconsole"));
+            utils.sendColorText(core.getAdventure().sender(sender), core.getMessage("generic.noconsole"));
             return false;
         }
     }

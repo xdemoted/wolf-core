@@ -40,7 +40,7 @@ public class subcommand implements ArgumentInterface {
     }
 
     @Override
-    public List<String> options(CorePlugin core, CommandSender sender,
+    public List<String> getOptions(CorePlugin core, CommandSender sender,
             org.bukkit.command.Command bukkitCommand, String[] args) {
         return subcommands.keySet().stream().toList();
     }

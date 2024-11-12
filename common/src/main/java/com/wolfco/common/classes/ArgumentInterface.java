@@ -11,7 +11,7 @@ public interface ArgumentInterface {
 
     abstract String getName();
 
-    abstract List<String> options(CorePlugin core, CommandSender sender, org.bukkit.command.Command bukkitCommand, String[] args);
+    abstract List<String> getOptions(CorePlugin core, CommandSender sender, org.bukkit.command.Command bukkitCommand, String[] args);
 
     abstract Object getValue(CorePlugin core, CommandSender sender, org.bukkit.command.Command bukkitCommand, String searchValue);
 
