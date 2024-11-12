@@ -68,16 +68,23 @@ public class Argument implements ArgumentInterface{
     }
 
     public Object getValue(CorePlugin core, CommandSender sender, org.bukkit.command.Command bukkitCommand, String searchValue) {
+        Object returnValue;
         switch (type) {
             case PLAYER:
-                return core.getServer().getPlayer(searchValue);
+                returnValue = core.getServer().getPlayer(searchValue);
             case OTHERPLAYER:
-                return core.getServer().getPlayer(searchValue);
+                returnValue = core.getServer().getPlayer(searchValue);
             case GAMEMODE:
-                return GameMode.valueOf(searchValue.toUpperCase());
+                returnValue = GameMode.valueOf(searchValue.toUpperCase());
             default:
-                return null;
+                returnValue = null;
         }
+
+        if (isRequired() && returnValue == null) {
+            throw new IllegalArgumentException("Argument " + getName() + " is required");
+        }
+        
+        return returnValue;
         
     }
 

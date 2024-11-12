@@ -21,7 +21,10 @@ import com.wolfco.velocity.JDA.JDAListener;
 import com.wolfco.velocity.modules.tablist;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+<<<<<<< HEAD
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+=======
+>>>>>>> 176256cb29a2aceab31316a77fe99b1426fa0668
 
 public class events {
     public wolfcore plugin;
@@ -45,9 +48,13 @@ public class events {
         if (subChannel.equals("globalchat")) {
             String formatting = in.readUTF();
             String message = in.readUTF();
+<<<<<<< HEAD
             Boolean color = in.readBoolean();
             plugin.broadcast(MiniMessage.miniMessage().deserialize(formatting,
                     (color ? Placeholder.parsed("message", message) : Placeholder.parsed("message", message))));
+=======
+            plugin.broadcast(MiniMessage.miniMessage().deserialize(message));
+>>>>>>> 176256cb29a2aceab31316a77fe99b1426fa0668
         }
     }
 
