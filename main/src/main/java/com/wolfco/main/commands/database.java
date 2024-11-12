@@ -31,7 +31,7 @@ public class database implements CoreCommandExecutor {
 
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args) {
-        Audience audience = core.adventure().sender(sender);
+        Audience audience = core.getAdventure().sender(sender);
         if (!(sender instanceof Player)) {
             utils.sendColorText(audience, core.getMessage("generic.noconsole"));
             return true;

@@ -26,7 +26,7 @@ public class warps implements CoreCommandExecutor {
 
     @Override
     public boolean execute(org.bukkit.command.CommandSender sender, org.bukkit.command.Command command, String alias, String[] args) {
-        Audience audience = core.adventure().sender(sender);
+        Audience audience = core.getAdventure().sender(sender);
         utils.sendColorText(audience, "<#ffaa00>Warps:");
         for (String key : core.warps.getRoutesAsStrings(false)) {
             utils.sendColorText(audience, "<#ffaa00> - <#ffff00>" + key);

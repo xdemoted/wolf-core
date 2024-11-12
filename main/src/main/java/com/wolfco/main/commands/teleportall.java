@@ -38,18 +38,18 @@ public class teleportall implements CoreCommandExecutor {
             core.getServer().getOnlinePlayers().forEach(player -> {
                 player.teleport(((org.bukkit.entity.Player) sender));
             });
-            utils.sendColorText(core.adventure().sender(sender), core.getMessage("teleportall.success",List.of("you")));
+            utils.sendColorText(core.getAdventure().sender(sender), core.getMessage("teleportall.success",List.of("you")));
             return true;
         } else if (args.length == 1) {
             Player player = getCommand().options.get(0).getExclusivePlayer(core, args[0]);
             if (player == null) {
-                utils.sendColorText(core.adventure().sender(sender), core.getMessage("generic.playernotfound"));
+                utils.sendColorText(core.getAdventure().sender(sender), core.getMessage("generic.playernotfound"));
                 return false;
             }
             core.getServer().getOnlinePlayers().forEach(p -> {
                 p.teleport(player);
             });
-            utils.sendColorText(core.adventure().sender(sender), core.getMessage("teleportall.success",List.of(player.getName())));
+            utils.sendColorText(core.getAdventure().sender(sender), core.getMessage("teleportall.success",List.of(player.getName())));
             return true;
         }
         return false;

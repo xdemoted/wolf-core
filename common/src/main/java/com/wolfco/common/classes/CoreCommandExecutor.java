@@ -35,7 +35,7 @@ public interface CoreCommandExecutor extends CommandExecutor, org.bukkit.command
         });
         return result.get(0);
     }
-    default Integer requiredArgs() {
+    default Integer getRequiredArgs() {
         Command command = getCommand();
         List<Integer> result = new ArrayList<>() {
             {
@@ -52,7 +52,7 @@ public interface CoreCommandExecutor extends CommandExecutor, org.bukkit.command
     
     default String checkArgs(String[] args, String alias) {
         Command command = getCommand();
-        Integer requiredArgs = requiredArgs();
+        Integer requiredArgs = getRequiredArgs();
         if (args.length < requiredArgs) {
             return getUsage(alias);
         } else if (args.length > command.options.size()) {
@@ -64,13 +64,13 @@ public interface CoreCommandExecutor extends CommandExecutor, org.bukkit.command
     default boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
         String result = checkArgs(args, label);
         if (result != null) {
-            utils.sendColorText(fetchCore().adventure().sender(sender), result);
+            utils.sendColorText(fetchCore().getAdventure().sender(sender), result);
             return false;
         }
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (!player.hasPermission(getCommand().node)) {
-                utils.sendColorText(fetchCore().adventure().sender(sender), fetchCore().getMessage("generic.nopermission"));
+                utils.sendColorText(fetchCore().getAdventure().sender(sender), fetchCore().getMessage("generic.nopermission"));
                 return false;
             }
         }
@@ -81,7 +81,7 @@ public interface CoreCommandExecutor extends CommandExecutor, org.bukkit.command
     @Override
     default List<String> onTabComplete(CommandSender sender, org.bukkit.command.Command bukkitCommand, String alias, String[] args) {
         TabCompleter tabComplete = new TabCompleter(fetchCore());
-        return tabComplete.tabComplete(getCommand(), sender, bukkitCommand, alias, args);
+        return tabComplete.runTabComplete(getCommand(), sender, bukkitCommand, alias, args);
     }
 
     default ArgumentInterface getArgument(int i) {

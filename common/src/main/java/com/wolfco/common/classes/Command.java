@@ -1,5 +1,6 @@
 package com.wolfco.common.classes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
@@ -8,7 +9,7 @@ public class Command {
     public String name, displayName, node, description;
 
     public CommandTypes accessType = CommandTypes.ALL;
-    public List<ArgumentInterface> options = List.of();
+    public List<ArgumentInterface> options = new ArrayList<ArgumentInterface>();
     public CorePlugin plugin;
 
     public Command(String name) throws IllegalArgumentException {
@@ -30,6 +31,11 @@ public class Command {
                 throw new IllegalArgumentException("Subcommand must be the last argument");
             }
         }
+        return this;
+    }
+
+    public Command addOption(ArgumentInterface option) {
+        options.add(option);
         return this;
     }
 
@@ -58,16 +64,28 @@ public class Command {
     }
 
     public Object getValue(int i, CorePlugin plugin, CommandSender sender, org.bukkit.command.Command bukkitCommand,
-            String[] args) {
-        return options.get(i).getValue(plugin, sender, bukkitCommand, args[i]);
+            String[] args) throws IllegalArgumentException {
+                Object value = options.get(i).getValue(plugin, sender, bukkitCommand, args[i]);
+
+                if (value == null) {
+                    throw new IllegalArgumentException("Invalid argument");
+                }
+    
+                return value;
     }
 
     public Object[] getValues(CorePlugin plugin, CommandSender sender, org.bukkit.command.Command bukkitCommand,
-            String[] args) {
+            String[] args) throws IllegalArgumentException {
         Object[] values = new Object[options.size()];
 
         for (int i = 0; i < options.size(); i++) {
-            values[i] = options.get(i).getValue(plugin, sender, bukkitCommand, args[i]);
+            Object value = options.get(i).getValue(plugin, sender, bukkitCommand, args[i]);
+
+            if (value == null) {
+                throw new IllegalArgumentException("Invalid argument");
+            }
+
+            values[i] = value;
         }
 
         return values;

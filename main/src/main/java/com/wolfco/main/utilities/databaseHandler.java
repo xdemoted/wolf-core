@@ -43,9 +43,9 @@ public class databaseHandler {
 
         try (Connection conn = dataSource.getConnection()) {
             if (conn.isValid(1)) {
-                core.instanceLog("Connection is valid");
+                core.log("Connection is valid");
             } else {
-                core.instanceLog("Connection is not valid");
+                core.log("Connection is not valid");
                 throw new SQLException("Connection is not valid");
             }
         }

@@ -77,7 +77,7 @@ public class utils {
     }
 
     public void sendPlayer(Player player, String text) {
-        sendColorText(core.adventure().player(player), text);
+        sendColorText(core.getAdventure().player(player), text);
     }
 
     public static void sendColorText(Audience audience, String text) {
