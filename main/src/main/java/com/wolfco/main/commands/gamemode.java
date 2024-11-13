@@ -43,7 +43,16 @@ public class gamemode implements CoreCommandExecutor {
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
         Boolean console = false;
-        Audience senderAudience = core.adventure().sender(sender);
+        Audience senderAudience = core.getAdventure().sender(sender);
+
+        GameMode mode;
+        try {
+            mode = 
+        } catch (Exception e) {
+            return false;
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
         if (!(sender instanceof Player)) {
             console = true;
         }

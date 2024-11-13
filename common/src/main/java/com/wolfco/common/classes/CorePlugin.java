@@ -2,7 +2,7 @@ package com.wolfco.common.classes;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.wolfco.common.commandLoader;
+import com.wolfco.common.CommandLoader;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,12 +17,12 @@ public abstract class CorePlugin extends JavaPlugin {
     public BukkitAudiences adventure;
     public YamlDocument config;
     public YamlDocument messages;
-    public commandLoader commandLoader;
+    public CommandLoader commandLoader;
     static public String prefix = "♆ ";
 
     public CorePlugin() {
         messages = getMessageData();
-        commandLoader = new commandLoader(this);
+        commandLoader = new CommandLoader(this);
         commandLoader.registerAll(getCommands());
     }
 

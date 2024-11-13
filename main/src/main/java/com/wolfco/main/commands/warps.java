@@ -1,7 +1,5 @@
 package com.wolfco.main.commands;
 
-import java.util.ArrayList;
-
 import net.kyori.adventure.audience.Audience;
 import com.wolfco.main.core;
 import com.wolfco.common.utils;
@@ -11,7 +9,11 @@ import com.wolfco.common.classes.CoreCommandExecutor;
 public class warps implements CoreCommandExecutor {
     @Override
     public Command getCommand() {
-        return new Command("warps","wolfcore.warp", new ArrayList<>());
+        Command command = new Command("warps");
+        command.setDescription("Lists available warps.");
+        command.setNode("wolfcore.warps");
+
+        return command;
     }
 
     @Override

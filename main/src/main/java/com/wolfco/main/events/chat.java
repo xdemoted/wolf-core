@@ -8,6 +8,9 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.luckperms.api.cacheddata.CachedDataManager;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.model.user.User;
@@ -31,22 +34,26 @@ public class chat implements Listener {
         CachedDataManager cacheData = user.getCachedData();
         CachedMetaData lpmetaData = cacheData.getMetaData();
         Boolean color = cacheData.getPermissionData().checkPermission("wolf-co.chat.color").asBoolean();
-        String[] metaData = utils.getMetaData(cacheData.getPermissionData(),player);
-        String chatPrefix = utils.colorizeText(metaData[0]);
-        String chatSuffix = utils.colorizeText(metaData[1]);
-        
+        String[] metaData = utils.getMetaData(cacheData.getPermissionData(), player);
+        String chatPrefix = metaData[0];
+        String chatSuffix = metaData[1];
+
         // Color & Null Check
         if (message != null) {
             if (message.contains("¶")) {
                 player.sendMessage(core.getMessage("chat.reserved"));
             } else {
-                message = utils.colorizeText(
-                    utils.nullCheck(lpmetaData.getPrefix()) + player.getName() + utils.nullCheck(lpmetaData.getSuffix()) + " <#555555>»<#aaaaaa> " + utils.nullCheck(chatPrefix))
-                        + (color == true ? utils.colorizeText(message) : message) + chatSuffix;
+                Component componentMessage = MiniMessage.miniMessage()
+                        .deserialize(utils.nullCheck(lpmetaData.getPrefix())
+                                + player.getName() + utils.nullCheck(lpmetaData.getSuffix()) + "<#555555>»<#aaaaaa> "
+                                + chatPrefix + "<chat>" + chatSuffix,
+                                (color == true ? Placeholder.parsed("chat", message)
+                                        : Placeholder.unparsed("chat", message)));
+
                 // Send to Velocity
                 ByteArrayDataOutput out = ByteStreams.newDataOutput();
                 out.writeUTF("globalchat");
-                out.writeUTF(message);
+                out.writeUTF(MiniMessage.miniMessage().serialize(componentMessage));
                 player.sendPluginMessage(core, "core:main", out.toByteArray());
             }
         } else {

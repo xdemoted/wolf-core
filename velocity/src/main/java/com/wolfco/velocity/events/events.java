@@ -16,11 +16,11 @@ import com.velocitypowered.api.proxy.ServerConnection;
 import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 
-import com.wolfco.velocity.utils;
 import com.wolfco.velocity.wolfcore;
 import com.wolfco.velocity.JDA.JDAListener;
 import com.wolfco.velocity.modules.tablist;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 
 public class events {
     public wolfcore plugin;
@@ -43,7 +43,7 @@ public class events {
         String subChannel = in.readUTF();
         if (subChannel.equals("globalchat")) {
             String message = in.readUTF();
-            plugin.broadcast(utils.parseColors(message));
+            plugin.broadcast(MiniMessage.miniMessage().deserialize(message));
         }
     }
 

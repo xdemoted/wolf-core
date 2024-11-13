@@ -60,6 +60,7 @@ public interface CoreCommandExecutor extends CommandExecutor, org.bukkit.command
         }
         return null;
     }
+    
     @Override
     default boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
         String result = checkArgs(args, label);

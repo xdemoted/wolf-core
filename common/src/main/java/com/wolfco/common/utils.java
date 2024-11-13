@@ -1,6 +1,5 @@
 package com.wolfco.common;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.entity.Player;
@@ -9,12 +8,10 @@ import com.wolfco.common.classes.ArgumentInterface;
 import com.wolfco.common.classes.ArgumentType;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CorePlugin;
-import com.wolfco.common.classes.subcommand;
+import com.wolfco.common.classes.Subcommand;
 
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.luckperms.api.cacheddata.CachedPermissionData;
 import java.util.Collection;
 import java.util.List;
@@ -29,24 +26,8 @@ public class utils {
 
     public static String[] gamemodes = { "survival", "creative", "adventure", "spectator" };
 
-    public static HashMap<String, String> colorCodes = new HashMap<String, String>();
-    {
-        colorCodes.put("0", "000000");
-        colorCodes.put("1", "0000AA");
-        colorCodes.put("2", "00AA00");
-        colorCodes.put("3", "00AAAA");
-        colorCodes.put("4", "AA0000");
-        colorCodes.put("5", "AA00AA");
-        colorCodes.put("6", "FFAA00");
-        colorCodes.put("7", "AAAAAA");
-        colorCodes.put("8", "555555");
-        colorCodes.put("9", "5555FF");
-        colorCodes.put("a", "55FF55");
-        colorCodes.put("b", "55FFFF");
-        colorCodes.put("c", "FF5555");
-        colorCodes.put("d", "FF55FF");
-        colorCodes.put("e", "FFFF55");
-        colorCodes.put("f", "FFFFFF");
+    public static void sendColorText(Audience audience, String text) {
+        audience.sendMessage(MiniMessage.miniMessage().deserialize(text));
     }
 
     @SuppressWarnings("unchecked")
@@ -76,51 +57,12 @@ public class utils {
         return null;
     }
 
-    public void sendPlayer(Player player, String text) {
-        sendColorText(core.getAdventure().player(player), text);
-    }
-
-    public static void sendColorText(Audience audience, String text) {
-        text = colorizeText(text);
-        audience.sendMessage(parseColors(text));
-    }
-
-    public static String colorizeText(String text) {
-        String[] textChar = text.split("");
-        for (int i = 0; i < textChar.length; i++) {
-            String c = textChar[i];
-            if (c.equals("&") && i < textChar.length - 1) {
-                String next = textChar[i + 1];
-                if (utils.colorCodes.containsKey(next)) {
-                    textChar[i] = "<¶" + utils.colorCodes.get(next) + ">";
-                    textChar[i + 1] = "";
-                }
-            }
-        }
-        text = String.join("", textChar);
-        text = text.replaceAll("&([kmolnrp])", "§$1");
-        text = text.replaceAll("<g#([0-9a-fA-F]{6})>", "<g¶$1>");
-        return text.replaceAll("<#([0-9a-fA-F]{6})>", "<¶$1>");
-    }
-
     public static String nullCheck(String text) {
         if (text == null) {
             return "";
         } else {
             return text;
         }
-    }
-
-    public static int[] toRGB(String hex) {
-        int rgb = Integer.parseInt(hex, 16);
-        int r = (rgb >> 16) & 0xFF;
-        int g = (rgb >> 8) & 0xFF;
-        int b = rgb & 0xFF;
-        return new int[] { r, g, b };
-    }
-
-    public static String toHex(int[] rgb) {
-        return String.format("%02x%02x%02x", rgb[0], rgb[1], rgb[2]);
     }
 
     public static String[] getMetaData(CachedPermissionData data, Player player) {
@@ -163,128 +105,12 @@ public class utils {
         return returnData;
     }
 
-    public static Component parseColors(String message) {
-        TextColor color = TextColor.fromHexString("#ffffff");
-        String gradientStart = null;
-        Boolean bold = false;
-        Boolean italic = false;
-        Boolean underlined = false;
-        Boolean strikethrough = false;
-        Boolean obfuscated = false;
-        Component component = Component.empty();
-        String current = "";
-        String[] messageChars = message.split("");
-        for (int i = 0; i < messageChars.length; i++) {
-            String c = messageChars[i];
-            if (c.equals("§") && i < messageChars.length - 1) {
-                String next = messageChars[i + 1];
-                component = append(component, color, bold, italic, underlined, strikethrough, obfuscated, current);
-                switch (next) {
-                    case "l":
-                        bold = !bold;
-                        break;
-                    case "k":
-                        obfuscated = !obfuscated;
-                        break;
-                    case "n":
-                        underlined = !underlined;
-                        break;
-                    case "m":
-                        strikethrough = !strikethrough;
-                        break;
-                    case "o":
-                        italic = !italic;
-                        break;
-                    case "p":
-                        italic = false;
-                        bold = false;
-                        underlined = false;
-                        strikethrough = false;
-                        obfuscated = false;
-                        break;
-                    case "r":
-                        gradientStart = null;
-                        bold = false;
-                        italic = false;
-                        underlined = false;
-                        strikethrough = false;
-                        obfuscated = false;
-                        color = TextColor.fromHexString("#ffffff");
-                        break;
-                    default:
-                        continue;
-                }
-                i++;
-                current = "";
-            } else if (i <= messageChars.length - 9 && message.substring(i, i + 9).matches("<¶([0-9a-fA-F]{6})>")) { // <#ffffff>
-                gradientStart = null;
-                component = append(component, color, bold, italic, underlined, strikethrough, obfuscated, current);
-                color = TextColor.fromHexString("#" + message.substring(i + 2, i + 8));
-                current = "";
-                i += 8;
-            } else if (i <= messageChars.length - 10 && message.substring(i, i + 10).matches("<g¶[a-fA-F0-9]{6}>")) { // <g§ffffff>
-                if (gradientStart == null) {
-                    component = append(component, color, bold, italic, underlined, strikethrough, obfuscated, current);
-                    gradientStart = message.substring(i + 3, i + 9);
-                    color = TextColor.fromHexString("#" + gradientStart);
-                } else {
-                    int[] startRGB = utils.toRGB(gradientStart);
-                    int[] endRGB = utils.toRGB(message.substring(i + 3, i + 9));
-                    int[] currentRGB = startRGB.clone();
-                    String[] gradientChars = current.split("");
-                    for (int j = 0; j < gradientChars.length; j++) {
-                        String gradientChar = gradientChars[j];
-                        if (gradientChar.equals(" ")) {
-                            component = component.append(Component.text(" "));
-                            continue;
-                        }
-                        component = append(component, TextColor.fromHexString("#" + utils.toHex(currentRGB)), bold,
-                                italic, underlined, strikethrough, obfuscated, current);
-                        for (int k = 0; k < startRGB.length; k++) {
-                            currentRGB[k] = Math
-                                    .round(((endRGB[k] - startRGB[k]) / gradientChars.length) * j + startRGB[k]);
-                        }
-                    }
-                    color = TextColor.fromHexString("#" + utils.toHex(currentRGB));
-                    gradientStart = null;
-                }
-                current = "";
-                i += 9;
-            } else {
-                current += c;
-            }
-        }
-        return append(component, color, bold, italic, underlined, strikethrough, obfuscated, current);
-    }
-
-    public static Component append(Component component, TextColor color, Boolean bold, Boolean italic,
-            Boolean underlined, Boolean strikethrough, Boolean obfuscated, String text) {
-        Component builder = Component.text(text)
-                .color(color);
-        if (bold) {
-            builder = builder.decorate(TextDecoration.BOLD);
-        }
-        if (italic) {
-            builder = builder.decorate(TextDecoration.ITALIC);
-        }
-        if (underlined) {
-            builder = builder.decorate(TextDecoration.UNDERLINED);
-        }
-        if (strikethrough) {
-            builder = builder.decorate(TextDecoration.STRIKETHROUGH);
-        }
-        if (obfuscated) {
-            builder = builder.decorate(TextDecoration.OBFUSCATED);
-        }
-        return component.append(builder);
-    }
-
     static public ArgumentInterface getArgument(List<ArgumentInterface> arguments, List<String> args, int i) {
         Command command;
 
         while (i >= arguments.size()) {
             if (arguments.getLast().getType() == ArgumentType.SUBCOMMAND) {
-                subcommand subcommand = (subcommand) arguments.getLast();
+                Subcommand subcommand = (Subcommand) arguments.getLast();
                 command = subcommand.get(args.get(arguments.size() - 1));
                 if (command == null) {
                     return null;

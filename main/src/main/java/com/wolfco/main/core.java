@@ -17,7 +17,7 @@ import com.wolfco.main.commands.*;
 import com.wolfco.common.utils;
 import com.wolfco.common.classes.CoreCommandExecutor;
 import com.wolfco.common.classes.CorePlugin;
-import com.wolfco.common.commandLoader;
+import com.wolfco.common.CommandLoader;
 
 public class core extends CorePlugin implements Listener {
     public LuckPerms lp;
@@ -44,7 +44,7 @@ public class core extends CorePlugin implements Listener {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        commandLoader commandLoader = new commandLoader(this);
+        CommandLoader commandLoader = new CommandLoader(this);
         commandLoader.registerAll(getCommands());
         this.getLogger().info("[Wolf-Core] Plugin enabled");
         playerManager = new playerManager(this);

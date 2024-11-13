@@ -1,7 +1,5 @@
 version: 3
 
-chat:
-  reserved: "§4§lError: §cThe \"¶\" character is reserved for internal use."
 gamemode:
   invalid: "♆ <#ff5555>Invalid gamemode."
   multisuccess: "♆ <#00ff00>Set <#ffff00>%0% <#00ff00>players' gamemode to <#ffff00>%1%"
