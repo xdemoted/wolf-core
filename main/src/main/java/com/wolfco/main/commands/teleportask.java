@@ -13,6 +13,7 @@ import com.wolfco.common.Utilities;
 import com.wolfco.common.classes.Argument;
 import com.wolfco.common.classes.ArgumentType;
 import com.wolfco.common.classes.Command;
+import com.wolfco.common.classes.CommandTypes;
 import com.wolfco.common.classes.CoreCommandExecutor;
 
 public class teleportask implements CoreCommandExecutor {
@@ -27,11 +28,17 @@ public class teleportask implements CoreCommandExecutor {
 
     @Override
     public Command getCommand() {
-        return new Command("teleportask", "wolfcore.tpa", new ArrayList<>() {
+        Command command = new Command("teleportask");
+        command.setDescription("Request a teleport to a player");
+        command.setAccessType(CommandTypes.PLAYER);    
+        command.setNode("wolfcore.teleportask");
+        command.setArguments(new ArrayList<>() {
             {
-                add(new Argument("player", ArgumentType.PLAYER, false));
+                add(new Argument(ArgumentType.PLAYER, true));
             }
         });
+
+        return command;
     }
 
     @Override

@@ -35,6 +35,7 @@ public interface CoreCommandExecutor extends CommandExecutor, org.bukkit.command
         });
         return result.get(0);
     }
+
     default Integer getRequiredArgs() {
         Command command = getCommand();
         List<Integer> result = new ArrayList<>() {
@@ -77,7 +78,7 @@ public interface CoreCommandExecutor extends CommandExecutor, org.bukkit.command
         }
         return execute(sender, command, label, args);
     }
-    boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args);
+    boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] ArgumentValues);
 
     @Override
     default List<String> onTabComplete(CommandSender sender, org.bukkit.command.Command bukkitCommand, String alias, String[] args) {

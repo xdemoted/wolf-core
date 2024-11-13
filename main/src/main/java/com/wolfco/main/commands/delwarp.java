@@ -37,15 +37,9 @@ public class delwarp implements CoreCommandExecutor {
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args) {
         boolean result = core.warps.remove(args[0]);
         if (result) {
-<<<<<<< HEAD
             Utilities.sendColorText(core.getAdventure().sender(sender), core.getMessage("warp.deleted", List.of(args[0])));
         } else {
             Utilities.sendColorText(core.getAdventure().sender(sender), core.getMessage("warp.notfound", List.of(args[0])));
-=======
-            utils.sendColorText(core.getAdventure().sender(sender), core.getMessage("warp.deleted", List.of(args[0])));
-        } else {
-            utils.sendColorText(core.getAdventure().sender(sender), core.getMessage("warp.notfound", List.of(args[0])));
->>>>>>> 176256cb29a2aceab31316a77fe99b1426fa0668
         }
         try {
             core.warps.save();

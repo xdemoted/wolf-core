@@ -10,11 +10,7 @@ public class warps implements CoreCommandExecutor {
     @Override
     public Command getCommand() {
         Command command = new Command("warps");
-<<<<<<< HEAD
-        command.setDescription("List all warps");
-=======
         command.setDescription("Lists available warps.");
->>>>>>> 176256cb29a2aceab31316a77fe99b1426fa0668
         command.setNode("wolfcore.warps");
 
         return command;

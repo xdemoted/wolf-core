@@ -79,6 +79,16 @@ public class Command {
         Object[] values = new Object[options.size()];
 
         for (int i = 0; i < options.size(); i++) {
+            
+            if (args.length <= i) {
+                if (options.get(i).isRequired()) {
+                    throw new IllegalArgumentException("Missing required argument");
+                } else {
+                    values[i] = null;
+                    continue;
+                }
+            }
+
             Object value = options.get(i).getValue(plugin, sender, bukkitCommand, args[i]);
 
             if (value == null) {
