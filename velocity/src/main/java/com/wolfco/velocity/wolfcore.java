@@ -6,7 +6,8 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
 
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
@@ -31,23 +32,25 @@ import net.luckperms.api.LuckPermsProvider;
 
 @Plugin(id = "velocicore", name = "Veloci-Core", version = "1.0", description = "A core plugin for the Wolf Co. network", authors = {
         "Demoted" })
+
 public class wolfcore {
-    @Inject
-    @DataDirectory
-    public Path dataDirectory;
-
     
-    @Inject
-    @SuppressWarnings("NonConstantLogger")
-    public Logger logger;
+    public  final Path dataDirectory;
+    public final ProxyServer server;
+    public final Logger logger;
 
-    @Inject
-    public ProxyServer server;
     public playerManager playerManager;
     public LuckPerms lp;
     public YamlDocument config;
     private JDAListener jda;
     public Map<UUID, String> playerChannels = new HashMap<>();
+
+    @Inject
+    public wolfcore(ProxyServer server, Logger logger, @DataDirectory Path dataDirectory) {
+        this.server = server;
+        this.logger = logger;
+        this.dataDirectory = dataDirectory;
+    }
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
@@ -60,11 +63,12 @@ public class wolfcore {
         try {
             jda = new JDAListener(this);
         } catch (InterruptedException e) {
-            logger.severe(e.getMessage());
+            logger.warn(e.getMessage());
         }
         if (jda != null) {
             server.getEventManager().register(this, new events(this, jda));
         }
+
         loadCommands();
         playerManager = new playerManager(this);
         logger.info("Wolf-Core Loaded Successfully");

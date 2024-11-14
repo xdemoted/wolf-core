@@ -90,7 +90,7 @@ public final class JDAListener extends ListenerAdapter implements EventListener 
             guild = jda.getGuildById(gui);
             channel = guild.getTextChannelById(chan);
         } else {
-            plugin.logger.severe("Null values in config");
+            plugin.logger.warn("Null values in config");
         }
     }
 
@@ -133,7 +133,7 @@ public final class JDAListener extends ListenerAdapter implements EventListener 
                         });
             }
             if (activeHook == null) {
-                plugin.logger.warning("Could not create webhook");
+                plugin.logger.warn("Could not create webhook");
                 return false;
             }
         }

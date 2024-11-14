@@ -1,5 +1,0 @@
-name: wolfcore
-main: demoted.bungee.wolfcore
-version: 1.0
-author: Demoted
-depend: [MC-JDA]

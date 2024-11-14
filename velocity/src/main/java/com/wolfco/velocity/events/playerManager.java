@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Level;
 
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
@@ -50,7 +49,7 @@ public final class playerManager {
     @Subscribe
     public void onJoin(ServerPostConnectEvent event
     ) {
-        core.logger.log(Level.INFO, "[Wolf-Core] Player joined: {0}", event.getPlayer().getUsername());
+        core.logger.warn(String.format("[Wolf-Core] Player joined: {0}", event.getPlayer().getUsername()));
         checkPlayer(event.getPlayer());
         onJoin(event.getPlayer());
     }
@@ -58,7 +57,7 @@ public final class playerManager {
     public void onJoin(Player player) {
         YamlDocument data = core.getConfig(player.getUniqueId().toString(), core.dataDirectory.resolve("userdata"));
         if (data == null) {
-            core.logger.log(Level.WARNING, "[Wolf-Core] Player data not found for {0}", player.getUsername());
+            core.logger.warn(String.format("[Wolf-Core] Player data not found for {0}", player.getUsername()));
             player.disconnect(Component.text("§4§lError: §cPlayer data not found, please contact an administrator."));
         } else {
             PlayerData PlayerData = new PlayerData(player, data);
@@ -76,17 +75,17 @@ public final class playerManager {
         Player player = event.getPlayer();
         PlayerData PlayerData = players.get(player.getUniqueId());
         if (PlayerData == null) {
-            core.logger.log(Level.WARNING, "[Wolf-Core] Player left without data: {0}", player.getUsername());
+            core.logger.warn(String.format("[Wolf-Core] Player left without data: {0}", player.getUsername()));
             return;
         }
         PlayerData.setLogout(System.currentTimeMillis());
         try {
             PlayerData.save();
         } catch (Exception e) {
-            core.logger.log(Level.WARNING, "[Wolf-Core] Failed to save data for {0}", player.getUsername());
+            core.logger.warn(String.format("[Wolf-Core] Failed to save data for {0}", player.getUsername()));
         }
         if (players.remove(player.getUniqueId()) == null) {
-            core.logger.log(Level.WARNING, "[Wolf-Core] Player left without data: {0}", player.getUsername());
+            core.logger.warn(String.format("[Wolf-Core] Player left without data: {0}", player.getUsername()));
         }
     }
 
@@ -116,7 +115,7 @@ public final class playerManager {
             try {
                 offlineData.save();
             } catch (IOException e) {
-                core.logger.warning(e.getMessage());
+                core.logger.warn(e.getMessage());
             }
         }
         UUID uuid = UUID.fromString(offlineData.getString(player.getUsername()));

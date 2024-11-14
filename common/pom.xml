@@ -5,11 +5,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-          <groupId>com.wolfco</groupId>
-          <artifactId>wolfcore</artifactId>
-          <version>1.0</version>
+        <groupId>com.wolfco</groupId>
+        <artifactId>wolfcore</artifactId>
+        <version>1.0</version>
     </parent>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.21-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+    
     <groupId>com.wolfco.wolfcore</groupId>
     <artifactId>common</artifactId>
     <version>1.0</version>

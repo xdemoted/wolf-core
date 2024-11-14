@@ -58,9 +58,9 @@ public class events {
             jda.sendMessage(player.getUsername(), ":arrow_left: **Has left the network.**",
                     "https://crafthead.net/helm/" + player.getUniqueId());
         } catch (MalformedURLException e) {
-            plugin.logger.warning(e.getMessage());
+            plugin.logger.warn(e.getMessage());
         } catch (IOException e) {
-            plugin.logger.warning(e.getMessage());
+            plugin.logger.warn(e.getMessage());
         }
         Component text = Component.text("§8[§aNetwork§8]§a " + player.getUsername() + " §eHas left the server.");
         plugin.broadcast(text);
@@ -80,7 +80,7 @@ public class events {
                                     + currentName + "]**",
                             "https://crafthead.net/helm/" + event.getPlayer().getUniqueId());
                 } catch (IOException e) {
-                    plugin.logger.warning(e.getMessage());
+                    plugin.logger.warn(e.getMessage());
                 }
                 player.sendMessage(
                         Component.text("§8[§aWelcome§8]§e There is currently §a" + plugin.server.getPlayerCount()
@@ -102,10 +102,10 @@ public class events {
                                 + currentName + "]",
                         "https://crafthead.net/helm/" + event.getPlayer().getUniqueId());
             } catch (IOException e) {
-                plugin.logger.warning(e.getMessage());
+                plugin.logger.warn(e.getMessage());
             }
         } else {
-            plugin.logger.warning("No current server found.");
+            plugin.logger.warn("No current server found.");
         }
     }
 
