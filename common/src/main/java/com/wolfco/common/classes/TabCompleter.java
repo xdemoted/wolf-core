@@ -7,7 +7,7 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 
 public class TabCompleter {
-    private CorePlugin core;
+    private final CorePlugin core;
 
     public TabCompleter(CorePlugin core) {
         this.core = core;
@@ -15,7 +15,8 @@ public class TabCompleter {
 
     public List<String> runTabComplete(Command command, CommandSender sender, org.bukkit.command.Command bukkitCommand,
             String alias, String[] args) {
-        List<String> result = new ArrayList<String>();
+        List<String> result;
+        result = new ArrayList<>();
 
         if (args.length > command.options.size()) {
             if (command.options.getLast().getType() == ArgumentType.SUBCOMMAND) {

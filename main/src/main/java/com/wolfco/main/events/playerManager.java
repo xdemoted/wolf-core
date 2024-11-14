@@ -1,19 +1,22 @@
 package com.wolfco.main.events;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import dev.dejvokep.boostedyaml.YamlDocument;
 
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.PlayerData;
+
+import dev.dejvokep.boostedyaml.YamlDocument;
 
 public class PlayerManager implements Listener {
     public Map<UUID, PlayerData> players = new HashMap<>();
@@ -22,7 +25,7 @@ public class PlayerManager implements Listener {
     public PlayerManager(Core core) {
         this.core = core;
         Collection<? extends Player> onlinePlayers = core.getServer().getOnlinePlayers();
-        if (onlinePlayers.size() > 0) {
+        if (!onlinePlayers.isEmpty()) {
             for (Player player : onlinePlayers) {
                 onJoin(player);
             }
@@ -34,10 +37,10 @@ public class PlayerManager implements Listener {
         onJoin(event.getPlayer());
     }
 
-    public void onJoin(Player player) {
+    private void onJoin(Player player) {
         YamlDocument data = core.getConfig(player.getUniqueId().toString(), core.getDataFolder().toPath().resolve("userdata"));
         if (data == null) {
-            core.getLogger().warning("[Wolf-Core] Player data not found for " + player.getName());
+            core.getLogger().log(Level.WARNING, "[Wolf-Core] Player data not found for {0}", player.getName());
             player.kickPlayer("§4§lError: §cPlayer data not found, please contact an administrator.");
             return;
         }
@@ -49,19 +52,24 @@ public class PlayerManager implements Listener {
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         PlayerData PlayerData = players.get(player.getUniqueId());
+
         if (PlayerData == null) {
-            core.getLogger().warning("[Wolf-Core] Player left without data: " + player.getName());
+            core.getLogger().log(Level.WARNING, "[Wolf-Core] Player left without data: {0}", player.getName());
             return;
         }
+
         YamlDocument data = PlayerData.data;
         data.set("timestamp.logout", System.currentTimeMillis());
+
         try {
             data.save();
-        } catch (Exception e) {
-            core.getLogger().warning("[Wolf-Core] Failed to save data for " + player.getName());
+        } catch (IOException ex) {
+            core.getLogger().log(Level.SEVERE, "[Wolf-Core] Error saving player data for {0}", player.getName());
+            return;
         }
+
         if (players.remove(player.getUniqueId()) == null) {
-            core.getLogger().warning("[Wolf-Core] Player left without data: " + player.getName());
+            core.getLogger().log(Level.WARNING, "[Wolf-Core] Player left without data: {0}", player.getName());
         }
     }
 

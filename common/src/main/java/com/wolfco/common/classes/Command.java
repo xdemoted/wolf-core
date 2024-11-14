@@ -9,7 +9,7 @@ public class Command {
     public String name, displayName, node, description;
 
     public CommandTypes accessType = CommandTypes.ALL;
-    public List<ArgumentInterface> options = new ArrayList<ArgumentInterface>();
+    public List<ArgumentInterface> options = new ArrayList<>();
     public CorePlugin plugin;
 
     public Command(String name) throws IllegalArgumentException {

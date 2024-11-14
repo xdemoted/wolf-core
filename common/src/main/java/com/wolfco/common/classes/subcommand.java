@@ -6,21 +6,24 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 
 public class Subcommand implements ArgumentInterface {
-    private HashMap<String, Command> subcommands = new HashMap<String, Command>();
-    private boolean required;
+    private final HashMap<String, Command> subcommands = new HashMap<>();
+    private final boolean required;
 
     public Subcommand(boolean required) {
         this.required = required;
     }
 
+    @Override
     public ArgumentType getType() {
         return ArgumentType.SUBCOMMAND;
     }
 
+    @Override
     public Boolean isRequired() {
         return required;
     }
 
+    @Override
     public String getName() {
         return ArgumentType.SUBCOMMAND.toString();
     }

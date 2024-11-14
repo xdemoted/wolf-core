@@ -1,18 +1,19 @@
 package com.wolfco.common;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.entity.Player;
 
 import com.wolfco.common.classes.CorePlugin;
+
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.luckperms.api.cacheddata.CachedPermissionData;
-import java.util.Collection;
-import java.util.List;
-import java.util.ArrayList;
 
 public class Utilities {
     CorePlugin core;
@@ -23,8 +24,8 @@ public class Utilities {
 
     public final static String[] gamemodes = { "survival", "creative", "adventure", "spectator" };
 
-    public final static HashMap<String, String> colorCodes = new HashMap<String, String>();
-    {
+    public final static HashMap<String, String> colorCodes = new HashMap<>();
+    static {
         colorCodes.put("0", "000000");
         colorCodes.put("1", "0000AA");
         colorCodes.put("2", "00AA00");
@@ -44,14 +45,12 @@ public class Utilities {
     }
 
     @SuppressWarnings("unchecked")
-    public Collection<Player> getTargets(String target) {
-        core.getLogger().info('"' + target + '"');
-        core.getLogger().info(String.valueOf(target.equalsIgnoreCase("*")));
+    static public Collection<Player> getTargets(CorePlugin core, String target) {
         if (target.equalsIgnoreCase("*")) {
             return (Collection<Player>) core.getServer().getOnlinePlayers();
         } else {
             List<Player> targetList = new ArrayList<>();
-            Player targetPlayer = getTarget(target);
+            Player targetPlayer = getTarget(core, target);
             if (targetPlayer != null) {
                 targetList.add(targetPlayer);
             }
@@ -59,7 +58,7 @@ public class Utilities {
         }
     }
 
-    public Player getTarget(String target) {
+    static public Player getTarget(CorePlugin core, String target) {
         Collection<? extends Player> players = core.getServer().getOnlinePlayers();
         if (target.length() < 3)
             return null;
@@ -93,9 +92,9 @@ public class Utilities {
         permissionMap.forEach((k, v) -> {
             if (k.startsWith("wolf-co.chatprefix") && v) {
                 String[] parts = k.split("\\.");
-                Integer kweight = 0;
+                Integer kweight;
                 try {
-                    kweight = Integer.parseInt(parts[2]);
+                    kweight = Integer.valueOf(parts[2]);
                 } catch (NumberFormatException e) {
                     kweight = 0;
                 }
@@ -108,9 +107,9 @@ public class Utilities {
                 }
             } else if (k.startsWith("wolf-co.chatsuffix") && v) {
                 String[] parts = k.split("\\.");
-                Integer kweight = 0;
+                Integer kweight;
                 try {
-                    kweight = Integer.parseInt(parts[2]);
+                    kweight = Integer.valueOf(parts[2]);
                 } catch (NumberFormatException e) {
                     kweight = 0;
                 }

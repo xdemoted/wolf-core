@@ -8,17 +8,18 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.wolfco.main.Core;
-import com.wolfco.main.classes.Warp;
-import com.wolfco.main.classes.customArgs.WarpArgument;
 import com.wolfco.common.Utilities;
 import com.wolfco.common.classes.Argument;
 import com.wolfco.common.classes.ArgumentInterface;
 import com.wolfco.common.classes.ArgumentType;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommandExecutor;
+import com.wolfco.main.Core;
+import com.wolfco.main.classes.Warp;
+import com.wolfco.main.classes.customArgs.WarpArgument;
 
 public class warp implements CoreCommandExecutor {
+
     @Override
     public Command getCommand() {
         Command command = new Command("warp");
@@ -37,7 +38,7 @@ public class warp implements CoreCommandExecutor {
     public Core fetchCore() {
         return core;
     }
-    
+
     Core core;
 
     public warp(Core core) {
@@ -45,7 +46,7 @@ public class warp implements CoreCommandExecutor {
     }
 
     @Override
-    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args) {
+    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
         Warp warp;
         Player target;
 
@@ -53,7 +54,7 @@ public class warp implements CoreCommandExecutor {
             Object[] values = getCommand().getValues(core, sender, command, args);
             warp = (Warp) values[0];
             target = (Player) values[1];
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             return false;
         }
 

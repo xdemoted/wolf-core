@@ -5,12 +5,12 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.wolfco.main.Core;
-import com.wolfco.main.classes.PlayerData;
 import com.wolfco.common.Utilities;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CommandTypes;
 import com.wolfco.common.classes.CoreCommandExecutor;
+import com.wolfco.main.Core;
+import com.wolfco.main.classes.PlayerData;
 
 public class teleportdeny implements CoreCommandExecutor {
 
@@ -36,7 +36,7 @@ public class teleportdeny implements CoreCommandExecutor {
     }
 
     @Override
-    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args) {
+    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
         PlayerData playerData = core.PlayerManager.getPlayerData((Player) sender);
 
         if (playerData == null) {

@@ -5,20 +5,22 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.event.player.ServerPostConnectEvent;
 import com.velocitypowered.api.proxy.Player;
-
-import com.wolfco.velocity.wolfcore;
 import com.wolfco.velocity.types.OfflinePlayer;
 import com.wolfco.velocity.types.PlayerData;
 import com.wolfco.velocity.types.Punishment;
+import com.wolfco.velocity.wolfcore;
+
 import dev.dejvokep.boostedyaml.YamlDocument;
 import net.kyori.adventure.text.Component;
 
-public class playerManager {
+public final class playerManager {
+
     public Map<UUID, PlayerData> players = new HashMap<>();
     public wolfcore core;
     public YamlDocument offlineData;
@@ -27,23 +29,28 @@ public class playerManager {
 
     public playerManager(wolfcore core) {
         this.core = core;
-        core.server.getEventManager().register(core, this);
         Collection<Player> onlinePlayers = core.server.getAllPlayers();
         offlineData = core.getConfig("playerHistory.yml", core.dataDirectory);
         punishmentData = core.getConfig("punishments.yml", core.dataDirectory);
         punishManager = new punishManager(this);
 
-        if (onlinePlayers.size() > 0) {
+        if (!onlinePlayers.isEmpty()) {
             for (Player player : onlinePlayers) {
                 onJoin(player);
                 checkPlayer(player);
             }
+            registerEvents();
         }
     }
 
+    private void registerEvents() {
+        core.server.getEventManager().register(core, this);
+    }
+
     @Subscribe
-    public void onJoin(ServerPostConnectEvent event) {
-        core.logger.info("[Wolf-Core] Player joined: " + event.getPlayer().getUsername());
+    public void onJoin(ServerPostConnectEvent event
+    ) {
+        core.logger.log(Level.INFO, "[Wolf-Core] Player joined: {0}", event.getPlayer().getUsername());
         checkPlayer(event.getPlayer());
         onJoin(event.getPlayer());
     }
@@ -51,9 +58,8 @@ public class playerManager {
     public void onJoin(Player player) {
         YamlDocument data = core.getConfig(player.getUniqueId().toString(), core.dataDirectory.resolve("userdata"));
         if (data == null) {
-            core.logger.warning("[Wolf-Core] Player data not found for " + player.getUsername());
+            core.logger.log(Level.WARNING, "[Wolf-Core] Player data not found for {0}", player.getUsername());
             player.disconnect(Component.text("§4§lError: §cPlayer data not found, please contact an administrator."));
-            return;
         } else {
             PlayerData PlayerData = new PlayerData(player, data);
             players.put(player.getUniqueId(), PlayerData);
@@ -61,7 +67,6 @@ public class playerManager {
             Punishment punishment = PlayerData.isBanned();
             if (punishment != null) {
                 player.disconnect(Component.text("§4§lError: §cYou are banned from this server.\n§6Reason: §e" + punishment.reason));
-                return;
             }
         }
     }
@@ -71,17 +76,17 @@ public class playerManager {
         Player player = event.getPlayer();
         PlayerData PlayerData = players.get(player.getUniqueId());
         if (PlayerData == null) {
-            core.logger.warning("[Wolf-Core] Player left without data: " + player.getUsername());
+            core.logger.log(Level.WARNING, "[Wolf-Core] Player left without data: {0}", player.getUsername());
             return;
         }
         PlayerData.setLogout(System.currentTimeMillis());
         try {
             PlayerData.save();
         } catch (Exception e) {
-            core.logger.warning("[Wolf-Core] Failed to save data for " + player.getUsername());
+            core.logger.log(Level.WARNING, "[Wolf-Core] Failed to save data for {0}", player.getUsername());
         }
         if (players.remove(player.getUniqueId()) == null) {
-            core.logger.warning("[Wolf-Core] Player left without data: " + player.getUsername());
+            core.logger.log(Level.WARNING, "[Wolf-Core] Player left without data: {0}", player.getUsername());
         }
     }
 
@@ -111,7 +116,7 @@ public class playerManager {
             try {
                 offlineData.save();
             } catch (IOException e) {
-                e.printStackTrace();
+                core.logger.warning(e.getMessage());
             }
         }
         UUID uuid = UUID.fromString(offlineData.getString(player.getUsername()));

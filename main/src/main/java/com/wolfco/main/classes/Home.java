@@ -3,6 +3,7 @@ package com.wolfco.main.classes;
 import java.util.UUID;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 
 public class Home {
     public Home(String name, Location location) {
@@ -12,7 +13,17 @@ public class Home {
         this.z = location.getZ();
         this.yaw = location.getYaw();
         this.pitch = location.getPitch();
-        this.world = location.getWorld().getUID();
+        
+        World tempWorld = location.getWorld();
+        try {
+            if (tempWorld != null) {
+                this.world = tempWorld.getUID();
+            } else {
+                this.world = null;
+            }
+        } catch (NullPointerException e) {
+            this.world = null;
+        }
     }
 
     public Home(String name, double x, double y, double z, float yaw, float pitch, UUID world) {

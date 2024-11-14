@@ -1,16 +1,19 @@
 package com.wolfco.main.commands;
 
 import java.io.FileNotFoundException;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import net.kyori.adventure.audience.Audience;
-import com.wolfco.main.Core;
 import com.wolfco.common.Utilities;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommandExecutor;
+import com.wolfco.main.Core;
+
+import net.kyori.adventure.audience.Audience;
 
 public class database implements CoreCommandExecutor {
+
     @Override
     public Command getCommand() {
         Command command = new Command("database");
@@ -25,43 +28,43 @@ public class database implements CoreCommandExecutor {
     }
 
     Core core;
+
     public database(Core core) {
         this.core = core;
     }
 
     @Override
-    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args) {
+    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
         Audience audience = core.getAdventure().sender(sender);
         if (!(sender instanceof Player)) {
             Utilities.sendColorText(audience, core.getMessage("generic.noconsole"));
             return true;
         }
 
-        if (args[0].equals("add")) {
-            if (!(args.length == 2)) {
-                Utilities.sendColorText(audience, "<#ffaa00>Usage: /database add <name>");
-                return true;
+        switch (args[0]) {
+            case "add" -> {
+                if (!(args.length == 2)) {
+                    Utilities.sendColorText(audience, "<#ffaa00>Usage: /database add <name>");
+                    return true;
+                }   try {
+                    core.db.addSchematic(args[1]);
+                } catch (FileNotFoundException e) {
+                    Utilities.sendColorText(audience, "<#ffaa00>File not found");
+                }
             }
-
-            try {
-                core.db.addSchematic(args[1]);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+            case "remove" -> {
+                if (!(args.length == 2)) {
+                    Utilities.sendColorText(audience, "<#ffaa00>Usage: /database remove <name>");
+                    return true;
+                }   core.db.removeSchematic(args[1]);
             }
-        } else if (args[0].equals("remove")) {
-            if (!(args.length == 2)) {
-                Utilities.sendColorText(audience, "<#ffaa00>Usage: /database remove <name>");
-                return true;
+            case "list" -> {
+                for (String name : core.db.listSchematics()) {
+                    Utilities.sendColorText(audience, "<#ffaa00>" + name);
+                }
             }
-
-            core.db.removeSchematic(args[1]);
-        } else if (args[0].equals("list")) {
-            for (String name : core.db.listSchematics()) {
-                Utilities.sendColorText(audience, "<#ffaa00>" + name);
-            }
-        } else {
-            Utilities.sendColorText(audience, "<#ffaa00>Usage: /database <add/remove/list> <name>");
-        } 
+            default -> Utilities.sendColorText(audience, "<#ffaa00>Usage: /database <add/remove/list> <name>");
+        }
         return true;
     }
 }

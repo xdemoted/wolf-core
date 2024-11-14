@@ -1,19 +1,21 @@
 package com.wolfco.common.classes;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.util.List;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.wolfco.common.CommandLoader;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-import java.nio.file.Path;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import dev.dejvokep.boostedyaml.dvs.versioning.BasicVersioning;
 import dev.dejvokep.boostedyaml.settings.updater.UpdaterSettings;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 
 public abstract class CorePlugin extends JavaPlugin {
+
     public BukkitAudiences adventure;
     public YamlDocument config;
     public YamlDocument messages;
@@ -23,6 +25,10 @@ public abstract class CorePlugin extends JavaPlugin {
     public CorePlugin() {
         messages = getMessageData();
         commandLoader = new CommandLoader(this);
+    }
+
+    @Override
+    public void onEnable() {
         commandLoader.registerAll(getCommands());
     }
 
@@ -41,17 +47,17 @@ public abstract class CorePlugin extends JavaPlugin {
 
     public YamlDocument getConfig(String fileName, Path parent) {
         Path configFile = parent.resolve(fileName);
-        YamlDocument config;
+        YamlDocument configReturn;
         try (InputStream is = getClass().getClassLoader().getResourceAsStream(fileName)) {
-            config = YamlDocument.create(configFile.toFile(), is);
+            configReturn = YamlDocument.create(configFile.toFile(), is);
         } catch (IOException e) {
             try {
-                config = YamlDocument.create(configFile.toFile());
+                configReturn = YamlDocument.create(configFile.toFile());
             } catch (IOException e1) {
-                config = null;
+                configReturn = null;
             }
         }
-        return config;
+        return configReturn;
     }
 
     public String getMessage(String key) {
@@ -66,13 +72,13 @@ public abstract class CorePlugin extends JavaPlugin {
         return message;
     }
 
-    public YamlDocument getMessageData() {
+    private YamlDocument getMessageData() {
         messages = getConfig("messages.yml");
         if (messages != null) {
             messages.setSettings(UpdaterSettings.builder().setVersioning(new BasicVersioning("version")).build());
             try {
                 messages.update();
-            } catch (Exception e) {
+            } catch (IOException e) {
                 getLogger().warning("Failed to update messages.yml");
             }
         }

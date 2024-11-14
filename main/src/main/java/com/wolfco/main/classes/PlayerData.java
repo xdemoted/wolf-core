@@ -1,5 +1,6 @@
 package com.wolfco.main.classes;
 
+import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -41,7 +42,14 @@ public class PlayerData {
         this.teleportEnabled = true;
         this.godmode = false;
         this.muted = false;
-        this.ipaddress = host.getAddress().getAddress().getHostAddress();
+
+        InetSocketAddress tempHost = host.getAddress();
+        
+        if (tempHost != null) {
+            this.ipaddress = tempHost.getAddress().getHostAddress();
+        } else {
+            this.ipaddress = null;
+        }
 
         if (data.contains("home")) {
             for (String key : data.getSection("home").getRoutesAsStrings(false)) {
@@ -103,9 +111,15 @@ public class PlayerData {
         data.set("ipaddress", this.ipaddress);
         data.set("username", this.username);
         Location lastPosition = host.getLocation();
+
+        if (lastPosition == null) {
+            lastPosition = host.getWorld().getSpawnLocation();
+        }
+
         data.set("lastPosition.x", lastPosition.getX());
         data.set("lastPosition.y", lastPosition.getY());
         data.set("lastPosition.z", lastPosition.getZ());
+        
         return data;
     }
 }

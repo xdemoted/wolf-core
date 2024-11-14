@@ -1,12 +1,14 @@
 package com.wolfco.main.commands;
 
-import net.kyori.adventure.audience.Audience;
-import com.wolfco.main.Core;
 import com.wolfco.common.Utilities;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommandExecutor;
+import com.wolfco.main.Core;
+
+import net.kyori.adventure.audience.Audience;
 
 public class warps implements CoreCommandExecutor {
+
     @Override
     public Command getCommand() {
         Command command = new Command("warps");
@@ -29,7 +31,7 @@ public class warps implements CoreCommandExecutor {
 
     @Override
     public boolean execute(org.bukkit.command.CommandSender sender, org.bukkit.command.Command command, String alias,
-            String[] args) {
+            String[] args, Object[] argumentValues) {
         Audience audience = core.getAdventure().sender(sender);
         Utilities.sendColorText(audience, "<#ffaa00>Warps:");
         for (String key : core.warps.getRoutesAsStrings(false)) {

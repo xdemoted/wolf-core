@@ -1,9 +1,11 @@
 package com.wolfco.velocity.events;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
 
 import com.wolfco.velocity.types.Punishment;
+
 import dev.dejvokep.boostedyaml.YamlDocument;
 
 public class punishManager {
@@ -70,9 +72,8 @@ public class punishManager {
         punishmentData.set(punishment.id + ".endTime", endTime);
         try {
             punishmentData.save();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (IOException e) {}
+        
         return punishment;
     }
     public void removePunishment(String id) {

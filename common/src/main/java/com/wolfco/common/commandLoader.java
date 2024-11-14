@@ -3,6 +3,7 @@ package com.wolfco.common;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 import org.bukkit.command.PluginCommand;
 
@@ -27,7 +28,7 @@ public class CommandLoader {
             PluginCommand.setExecutor(executor);
             PluginCommand.setTabCompleter(executor);
         }
-        else core.getLogger().warning("Command " + command.name + " cannot be found in the plugin yml.");
+        else core.getLogger().log(Level.WARNING, "Command {0} cannot be found in the plugin yml.", command.name);
     }
 
     public void registerAll(List<CoreCommandExecutor> executors) {

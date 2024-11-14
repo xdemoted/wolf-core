@@ -2,14 +2,21 @@ package com.wolfco.common.classes;
 
 public enum ArgumentType {
     STRING,
-    GAMEMODE,
-    CUSTOM,
+    ALPHANUMERICSTRING,
     DOUBLE,
+    INTEGER,
     BOOLEAN,
+
+    GAMEMODE,
+
     PLAYER,
     EXCLUSIVEPLAYER,
     OTHERPLAYER,
     EXCLUSIVEOTHERPLAYER,
+
     WORLD,
-    SUBCOMMAND;
+
+    SUBCOMMAND,
+    
+    CUSTOM;
 }

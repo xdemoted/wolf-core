@@ -69,15 +69,17 @@ public interface CoreCommandExecutor extends CommandExecutor, org.bukkit.command
             Utilities.sendColorText(fetchCore().getAdventure().sender(sender), result);
             return false;
         }
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
+        if (sender instanceof Player player) {
             if (!player.hasPermission(getCommand().node)) {
                 Utilities.sendColorText(fetchCore().getAdventure().sender(sender), fetchCore().getMessage("generic.nopermission"));
                 return false;
             }
         }
-        return execute(sender, command, label, args);
+
+        Object[] argumentValues = getCommand().getValues(fetchCore(), sender, command, args);
+        return execute(sender, command, label, args, argumentValues);
     }
+    
     boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] ArgumentValues);
 
     @Override

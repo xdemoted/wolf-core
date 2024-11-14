@@ -1,12 +1,10 @@
-version: 3
+version: 4
 
 gamemode:
   invalid: "♆ <#ff5555>Invalid gamemode."
   multisuccess: "♆ <#00ff00>Set <#ffff00>%0% <#00ff00>players' gamemode to <#ffff00>%1%"
   othersuccess: "♆ <#00ff00>Set <#ffff00>%0%<#00ff00>'s gamemode to <#ffff00>%1%"
   selfsuccess: "♆ <#55ff55>Set your gamemode to <#ffff00>%0%"
-  usage: "♆ <#ffaa00>Usage: <#ff5555>/gm <creative|survival|spectator|adventure>
-    [target]"
 generic:
   alphanumeric: "♆ <#ffaa00>Argument <#ffff00>%0% <#ffaa00>must be alphanumeric."
   consoleargs: "<#ffaa00>This command requires %0% argument(s)."
@@ -15,6 +13,7 @@ generic:
   noconsole: "<#ffaa00>This command can only be executed by players."
   nopermission: "<#ffaa00>You do not have permission to use this command."
   playernotfound: "♆ <#ff0000>Player not found."
+  self: "♆ <#ffaa00>You can't use this command on yourself."
   usage: "♆ <#ffaa00>Usage: <#ffffff>/%0% <%1%>"
 home:
   deleted: "♆ <#00ff00>Home <#ffff00>%0% <#00ff00>deleted."

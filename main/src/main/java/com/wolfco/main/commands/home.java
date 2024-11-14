@@ -8,22 +8,32 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import net.kyori.adventure.audience.Audience;
+import com.wolfco.common.Utilities;
+import com.wolfco.common.classes.Command;
+import com.wolfco.common.classes.CommandTypes;
+import com.wolfco.common.classes.CoreCommandExecutor;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.Home;
 import com.wolfco.main.classes.PlayerData;
-import com.wolfco.common.Utilities;
-import com.wolfco.common.classes.Argument;
-import com.wolfco.common.classes.ArgumentType;
-import com.wolfco.common.classes.Command;
-import com.wolfco.common.classes.CoreCommandExecutor;
+import com.wolfco.main.classes.customArgs.HomeArgument;
+
+import net.kyori.adventure.audience.Audience;
 
 public class home implements CoreCommandExecutor {
+
     @Override
     public Command getCommand() {
         Command command = new Command("home");
+        command.setDescription("Used to teleport to a home");
+        command.setNode("wolfcore.home");
+        command.setAccessType(CommandTypes.PLAYER);
+        command.setArguments(new ArrayList<>() {
+            {
+                add(new HomeArgument(false));
+            }
+        });
 
-
+        return command;
     }
 
     @Override
@@ -32,43 +42,42 @@ public class home implements CoreCommandExecutor {
     }
 
     Core core;
+
     public home(Core core) {
         this.core = core;
     }
 
     @Override
-    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args) {
+    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
         Audience audience = core.getAdventure().sender(sender);
-        if (!(sender instanceof Player)) {
-            Utilities.sendColorText(audience, core.getMessage("generic.noconsole"));
-            return true;
-        }
-        String home;
-        if (args.length == 0) {
-            home = "home";
-        } else {
-            home = args[0];
-        }
-        if (!home.matches("^[a-zA-Z0-9]+$")) {
-            Utilities.sendColorText(audience, core.getMessage("generic.alphanumeric",List.of(getCommand().options.get(0).name)));
-            return true;
-        }
-        PlayerData playerData = core.playerManager.getPlayerData((Player) sender);
-        if (playerData != null) {
-            Home result = getCommand().options.get(0).getHome(home, playerData);
-            if (result == null) {
-                Utilities.sendColorText(audience, core.getMessage("home.notfound", List.of(home)));
+        Home home = (Home) argumentValues[0];
+
+        if (home == null) {
+            PlayerData playerData = core.PlayerManager.getPlayerData((Player) sender);
+            if (playerData != null) {
+                home = playerData.homes.get("home");
+            } else {
+                Utilities.sendColorText(audience, core.getMessage("generic.invaliddata"));
                 return true;
             }
-            World world = core.getServer().getWorld(result.world);
-            if (world == null) {
-                Utilities.sendColorText(audience, core.getMessage("home.worldinvalid", List.of(result.world.toString(), home)));
-                return true;
-            }
-            Location location = new Location(world, result.x, result.y, result.z, result.yaw, result.pitch);
-            ((Player) sender).teleport(location);
-            Utilities.sendColorText(audience, core.getMessage("home.teleported", List.of(home)));
         }
+
+        if (home == null) {
+            Utilities.sendColorText(audience, core.getMessage("home.notfound", List.of("home")));
+            return true;
+        }
+
+        World world = core.getServer().getWorld(home.world);
+
+        if (world == null) {
+            Utilities.sendColorText(audience, core.getMessage("home.worldinvalid", List.of(home.world.toString(), home.name)));
+            return true;
+        }
+
+        Location location = new Location(world, home.x, home.y, home.z, home.yaw, home.pitch);
+        ((Player) sender).teleport(location);
+        Utilities.sendColorText(audience, core.getMessage("home.teleported", List.of(home.name)));
+
         return true;
     }
 }

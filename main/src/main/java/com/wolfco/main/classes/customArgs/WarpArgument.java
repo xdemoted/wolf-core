@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.command.CommandSender;
+
 import com.wolfco.common.classes.ArgumentInterface;
 import com.wolfco.common.classes.ArgumentType;
 import com.wolfco.common.classes.CorePlugin;
@@ -13,7 +14,7 @@ import com.wolfco.main.classes.Warp;
 import dev.dejvokep.boostedyaml.YamlDocument;
  
 public class WarpArgument implements ArgumentInterface {
-    private boolean required = true;
+    private final boolean required = true;
 
     public WarpArgument(boolean required) { 
     }

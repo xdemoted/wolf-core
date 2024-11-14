@@ -9,10 +9,11 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import com.wolfco.velocity.types.Code;
+import com.wolfco.velocity.wolfcore;
+
 import club.minnced.discord.webhook.WebhookClient;
 import club.minnced.discord.webhook.send.WebhookMessageBuilder;
-import com.wolfco.velocity.wolfcore;
-import com.wolfco.velocity.types.Code;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
@@ -25,13 +26,13 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 
-public class JDAListener extends ListenerAdapter implements EventListener {
+public final class JDAListener extends ListenerAdapter implements EventListener {
     private static wolfcore plugin;
     private Guild guild;
     private TextChannel channel;
     private Webhook activeHook = null;
     static JDA jda;
-    private ArrayList<Code> codes = new ArrayList<>();
+    private final ArrayList<Code> codes = new ArrayList<>();
 
     public Code createCode(String uuid) {
         Code Code = new Code();
@@ -65,12 +66,18 @@ public class JDAListener extends ListenerAdapter implements EventListener {
         return code;
     }
 
+    public void buildJDA() {
+        jda = JDABuilder.createDefault(plugin.config.getString("token"))
+                .addEventListeners(this)
+                .build();
+    }
+
     public JDAListener(wolfcore plugn) throws InterruptedException {
         plugin = plugn;
         YamlDocument config = plugin.config;
-        jda = JDABuilder.createDefault(config.getString("token"))
-                .addEventListeners(this)
-                .build();
+
+        buildJDA();
+        
         jda.updateCommands().addCommands(
                 Commands.slash("online", "Show all online players and their location"),
                 Commands.slash("link", "Used for the purpose of linking")

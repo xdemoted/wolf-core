@@ -18,7 +18,7 @@ public class PermissionHandler {
                 String value = node.getKey().replace(prefixNode + ".", "");
                 if (node.getValue()) {
                     if (value.matches("^[0-9]+$")) {
-                        Number number = Integer.parseInt(value);
+                        Number number = Integer.valueOf(value);
                         if (number.intValue() > highest.intValue()) {
                             highest = number;
                         }

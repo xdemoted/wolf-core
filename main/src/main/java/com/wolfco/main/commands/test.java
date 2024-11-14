@@ -1,14 +1,15 @@
 package com.wolfco.main.commands;
 
-import com.wolfco.main.Core;
-import com.wolfco.main.classes.customArgs.WarpArgument;
 import com.wolfco.common.classes.Argument;
 import com.wolfco.common.classes.ArgumentType;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommandExecutor;
 import com.wolfco.common.classes.Subcommand;
+import com.wolfco.main.Core;
+import com.wolfco.main.classes.customArgs.WarpArgument;
 
 public class test implements CoreCommandExecutor {
+
     @Override
     public Command getCommand() {
         Command command1 = new Command("warps");
@@ -20,7 +21,7 @@ public class test implements CoreCommandExecutor {
 
         Command command = new Command("test");
         command.setDescription("Get information about a warp");
-        command.setNode("wolfcore.tes");
+        command.setNode("wolfcore.test");
         command.addArgument(new Subcommand(true).add(command1).add(command2));
 
         return command;
@@ -32,12 +33,13 @@ public class test implements CoreCommandExecutor {
     }
 
     Core core;
+
     public test(Core core) {
         this.core = core;
     }
 
     @Override
-    public boolean execute(org.bukkit.command.CommandSender sender, org.bukkit.command.Command command, String alias, String[] args) {
+    public boolean execute(org.bukkit.command.CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
         return false; // TODO Add test command logic
     }
 }

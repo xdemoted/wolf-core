@@ -2,8 +2,8 @@ package com.wolfco.velocity.events;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-
 import java.util.Optional;
+
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 import com.velocitypowered.api.event.Subscribe;
@@ -15,10 +15,10 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ServerConnection;
 import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
-
-import com.wolfco.velocity.wolfcore;
 import com.wolfco.velocity.JDA.JDAListener;
 import com.wolfco.velocity.modules.tablist;
+import com.wolfco.velocity.wolfcore;
+
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
@@ -86,7 +86,7 @@ public class events {
                         Component.text("§8[§aWelcome§8]§e There is currently §a" + plugin.server.getPlayerCount()
                                 + "§e players online.\nRun /list to get a full list of players."));
                 plugin.server.getAllPlayers().forEach(p -> {
-                    if (p.getUsername() != player.getUsername())
+                    if (!p.getUsername().equals(player.getUsername()))
                         p.sendMessage(
                                 Component.text(
                                         "§8[§aNetwork§8]§a " + player.getUsername() + " §eHas joined the server."));
@@ -107,17 +107,6 @@ public class events {
         } else {
             plugin.logger.warning("No current server found.");
         }
-    }
-
-    int[] toRGB(String hex) {
-        int r = Integer.parseInt(hex.substring(0, 2), 16);
-        int g = Integer.parseInt(hex.substring(2, 4), 16);
-        int b = Integer.parseInt(hex.substring(4, 6), 16);
-        return new int[] { r, g, b };
-    }
-
-    String toHex(int[] rgb) {
-        return String.format("%02x%02x%02x", rgb[0], rgb[1], rgb[2]);
     }
 
     @Subscribe

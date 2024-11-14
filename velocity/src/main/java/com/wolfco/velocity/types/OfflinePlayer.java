@@ -14,19 +14,9 @@ import dev.dejvokep.boostedyaml.block.implementation.Section;
 public class OfflinePlayer {
     public YamlDocument data;
     public HashMap<String, Object> changes = new HashMap<>();
-    public final long login;
-    public final long logout;
-    public final String username;
-    public final String ipaddress;
-    public final List<Punishment> punishments;
 
     public OfflinePlayer(@Nonnull YamlDocument data) {
         this.data = data;
-        this.login = login();
-        this.logout = logout();
-        this.username = username();
-        this.ipaddress = ipaddress();
-        this.punishments = punishments();
     }
     public void set(String key, Object value) {
         changes.put(key, value);
@@ -59,10 +49,10 @@ public class OfflinePlayer {
         return data.getString("ipaddress","");
     }
     public List<Punishment> punishments() {
-        List<Punishment> punishments = new ArrayList<>();
+        List<Punishment> punishmentsList = new ArrayList<>();
         Section punishmentRoute = data.getSection("punishments");
         if (punishmentRoute == null) {
-            return punishments;
+            return punishmentsList;
         }
         Set<String> punishmentKeys = punishmentRoute.getRoutesAsStrings(false);
         for (String key : punishmentKeys) {
@@ -71,12 +61,13 @@ public class OfflinePlayer {
             punishment.endTime = punishmentRoute.getLong(key + ".endTime");
             punishment.reason = punishmentRoute.getString(key + ".reason");
             punishment.type = punishmentRoute.getString(key + ".type");
-            punishments.add(punishment);
+            punishmentsList.add(punishment);
         }
-        return punishments;
+        return punishmentsList;
     }
+    
     public Punishment isBanned() {
-        for (Punishment punishment : punishments) {
+        for (Punishment punishment : punishments()) {
             if (punishment.type.equals("ban")) {
                 return punishment;
             }
