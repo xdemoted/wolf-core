@@ -28,7 +28,7 @@ public class setwarp implements CoreCommandExecutor {
         command.setAccessType(CommandTypes.PLAYER);
         command.setArguments(new ArrayList<>() {
             {
-                add(new Argument(ArgumentType.ALPHANUMERICSTRING, true));
+                add(new Argument(ArgumentType.ALPHANUMERICSTRING, true).setName("WARPNAME"));
             }
         });
 

@@ -24,8 +24,8 @@ public class teleport implements CoreCommandExecutor {
         command.setNode("wolfcore.teleport");
         command.setArguments(new ArrayList<>() {
             {
-                add(new Argument(ArgumentType.EXCLUSIVEPLAYER, true));
-                add(new Argument(ArgumentType.EXCLUSIVEOTHERPLAYER, false));
+                add(new Argument(ArgumentType.EXCLUSIVEPLAYER, true).setName("PLAYER1"));
+                add(new Argument(ArgumentType.EXCLUSIVEOTHERPLAYER, false).setName("PLAYER2"));
             }
         });
 

@@ -7,9 +7,13 @@ import org.bukkit.command.CommandSender;
 public interface ArgumentInterface {
     abstract ArgumentType getType();
 
+    abstract String getError();
+
     abstract Boolean isRequired();
 
     abstract String getName();
+
+    abstract ArgumentInterface setName(String name);
 
     abstract List<String> getOptions(CorePlugin core, CommandSender sender, org.bukkit.command.Command bukkitCommand, String[] args);
 

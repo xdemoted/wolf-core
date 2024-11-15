@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 
 import com.wolfco.common.Utilities;
 
+import net.kyori.adventure.audience.Audience;
+
 public interface CoreCommandExecutor extends CommandExecutor, org.bukkit.command.TabCompleter {
 
     Command getCommand();
@@ -23,14 +25,14 @@ public interface CoreCommandExecutor extends CommandExecutor, org.bukkit.command
         Command command = getCommand();
         List<String> result = new ArrayList<>() {
             {
-                add("<#ffaa00>Usage: <#ff5555>/" + alias + " ");
+                add("<#aa00><b>Usage:</b> <#ff5555>/" + alias + " ");
             }
         };
         command.options.forEach(option -> {
             if (option.isRequired()) {
-                result.set(0, result.get(0) + "<" + option.getType().toString() + "> ");
+                result.set(0, result.get(0) + "<" + option.getName() + "> ");
             } else {
-                result.set(0, result.get(0) + "[" + option.getType().toString() + "] ");
+                result.set(0, result.get(0) + "[" + option.getName() + "] ");
             }
         });
         return result.get(0);
@@ -44,7 +46,7 @@ public interface CoreCommandExecutor extends CommandExecutor, org.bukkit.command
             }
         };
         command.options.forEach(option -> {
-            if (!option.isRequired()) {
+            if (option.isRequired()) {
                 result.set(0, result.get(0) + 1);
             }
         });
@@ -57,26 +59,36 @@ public interface CoreCommandExecutor extends CommandExecutor, org.bukkit.command
         if (args.length < requiredArgs) {
             return getUsage(alias);
         } else if (args.length > command.options.size()) {
-            return "<#ffaa00>Error: <#ff5555>Too many args";
+            return "<#aa0000><b>Error:</b> <#ff5555>Too many args";
         }
         return null;
     }
     
     @Override
     default boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
+        Audience audience = fetchCore().getAdventure().sender(sender);
         String result = checkArgs(args, label);
+        
+        Utilities.sendColorText(audience, getRequiredArgs().toString());
+
         if (result != null) {
-            Utilities.sendColorText(fetchCore().getAdventure().sender(sender), result);
+            Utilities.sendColorText(audience, result);
             return false;
         }
         if (sender instanceof Player player) {
             if (!player.hasPermission(getCommand().node)) {
-                Utilities.sendColorText(fetchCore().getAdventure().sender(sender), fetchCore().getMessage("generic.nopermission"));
+                Utilities.sendColorText(audience, fetchCore().getMessage("generic.nopermission"));
                 return false;
             }
         }
 
-        Object[] argumentValues = getCommand().getValues(fetchCore(), sender, command, args);
+        Object[] argumentValues;
+        try {
+            argumentValues = getCommand().getValues(fetchCore(), sender, command, args);
+        } catch (IllegalArgumentException e) {
+            Utilities.sendColorText(audience, fetchCore().getMessage("error.base", List.of(e.getMessage())));
+            return false;
+        }
         return execute(sender, command, label, args, argumentValues);
     }
     

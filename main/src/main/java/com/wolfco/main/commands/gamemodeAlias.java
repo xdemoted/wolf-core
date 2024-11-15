@@ -34,7 +34,7 @@ public class gamemodeAlias implements CoreCommandExecutor {
 
     @Override
     public Command getCommand() {
-        Command command = new Command("gamemode");
+        Command command = new Command("gms");
         command.setDescription("Used to modify player's gamemode.");
         command.setNode("wolfcore.gamemode");
         command.setArguments(new ArrayList<>() {

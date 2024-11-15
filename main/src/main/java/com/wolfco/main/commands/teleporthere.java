@@ -24,7 +24,7 @@ public class teleporthere implements CoreCommandExecutor {
         command.setAccessType(CommandTypes.PLAYER);
         command.setArguments(new ArrayList<>() {
             {
-                add(new Argument(ArgumentType.OTHERPLAYER, true));
+                add(new Argument(ArgumentType.EXCLUSIVEOTHERPLAYER, true));
             }
         });
         return command;
@@ -43,13 +43,7 @@ public class teleporthere implements CoreCommandExecutor {
 
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
-        Player player;
-
-        try {
-            player = (Player) getCommand().getValues(core, sender, command, args)[0];
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
+        Player player = (Player) argumentValues[0];
 
         player.teleport(((Player) sender));
         Utilities.sendColorText(core.getAdventure().sender(sender), core.getMessage("teleporthere.success", List.of(player.getName())));

@@ -2,10 +2,11 @@ package com.wolfco.velocity.modules;
 
 import java.util.Collection;
 import java.util.List;
+
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.player.TabListEntry;
-
 import com.wolfco.velocity.wolfcore;
+
 import net.kyori.adventure.text.Component;
 
 public class tablist {

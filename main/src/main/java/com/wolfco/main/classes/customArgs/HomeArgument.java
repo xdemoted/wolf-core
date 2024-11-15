@@ -12,10 +12,11 @@ import com.wolfco.main.Core;
 import com.wolfco.main.classes.PlayerData;
 
 public class HomeArgument implements ArgumentInterface {
-    public boolean required = true;
+    private boolean required = true;
+    private String name = "HOME";
 
     public HomeArgument(boolean required) {
-        
+        this.required = required;
     }
 
     @Override
@@ -29,8 +30,14 @@ public class HomeArgument implements ArgumentInterface {
     }
 
     @Override
+    public ArgumentInterface setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    @Override
     public String getName() {
-        return "HOME";
+        return name;
     }
 
     @Override
@@ -55,5 +62,11 @@ public class HomeArgument implements ArgumentInterface {
         PlayerData playerData = plugin.PlayerManager.getPlayerData((Player) sender);
 
         return playerData.homes.get(searchValue);
+    }
+
+        @Override
+    public String getError() {
+                return String.format("Argument {0} requires a valid home.", name);
+
     }
 }

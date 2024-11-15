@@ -3,12 +3,12 @@ package com.wolfco.velocity.commands;
 import com.velocitypowered.api.command.CommandManager;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
-
-import com.wolfco.velocity.wolfcore;
 import com.wolfco.velocity.events.punishManager;
 import com.wolfco.velocity.types.Command;
 import com.wolfco.velocity.types.OfflinePlayer;
 import com.wolfco.velocity.types.Punishment;
+import com.wolfco.velocity.wolfcore;
+
 import net.kyori.adventure.text.Component;
 
 public class ban implements Command {

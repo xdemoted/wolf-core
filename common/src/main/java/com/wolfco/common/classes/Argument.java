@@ -11,7 +11,8 @@ import org.bukkit.entity.Player;
 
 import com.wolfco.common.Utilities;
 
-public class Argument implements ArgumentInterface{
+public class Argument implements ArgumentInterface {
+
     private final ArgumentType type;
     private final Boolean required;
     private String name;
@@ -19,11 +20,18 @@ public class Argument implements ArgumentInterface{
     public Argument(ArgumentType type, Boolean required) {
         this.type = type;
         this.required = required;
-        this.name = type.toString();
+        this.name = switch (type) {
+            case PLAYER, EXCLUSIVEOTHERPLAYER, EXCLUSIVEPLAYER, OTHERPLAYER ->
+                "PLAYER";
+            default ->
+                type.toString();
+        };
     }
 
-    public void setName(String name) {
+    @Override
+    public ArgumentInterface setName(String name) {
         this.name = name;
+        return this;
     }
 
     @Override
@@ -46,12 +54,12 @@ public class Argument implements ArgumentInterface{
             org.bukkit.command.Command bukkitCommand, String[] args) {
         switch (type) {
             case EXCLUSIVEPLAYER -> {
-                return  core.getServer().getOnlinePlayers().stream().map(Player::getName).toList();
+                return core.getServer().getOnlinePlayers().stream().map(Player::getName).toList();
             }
             case PLAYER -> {
                 List<String> players = new ArrayList<>();
                 players.add("*");
-        
+
                 players.addAll(core.getServer().getOnlinePlayers().stream().map(Player::getName).toList());
 
                 return players;
@@ -66,7 +74,7 @@ public class Argument implements ArgumentInterface{
                 }
 
                 return players;
-            } 
+            }
             case OTHERPLAYER -> {
                 List<String> players = new ArrayList<>();
 
@@ -113,41 +121,76 @@ public class Argument implements ArgumentInterface{
         }
 
         returnValue = switch (type) {
-            case STRING -> searchValue;
-            case ALPHANUMERICSTRING -> (searchValue.matches("^[a-zA-Z0-9]*$")) ? searchValue : null;
-            case DOUBLE -> (searchValue.matches("^[0-9]*$")) ? Double.parseDouble(searchValue) : null;
-            case INTEGER -> (searchValue.matches("^[0-9]*$")) ? Integer.parseInt(searchValue) : null;
-            case BOOLEAN -> (searchValue.equalsIgnoreCase("true") || searchValue.equalsIgnoreCase("false")) ? Boolean.parseBoolean(searchValue) : null;
+            case STRING ->
+                searchValue;
+            case ALPHANUMERICSTRING ->
+                (searchValue.matches("^[a-zA-Z0-9]*$")) ? searchValue : null;
+            case DOUBLE ->
+                (searchValue.matches("^[0-9]*$")) ? Double.parseDouble(searchValue) : null;
+            case INTEGER ->
+                (searchValue.matches("^[0-9]*$")) ? Integer.parseInt(searchValue) : null;
+            case BOOLEAN ->
+                (searchValue.equalsIgnoreCase("true") || searchValue.equalsIgnoreCase("false")) ? Boolean.parseBoolean(searchValue) : null;
 
-            case GAMEMODE -> GameMode.valueOf(searchValue.toUpperCase());        
+            case GAMEMODE ->
+                GameMode.valueOf(searchValue.toUpperCase());
 
-            case PLAYER -> Utilities.getTargets(core, name);
-            case EXCLUSIVEPLAYER -> Utilities.getTarget(core, name);
-            case OTHERPLAYER -> Utilities.getTargets(core, name);
+            case PLAYER ->
+                Utilities.getTargets(core, name);
+            case EXCLUSIVEPLAYER ->
+                Utilities.getTarget(core, name);
+            case OTHERPLAYER ->
+                Utilities.getTargets(core, name);
             case EXCLUSIVEOTHERPLAYER -> {
                 Collection<Player> players = Utilities.getTargets(core, name);
 
-                if (sender == null) yield players;
+                if (sender == null) {
+                    yield players;
+                }
 
                 players.removeIf(player -> player.getName().equalsIgnoreCase(sender.getName()));
 
                 yield players;
             }
 
-            case WORLD -> core.getServer().getWorld(searchValue);
+            case WORLD ->
+                core.getServer().getWorld(searchValue);
 
-            default -> null;
+            default ->
+                null;
         };
 
         if (isRequired() && returnValue == null) {
             throw new IllegalArgumentException("Argument " + getName() + " is required");
         }
-        
+
         return returnValue;
-        
+
     }
 
-    public char getCode() {
-        return type.toString().charAt(0);
+    @Override
+    public String getError() {
+        return String.format("Argument %1s %2s", name, switch (type) {
+            case STRING ->
+                "requires a valid string.";
+            case ALPHANUMERICSTRING ->
+                "requires a valid alphanumeric string.";
+            case DOUBLE ->
+                "requires a valid number.";
+            case INTEGER ->
+                "requires a valid integer.";
+            case BOOLEAN ->
+                "requires true or false.";
+            case GAMEMODE ->
+                "requires a valid gamemode.";
+            case PLAYER, EXCLUSIVEPLAYER, OTHERPLAYER, EXCLUSIVEOTHERPLAYER ->
+                "expected a valid player.";
+            case WORLD ->
+                "requires a valid world.";
+            case SUBCOMMAND ->
+                "requires a valid subcommand.";
+            default ->
+                "Invalid argument implementation.";
+        });
     }
 }

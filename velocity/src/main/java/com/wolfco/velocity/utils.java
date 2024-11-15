@@ -1,14 +1,13 @@
 package com.wolfco.velocity;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-import java.util.Collection;
-import java.util.Arrays;
-
 import com.velocitypowered.api.proxy.Player;
-
 import com.wolfco.velocity.types.OfflinePlayer;
+
 import net.luckperms.api.model.user.User;
 
 public class utils {

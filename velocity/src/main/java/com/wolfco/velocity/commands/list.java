@@ -5,9 +5,9 @@ import java.util.Collection;
 import com.velocitypowered.api.command.CommandManager;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
-
-import com.wolfco.velocity.wolfcore;
 import com.wolfco.velocity.types.Command;
+import com.wolfco.velocity.wolfcore;
+
 import net.kyori.adventure.text.Component;
 
 public class list implements Command {

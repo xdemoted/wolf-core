@@ -1,4 +1,4 @@
-version: 4
+version: 6
 
 gamemode:
   invalid: "♆ <#ff5555>Invalid gamemode."
@@ -51,3 +51,6 @@ warp:
   othersuccess: "<#ffaa00>Warping %1% to <#ffff00>%0%"
   set: "<#ffaa00>Warp <#ffff00>%0% <#ffaa00>set."
   success: "<#ffaa00>Warping to <#ffff00>%0%"
+error:
+  base: "<#aa0000><b>Error:</b> <#ff5555>%0%"
+

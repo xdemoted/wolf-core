@@ -9,6 +9,8 @@ public class Subcommand implements ArgumentInterface {
     private final HashMap<String, Command> subcommands = new HashMap<>();
     private final boolean required;
 
+    private String name = ArgumentType.SUBCOMMAND.toString();
+
     public Subcommand(boolean required) {
         this.required = required;
     }
@@ -24,8 +26,15 @@ public class Subcommand implements ArgumentInterface {
     }
 
     @Override
+    public ArgumentInterface setName(String name) {
+        this.name = name;
+
+        return this;
+    }
+
+    @Override
     public String getName() {
-        return ArgumentType.SUBCOMMAND.toString();
+        return name;
     }
 
     public Subcommand add(Command command) {
@@ -52,5 +61,10 @@ public class Subcommand implements ArgumentInterface {
     public Object getValue(CorePlugin core, CommandSender sender, org.bukkit.command.Command bukkitCommand,
             String searchValue) {
         return get(searchValue);
+    }
+
+    @Override
+    public String getError() {
+        return String.format("Argument {0} requires a valid subcommand.", name);
     }
 }

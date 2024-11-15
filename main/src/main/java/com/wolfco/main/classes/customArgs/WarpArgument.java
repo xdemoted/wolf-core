@@ -14,9 +14,11 @@ import com.wolfco.main.classes.Warp;
 import dev.dejvokep.boostedyaml.YamlDocument;
  
 public class WarpArgument implements ArgumentInterface {
-    private final boolean required = true;
+    private boolean required = true;
+    private String name = "WARP";
 
     public WarpArgument(boolean required) { 
+        this.required = required;
     }
 
     @Override
@@ -30,8 +32,14 @@ public class WarpArgument implements ArgumentInterface {
     }
 
     @Override
+    public ArgumentInterface setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    @Override
     public String getName() {
-        return "WARP";
+        return name;
     }
 
     @Override
@@ -58,5 +66,10 @@ public class WarpArgument implements ArgumentInterface {
         warp.y = warps.getDouble(searchValue + ".y");
         warp.z = warps.getDouble(searchValue + ".z");
         return warp;
+    }
+
+        @Override
+    public String getError() {
+        return String.format("Argument {0} requires a valid warp.", name);
     }
 }

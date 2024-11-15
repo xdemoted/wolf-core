@@ -92,7 +92,7 @@ public class Command {
             Object value = options.get(i).getValue(plugin, sender, bukkitCommand, args[i]);
 
             if (value == null) {
-                throw new IllegalArgumentException("Invalid argument");
+                throw new IllegalArgumentException(options.get(i).getError());
             }
 
             values[i] = value;

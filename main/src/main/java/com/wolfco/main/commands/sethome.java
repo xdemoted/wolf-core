@@ -27,7 +27,7 @@ public class sethome implements CoreCommandExecutor {
         command.setDescription("Set a home location");
         command.setNode("wolfcore.sethome");
         command.setAccessType(CommandTypes.PLAYER);
-        command.addArgument(new Argument(ArgumentType.ALPHANUMERICSTRING, false));
+        command.addArgument(new Argument(ArgumentType.ALPHANUMERICSTRING, false).setName("HOME"));
 
         return command;
     }
