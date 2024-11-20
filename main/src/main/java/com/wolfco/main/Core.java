@@ -35,16 +35,17 @@ import com.wolfco.main.events.PlayerManager;
 import com.wolfco.main.handlers.DatabaseHandler;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 
 public class Core extends CorePlugin implements Listener {
 
-    public LuckPerms lp;
-    public Utilities utils = new Utilities(this);
-    public YamlDocument warps;
-    public PlayerManager PlayerManager;
-    public DatabaseHandler db;
+     LuckPerms lp;
+     Utilities utils = new Utilities(this);
+     YamlDocument warps;
+     PlayerManager playerManager;
+     DatabaseHandler db;
 
     @Override
     public void onEnable() {
@@ -53,34 +54,59 @@ public class Core extends CorePlugin implements Listener {
         } catch (Exception e) {
             return;
         }
+
         getAdventure();
-        config = getConfig("config.yml");
-        warps = getConfig("warps.yml");
+
+        setMainConfig(getConfigDocument("config.yml"));
+        warps = getConfigDocument("warps.yml");
+
         try {
             db = new DatabaseHandler(this);
         } catch (SQLException e) {
             return;
         }
 
-        commandLoader.registerAll(getCommands());
-        PlayerManager = new PlayerManager(this);
+        getCommandLoader().registerAll(getCommands());
+        playerManager = new PlayerManager(this);
 
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(this, this);
-        pm.registerEvents((Listener) PlayerManager, this);
-        pm.registerEvents((Listener) new ChatManager(this), this);
+        pm.registerEvents(playerManager, this);
+        pm.registerEvents(new ChatManager(this), this);
 
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "core:main");
 
         this.getLogger().info("[Wolf-Core] Plugin enabled");
     }
 
+    public DatabaseHandler getDatabaseHandler() {
+        return db;
+    }
+
+    public LuckPerms getLuckPerms() {
+        return lp;
+    }
+
+    public Utilities getUtilities() {
+        return utils;
+    }
+
+    public YamlDocument getWarps() {
+        return warps;
+    }
+
+    public PlayerManager getPlayerManager() {
+        return playerManager;
+    }
+
     @Override
     public void onDisable() {
-        if (this.adventure != null) {
-            this.adventure.close();
-            this.adventure = null;
+        BukkitAudiences adventure = getAdventure();
+
+        if (adventure != null) {
+            adventure.close();
         }
+
         Bukkit.getMessenger().unregisterOutgoingPluginChannel(this, "core:main");
         this.getLogger().info("[Wolf-Core] Plugin disabled");
     }

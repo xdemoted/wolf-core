@@ -1,6 +1,5 @@
 package com.wolfco.main.commands;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -26,12 +25,10 @@ public class Gamemode implements CoreCommandExecutor {
         Command command = new Command("gamemode");
         command.setDescription("Used to modify player's gamemode.");
         command.setNode("wolfcore.gamemode");
-        command.setArguments(new ArrayList<>() {
-            {
-                add(new Argument(ArgumentType.GAMEMODE, true));
-                add(new Argument(ArgumentType.OTHERPLAYER, false));
-            }
-        });
+        command.setArguments(Arrays.asList(
+                new Argument(ArgumentType.GAMEMODE, true),
+                new Argument(ArgumentType.OTHERPLAYER, false)
+        ));
 
         return command;
     }
@@ -50,6 +47,8 @@ public class Gamemode implements CoreCommandExecutor {
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String label, String[] args, Object[] argumentValues) {
         GameMode mode = (GameMode) argumentValues[0];
+
+        @SuppressWarnings("unchecked")
         Collection<Player> target = (Collection<Player>) argumentValues[1];
 
         Boolean console = (sender instanceof ConsoleCommandSender);
@@ -70,7 +69,7 @@ public class Gamemode implements CoreCommandExecutor {
             ((Player) sender).setGameMode(mode);
             Utilities.sendColorText(senderAudience, core.getMessage("gamemode.selfsuccess", List.of(mode.toString())));
             return true;
-        } else if (target instanceof Collection) { // TODO implement multi-targeting
+        } else if (target instanceof Collection) {
             if (target.size() == 1) {
                 Utilities.sendColorText(senderAudience,
                         core.getMessage("gamemode.othersuccess", List.of(target.iterator().next().getName(), mode.toString())));

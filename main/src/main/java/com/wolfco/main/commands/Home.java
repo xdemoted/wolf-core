@@ -1,6 +1,5 @@
 package com.wolfco.main.commands;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Location;
@@ -14,7 +13,7 @@ import com.wolfco.common.classes.CommandTypes;
 import com.wolfco.common.classes.CoreCommandExecutor;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.PlayerData;
-import com.wolfco.main.classes.customArgs.HomeArgument;
+import com.wolfco.main.classes.customargs.HomeArgument;
 
 import net.kyori.adventure.audience.Audience;
 
@@ -26,11 +25,7 @@ public class Home implements CoreCommandExecutor {
         command.setDescription("Used to teleport to a home");
         command.setNode("wolfcore.home");
         command.setAccessType(CommandTypes.PLAYER);
-        command.setArguments(new ArrayList<>() {
-            {
-                add(new HomeArgument(false));
-            }
-        });
+        command.addArgument(new HomeArgument(false));
 
         return command;
     }
@@ -52,7 +47,7 @@ public class Home implements CoreCommandExecutor {
         com.wolfco.main.classes.Home home = (com.wolfco.main.classes.Home) argumentValues[0];
 
         if (home == null) {
-            PlayerData playerData = core.PlayerManager.getPlayerData((Player) sender);
+            PlayerData playerData = core.getPlayerManager().getPlayerData((Player) sender);
             if (playerData != null) {
                 home = playerData.homes.get("home");
             } else {

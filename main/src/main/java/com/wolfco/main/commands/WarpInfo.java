@@ -9,7 +9,7 @@ import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommandExecutor;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.Warp;
-import com.wolfco.main.classes.customArgs.WarpArgument;
+import com.wolfco.main.classes.customargs.WarpArgument;
 
 public class WarpInfo implements CoreCommandExecutor {
 

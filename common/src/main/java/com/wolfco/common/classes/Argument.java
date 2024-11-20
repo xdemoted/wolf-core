@@ -13,9 +13,9 @@ import com.wolfco.common.Utilities;
 
 public class Argument implements ArgumentInterface {
 
-    private final ArgumentType type;
-    private final Boolean required;
-    private String name;
+    final ArgumentType type;
+    final Boolean required;
+    String name;
 
     public Argument(ArgumentType type, Boolean required) {
         this.type = type;
@@ -45,12 +45,7 @@ public class Argument implements ArgumentInterface {
     }
 
     @Override
-    public ArgumentType getType() {
-        return type;
-    }
-
-    @Override
-    public List<String> getOptions(CorePlugin core, CommandSender sender, // TODO - Add Exclusivity and * notation
+    public List<String> getOptions(CorePlugin core, CommandSender sender,
             org.bukkit.command.Command bukkitCommand, String[] args) {
         switch (type) {
             case EXCLUSIVEPLAYER -> {
@@ -67,7 +62,7 @@ public class Argument implements ArgumentInterface {
             case EXCLUSIVEOTHERPLAYER -> {
                 List<String> players = new ArrayList<>();
 
-                for (String player : Bukkit.getOnlinePlayers().stream().map(player -> player.getName()).toList()) {
+                for (String player : Bukkit.getOnlinePlayers().stream().map(Player::getName).toList()) {
                     if (!player.equals(sender.getName())) {
                         players.add(player);
                     }
@@ -78,7 +73,7 @@ public class Argument implements ArgumentInterface {
             case OTHERPLAYER -> {
                 List<String> players = new ArrayList<>();
 
-                for (String player : Bukkit.getOnlinePlayers().stream().map(player -> player.getName()).toList()) {
+                for (String player : Bukkit.getOnlinePlayers().stream().map(Player::getName).toList()) {
                     if (!player.equals(sender.getName())) {
                         players.add(player);
                     }
@@ -93,7 +88,7 @@ public class Argument implements ArgumentInterface {
                 List<String> gameModeNames = new ArrayList<>();
 
                 for (GameMode gameMode : gameModes) {
-                    gameModeNames.add(gameMode.toString());
+                    gameModeNames.add(gameMode.toString().toLowerCase());
                 }
 
                 return gameModeNames;
@@ -108,16 +103,14 @@ public class Argument implements ArgumentInterface {
     }
 
     @Override
-    public Object getValue(CorePlugin core, CommandSender sender, org.bukkit.command.Command bukkitCommand, String searchValue) {
+    public Object getValue(CorePlugin core, CommandSender sender, org.bukkit.command.Command bukkitCommand,
+            String searchValue) {
         Object returnValue;
 
-        if (sender instanceof Player player) {
-            if (type == ArgumentType.OTHERPLAYER || type == ArgumentType.EXCLUSIVEOTHERPLAYER) {
-                if (player.getName().equalsIgnoreCase(searchValue)) {
-                    Utilities.sendColorText(core.getAdventure().sender(sender), core.getMessage("generic.self"));
-                    throw new IllegalArgumentException("Argument " + getName() + " cannot be the same as the sender");
-                }
-            }
+        if (sender instanceof Player player && player.getName().equalsIgnoreCase(searchValue)
+                && (type == ArgumentType.OTHERPLAYER || type == ArgumentType.EXCLUSIVEOTHERPLAYER)) {
+
+            throw new IllegalArgumentException("Argument " + getName() + " cannot be the same as sender");
         }
 
         returnValue = switch (type) {
@@ -126,11 +119,13 @@ public class Argument implements ArgumentInterface {
             case ALPHANUMERICSTRING ->
                 (searchValue.matches("^[a-zA-Z0-9]*$")) ? searchValue : null;
             case DOUBLE ->
-                (searchValue.matches("^[0-9]*$")) ? Double.parseDouble(searchValue) : null;
+                (searchValue.matches("^\\d*$")) ? Double.parseDouble(searchValue) : null;
             case INTEGER ->
-                (searchValue.matches("^[0-9]*$")) ? Integer.parseInt(searchValue) : null;
+                (searchValue.matches("^\\d*$")) ? Integer.parseInt(searchValue) : null;
             case BOOLEAN ->
-                (searchValue.equalsIgnoreCase("true") || searchValue.equalsIgnoreCase("false")) ? Boolean.parseBoolean(searchValue) : null;
+                (searchValue.equalsIgnoreCase("true") || searchValue.equalsIgnoreCase("false"))
+                        ? Boolean.parseBoolean(searchValue)
+                        : null;
 
             case GAMEMODE ->
                 GameMode.valueOf(searchValue.toUpperCase());

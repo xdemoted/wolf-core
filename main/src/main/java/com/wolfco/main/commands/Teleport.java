@@ -1,6 +1,6 @@
 package com.wolfco.main.commands;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
@@ -22,12 +22,9 @@ public class Teleport implements CoreCommandExecutor {
         Command command = new Command("teleport");
         command.setDescription("Teleport to a player or teleport a player to another player.");
         command.setNode("wolfcore.teleport");
-        command.setArguments(new ArrayList<>() {
-            {
-                add(new Argument(ArgumentType.EXCLUSIVEPLAYER, true).setName("PLAYER1"));
-                add(new Argument(ArgumentType.EXCLUSIVEOTHERPLAYER, false).setName("PLAYER2"));
-            }
-        });
+        command.setArguments(Arrays.asList(
+                new Argument(ArgumentType.EXCLUSIVEPLAYER, true).setName("PLAYER1"),
+                new Argument(ArgumentType.EXCLUSIVEOTHERPLAYER, false).setName("PLAYER2")));
 
         return command;
     }
@@ -44,7 +41,8 @@ public class Teleport implements CoreCommandExecutor {
     }
 
     @Override
-    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String label, String[] args, Object[] argumentValues) {
+    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String label, String[] args,
+            Object[] argumentValues) {
         Player player1 = (Player) argumentValues[0];
         Player player2 = (Player) argumentValues[1];
 
@@ -76,7 +74,8 @@ public class Teleport implements CoreCommandExecutor {
                 player1.teleport(player2);
             }
 
-            Utilities.sendColorText(senderAudience, core.getMessage("teleport.othersuccess", List.of(player1.getName(), player2.getName())));
+            Utilities.sendColorText(senderAudience,
+                    core.getMessage("teleport.othersuccess", List.of(player1.getName(), player2.getName())));
             return true;
         }
         return true;

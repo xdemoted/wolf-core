@@ -41,7 +41,7 @@ public class Max implements CoreCommandExecutor {
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
         Audience audience = core.getAdventure().sender(sender);
-        User user = core.lp.getUserManager().getUser(sender.getName());
+        User user = core.getLuckPerms().getUserManager().getUser(sender.getName());
         Utilities.sendColorText(audience, "Max is " + PermissionHandler.getNumberValue(args[0], user));
         return true;
     }

@@ -34,7 +34,7 @@ public class Warps implements CoreCommandExecutor {
             String[] args, Object[] argumentValues) {
         Audience audience = core.getAdventure().sender(sender);
         Utilities.sendColorText(audience, "<#ffaa00>Warps:");
-        for (String key : core.warps.getRoutesAsStrings(false)) {
+        for (String key : core.getWarps().getRoutesAsStrings(false)) {
             Utilities.sendColorText(audience,
                     "<#ffaa00> - <#ffff00><click:run_command:/warp " + key + ">" + key + "</click>");
         }

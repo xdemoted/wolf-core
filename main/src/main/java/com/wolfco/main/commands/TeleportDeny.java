@@ -37,7 +37,7 @@ public class TeleportDeny implements CoreCommandExecutor {
 
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
-        PlayerData playerData = core.PlayerManager.getPlayerData((Player) sender);
+        PlayerData playerData = core.getPlayerManager().getPlayerData((Player) sender);
 
         if (playerData == null) {
             Utilities.sendColorText(core.getAdventure().sender(sender), core.getMessage("generic.invaliddata"));

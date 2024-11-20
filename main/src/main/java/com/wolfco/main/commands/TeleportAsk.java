@@ -1,6 +1,5 @@
 package com.wolfco.main.commands;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,14 +17,16 @@ import com.wolfco.main.classes.PlayerData;
 
 public class TeleportAsk implements CoreCommandExecutor {
 
-    HashMap<String, String> requestTypes = new HashMap<>() {
-        {
-            put("teleportask", "tpa");
-            put("tpa", "tpa");
-            put("tpahere", "tpahere");
-            put("teleportaskhere", "tpahere");
-        }
-    };
+    HashMap<String, String> requestTypes = new HashMap<>();
+    static final String TPA = "tpa";
+    static final String TPAHERE = TPA + "here";
+
+    public TeleportAsk() {
+        requestTypes.put("teleportask", TPA);
+        requestTypes.put(TPA, TPA);
+        requestTypes.put(TPAHERE, TPAHERE);
+        requestTypes.put("teleportaskhere", TPAHERE);
+    }
 
     @Override
     public Command getCommand() {
@@ -33,11 +34,7 @@ public class TeleportAsk implements CoreCommandExecutor {
         command.setDescription("Request a teleport to a player");
         command.setAccessType(CommandTypes.PLAYER);
         command.setNode("wolfcore.teleportask");
-        command.setArguments(new ArrayList<>() {
-            {
-                add(new Argument(ArgumentType.EXCLUSIVEOTHERPLAYER, true));
-            }
-        });
+        command.addArgument(new Argument(ArgumentType.EXCLUSIVEOTHERPLAYER, true));
 
         return command;
     }
@@ -56,7 +53,7 @@ public class TeleportAsk implements CoreCommandExecutor {
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
         Player receiver = (Player) argumentValues[0];
-        PlayerData receiverData = core.PlayerManager.getPlayerData(receiver);
+        PlayerData receiverData = core.getPlayerManager().getPlayerData(receiver);
 
         if (receiverData == null) {
             Utilities.sendColorText(core.getAdventure().sender(sender), core.getMessage("generic.playernotfound"));

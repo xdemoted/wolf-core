@@ -43,23 +43,23 @@ public class Database implements CoreCommandExecutor {
 
         switch (args[0]) {
             case "add" -> {
-                if (!(args.length == 2)) {
+                if (args.length != 2) {
                     Utilities.sendColorText(audience, "<#ffaa00>Usage: /database add <name>");
                     return true;
                 }   try {
-                    core.db.addSchematic(args[1]);
+                    core.getDatabaseHandler().addSchematic(args[1]);
                 } catch (FileNotFoundException e) {
                     Utilities.sendColorText(audience, "<#ffaa00>File not found");
                 }
             }
             case "remove" -> {
-                if (!(args.length == 2)) {
+                if (args.length != 2) {
                     Utilities.sendColorText(audience, "<#ffaa00>Usage: /database remove <name>");
                     return true;
-                }   core.db.removeSchematic(args[1]);
+                }   core.getDatabaseHandler().removeSchematic(args[1]);
             }
             case "list" -> {
-                for (String name : core.db.listSchematics()) {
+                for (String name : core.getDatabaseHandler().listSchematics()) {
                     Utilities.sendColorText(audience, "<#ffaa00>" + name);
                 }
             }

@@ -11,7 +11,7 @@ import com.wolfco.common.classes.CoreCommandExecutor;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.Home;
 import com.wolfco.main.classes.PlayerData;
-import com.wolfco.main.classes.customArgs.HomeArgument;
+import com.wolfco.main.classes.customargs.HomeArgument;
 
 import net.kyori.adventure.audience.Audience;
 
@@ -53,7 +53,7 @@ public class DelHome implements CoreCommandExecutor {
             return true;
         }
 
-        PlayerData playerData = core.PlayerManager.getPlayerData((Player) sender);
+        PlayerData playerData = core.getPlayerManager().getPlayerData((Player) sender);
 
         if (playerData != null) {
             Utilities.sendColorText(audience, core.getMessage("home.deleted", List.of(home.name)));

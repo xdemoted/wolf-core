@@ -1,6 +1,5 @@
 package com.wolfco.main.commands;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
@@ -22,11 +21,7 @@ public class TeleportHere implements CoreCommandExecutor {
         command.setDescription("Teleport a player to you.");
         command.setNode("wolfcore.teleporthere");
         command.setAccessType(CommandTypes.PLAYER);
-        command.setArguments(new ArrayList<>() {
-            {
-                add(new Argument(ArgumentType.EXCLUSIVEOTHERPLAYER, true));
-            }
-        });
+        command.addArgument(new Argument(ArgumentType.EXCLUSIVEOTHERPLAYER, true));
         return command;
     }
 

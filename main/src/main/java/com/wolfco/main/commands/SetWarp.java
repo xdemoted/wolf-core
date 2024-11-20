@@ -1,7 +1,6 @@
 package com.wolfco.main.commands;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Location;
@@ -16,6 +15,7 @@ import com.wolfco.common.classes.CommandTypes;
 import com.wolfco.common.classes.CoreCommandExecutor;
 import com.wolfco.main.Core;
 
+import dev.dejvokep.boostedyaml.YamlDocument;
 import net.kyori.adventure.audience.Audience;
 
 public class SetWarp implements CoreCommandExecutor {
@@ -26,11 +26,7 @@ public class SetWarp implements CoreCommandExecutor {
         command.setDescription("Set a warp");
         command.setNode("wolfcore.setwarp");
         command.setAccessType(CommandTypes.PLAYER);
-        command.setArguments(new ArrayList<>() {
-            {
-                add(new Argument(ArgumentType.ALPHANUMERICSTRING, true).setName("WARPNAME"));
-            }
-        });
+        command.addArgument(new Argument(ArgumentType.ALPHANUMERICSTRING, true).setName("WARPNAME"));
 
         return command;
     }
@@ -49,15 +45,12 @@ public class SetWarp implements CoreCommandExecutor {
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
         Audience audience = core.getAdventure().sender(sender);
+        YamlDocument warps = core.getWarps();
         String warpName = args[0];
-        if (!(sender instanceof Player)) {
-            Utilities.sendColorText(audience, core.getMessage("generic.noconsole"));
-            return false;
-        }
         Player player = (Player) sender;
         Location location = player.getLocation();
 
-        if (core.warps.contains(warpName)) {
+        if (warps.contains(warpName)) {
             Utilities.sendColorText(audience, core.getMessage("warp.exists", List.of(warpName)));
             return true;
         } else if (location == null) {
@@ -65,18 +58,19 @@ public class SetWarp implements CoreCommandExecutor {
             return true;
         }
         
-        core.warps.set(warpName + ".x", location.getX());
-        core.warps.set(warpName + ".y", location.getY());
-        core.warps.set(warpName + ".z", location.getZ());
-        core.warps.set(warpName + ".world", player.getWorld().getUID().toString());
+        warps.set(warpName + ".x", location.getX());
+        warps.set(warpName + ".y", location.getY());
+        warps.set(warpName + ".z", location.getZ());
+        warps.set(warpName + ".world", player.getWorld().getUID().toString());
 
         try {
-            core.warps.save();
+            warps.save();
         } catch (IOException e) {
-
+            player.sendMessage("An error occurred while saving warps");
         }
 
         Utilities.sendColorText(audience, core.getMessage("warp.set", List.of(warpName)));
+        
         return true;
     }
 

@@ -1,29 +1,28 @@
 package com.wolfco.main.handlers;
 
-import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
-import com.mysql.cj.jdbc.MysqlDataSource;
-
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.FileNotFoundException;
-import java.util.List;
-import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
+import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
+import com.mysql.cj.jdbc.MysqlDataSource;
 import com.wolfco.main.Core;
 
 public class DatabaseHandler {
-    private MysqlDataSource dataSource;
-    public Core core;
+    final MysqlDataSource dataSource;
+    final Core core;
 
     public DatabaseHandler(Core core) throws SQLException {
         this.core = core;
@@ -32,9 +31,12 @@ public class DatabaseHandler {
         String name = core.getConfig().getString("database.database");
         String user = core.getConfig().getString("database.user");
         String password = core.getConfig().getString("database.password");
-        core.getLogger().info(password + " " + user + " " + port + " " + host);
 
-        MysqlDataSource dataSource = new MysqlConnectionPoolDataSource();
+        if (core.getLogger().isLoggable(java.util.logging.Level.INFO)) {
+            core.getLogger().info(String.format("%s %s %s %s", password, user, port, host));
+        }
+
+        dataSource = new MysqlConnectionPoolDataSource();
         dataSource.setServerName(host);
         dataSource.setPort(port);
         dataSource.setDatabaseName(name);
@@ -70,7 +72,7 @@ public class DatabaseHandler {
             pstmt.setBinaryStream(2, fis, (int) schematicFile.length());
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            core.log(e.getMessage());
         }
     }
 
@@ -80,7 +82,7 @@ public class DatabaseHandler {
             pstmt.setString(1, name);
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            core.log(e.getMessage());
         }
     }
 
@@ -108,7 +110,7 @@ public class DatabaseHandler {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            core.log(e.getMessage());
         }
     }
 
@@ -121,7 +123,7 @@ public class DatabaseHandler {
                 schematics.add(rs.getString("name"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            core.log(e.getMessage());
         }
         return schematics;
     }

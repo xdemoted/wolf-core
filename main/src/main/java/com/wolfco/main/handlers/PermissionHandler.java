@@ -15,17 +15,22 @@ public class PermissionHandler {
         Number highest = 0;
         for (Node node : nodes) {
             if (node.getKey().startsWith(prefixNode)) {
-                String value = node.getKey().replace(prefixNode + ".", "");
-                if (node.getValue()) {
-                    if (value.matches("^[0-9]+$")) {
-                        Number number = Integer.valueOf(value);
-                        if (number.intValue() > highest.intValue()) {
-                            highest = number;
-                        }
-                    } else if (value.equals("*")) {
-                        highest = Integer.MAX_VALUE;
-                    }
+                highest = getHighestNumber(prefixNode, node, highest);
+            }
+        }
+        return highest;
+    }
+
+    private static Number getHighestNumber(String prefixNode, Node node, Number highest) {
+        String value = node.getKey().replace(prefixNode + ".", "");
+        if (node.getValue()) {
+            if (value.matches("^\\d+$")) {
+                Number number = Integer.valueOf(value);
+                if (number.intValue() > highest.intValue()) {
+                    highest = number;
                 }
+            } else if (value.equals("*")) {
+                highest = Integer.MAX_VALUE;
             }
         }
         return highest;

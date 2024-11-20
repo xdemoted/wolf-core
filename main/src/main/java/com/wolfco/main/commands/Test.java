@@ -6,7 +6,7 @@ import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommandExecutor;
 import com.wolfco.common.classes.Subcommand;
 import com.wolfco.main.Core;
-import com.wolfco.main.classes.customArgs.WarpArgument;
+import com.wolfco.main.classes.customargs.WarpArgument;
 
 public class Test implements CoreCommandExecutor {
 

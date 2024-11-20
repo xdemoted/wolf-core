@@ -20,12 +20,13 @@ import net.kyori.adventure.audience.Audience;
 import net.luckperms.api.model.user.User;
 
 public class SetHome implements CoreCommandExecutor {
+    static final String NODE = "wolfcore.sethome";
 
     @Override
     public Command getCommand() {
         Command command = new Command("sethome");
         command.setDescription("Set a home location");
-        command.setNode("wolfcore.sethome");
+        command.setNode(NODE);
         command.setAccessType(CommandTypes.PLAYER);
         command.addArgument(new Argument(ArgumentType.ALPHANUMERICSTRING, false).setName("HOME"));
 
@@ -47,17 +48,17 @@ public class SetHome implements CoreCommandExecutor {
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
         String home = (String) argumentValues[0];
         Audience audience = fetchCore().getAdventure().sender(sender);
-        User user = fetchCore().lp.getUserManager().getUser(sender.getName());
+        User user = fetchCore().getLuckPerms().getUserManager().getUser(sender.getName());
 
         if (home == null) {
             home = "home";
         }
 
-        PlayerData playerData = core.PlayerManager.getPlayerData((Player) sender);
+        PlayerData playerData = core.getPlayerManager().getPlayerData((Player) sender);
 
         if (playerData != null) {
-            if (playerData.homes.size() == PermissionHandler.getNumberValue("wolfcore.sethome", user).intValue()) {
-                Utilities.sendColorText(audience, core.getMessage("home.limit", List.of(PermissionHandler.getNumberValue("wolfcore.sethome", user).toString())));
+            if (playerData.homes.size() == PermissionHandler.getNumberValue(NODE, user).intValue()) {
+                Utilities.sendColorText(audience, core.getMessage("home.limit", List.of(PermissionHandler.getNumberValue(NODE, user).toString())));
                 return true;
             }
 

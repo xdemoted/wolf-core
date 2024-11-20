@@ -39,7 +39,7 @@ public class TeleportAccept implements CoreCommandExecutor {
     public boolean execute(org.bukkit.command.CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
         Audience audience = core.getAdventure().sender(sender);
         Player receiver = (Player) sender;
-        PlayerData receiverData = core.PlayerManager.getPlayerData(receiver);
+        PlayerData receiverData = core.getPlayerManager().getPlayerData(receiver);
 
         if (receiverData == null) {
             Utilities.sendColorText(audience, core.getMessage("generic.invaliddata"));

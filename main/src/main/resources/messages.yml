@@ -1,9 +1,9 @@
-version: 6
+version: 7
 
 gamemode:
   invalid: "♆ <#ff5555>Invalid gamemode."
-  multisuccess: "♆ <#00ff00>Set <#ffff00>%0% <#00ff00>players' gamemode to <#ffff00>%1%"
-  othersuccess: "♆ <#00ff00>Set <#ffff00>%0%<#00ff00>'s gamemode to <#ffff00>%1%"
+  multisuccess: "♆ <#55ff55>Set <#ffff00>%0% <#55ff55>players' gamemode to <#ffff00>%1%"
+  othersuccess: "♆ <#55ff55>Set <#ffff00>%0%<#55ff55>'s gamemode to <#ffff00>%1%"
   selfsuccess: "♆ <#55ff55>Set your gamemode to <#ffff00>%0%"
 generic:
   alphanumeric: "♆ <#ffaa00>Argument <#ffff00>%0% <#ffaa00>must be alphanumeric."
@@ -21,7 +21,7 @@ home:
   limit: "♆ <#ffaa00>You can't set more than <#ffff00>%0% <#ffaa00>homes."
   notfound: "♆ <#ffaa00>Home <#ffff00>%0% <#ffaa00>not found."
   set: "♆ <#00ff00>Home <#ffff00>%0% <#00ff00>set."
-  teleport: "♆ <#00ff00>Teleported to home <#ffff00>%0%."
+  teleported: "♆ <#00ff00>Teleported to home <#ffff00>%0%."
 teleport:
   heresuccess: "♆ <#00ff00>Teleported <#ffff00>%0% <#00ff00>to <#ffff00>you"
   multisuccess: "♆ <#00ff00>Teleported <#ffff00>%0% <#00ff00>players to <#ffff00>%1%"

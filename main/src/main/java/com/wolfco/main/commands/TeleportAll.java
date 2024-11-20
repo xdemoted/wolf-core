@@ -1,6 +1,5 @@
 package com.wolfco.main.commands;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
@@ -22,11 +21,7 @@ public class TeleportAll implements CoreCommandExecutor {
         Command command = new Command("teleportall");
         command.setDescription("Teleport all players to you.");
         command.setNode("wolfcore.teleportall");
-        command.setArguments(new ArrayList<>() {
-            {
-                add(new Argument(ArgumentType.EXCLUSIVEPLAYER, false));
-            }
-        });
+        command.addArgument(new Argument(ArgumentType.EXCLUSIVEPLAYER, false));
 
         return command;
     }
@@ -48,22 +43,23 @@ public class TeleportAll implements CoreCommandExecutor {
         Player player1 = (Player) argumentValues[0];
 
         if (args.length == 0 && sender instanceof Player) {
-            core.getServer().getOnlinePlayers().forEach(player -> {
-                player.teleport((Player) sender);
-            });
+            core.getServer().getOnlinePlayers().forEach(player -> 
+                player.teleport((Player) sender)
+            );
 
             Utilities.sendColorText(senderAudience, core.getMessage("teleportall.success", List.of("you")));
 
             return true;
         } else if (player1 != null) {
-            core.getServer().getOnlinePlayers().forEach(p -> {
-                p.teleport(player1);
-            });
+            core.getServer().getOnlinePlayers().forEach(p -> 
+                p.teleport(player1)
+            );
 
             Utilities.sendColorText(senderAudience, core.getMessage("teleportall.success", List.of(player1.getName())));
             
             return true;
         }
+        
         return false;
     }
 
