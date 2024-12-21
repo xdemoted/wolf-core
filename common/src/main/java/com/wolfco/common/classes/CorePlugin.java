@@ -39,6 +39,7 @@ public abstract class CorePlugin extends JavaPlugin {
         if (this.adventure == null) {
             this.adventure = BukkitAudiences.create(this);
         }
+        
         return this.adventure;
     }
 

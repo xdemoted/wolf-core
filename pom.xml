@@ -15,6 +15,7 @@
         <module>skyblock</module>
         <module>velocity</module>
         <module>common</module>
+        <module>mongocore</module>
     </modules>
 
     <properties>

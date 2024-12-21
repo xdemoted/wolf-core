@@ -58,12 +58,16 @@ public class wolfcore {
         
         try {
             lp = LuckPermsProvider.get();
-        } catch (IllegalStateException e) {}
+        } catch (IllegalStateException e) {
+            logger.warn(e.getMessage());
+        }
 
         try {
             jda = new JDAListener(this);
         } catch (InterruptedException e) {
             logger.warn(e.getMessage());
+
+            Thread.currentThread().interrupt();
         }
         if (jda != null) {
             server.getEventManager().register(this, new events(this, jda));
