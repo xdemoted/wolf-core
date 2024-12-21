@@ -1,6 +1,7 @@
 package com.wolfco.main.commands;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.Location;
@@ -47,16 +48,8 @@ public class warp implements CoreCommandExecutor {
 
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
-        Warp warp;
-        Player target;
-
-        try {
-            Object[] values = getCommand().getValues(core, sender, command, args);
-            warp = (Warp) values[0];
-            target = (Player) values[1];
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
+        Warp warp = (Warp) argumentValues[0];
+        Collection<Player> target = (Collection<Player>) argumentValues[1];
 
         World world = core.getServer().getWorld(warp.world);
 
@@ -69,16 +62,23 @@ public class warp implements CoreCommandExecutor {
 
         if (sender instanceof Player && args.length == 1) {
             ((Player) sender).teleport(new Location(world, warp.x, warp.y, warp.z));
-            Utilities.sendColorText(core.getAdventure().sender(sender), core.getMessage("warp.success", List.of(warp.name)));
+            Utilities.sendColorText(core.getAdventure().sender(sender), core.getMessage("warp.success.self", List.of(warp.name)));
 
             return true;
-        } else if (target instanceof Player) {
-            Utilities.sendColorText(core.getAdventure().sender(sender),
-                    core.getMessage("warp.othersuccess", List.of(target.getName(), warp.name)));
+        } else if (target != null) {
+            if (target.size() > 1) {
+                Utilities.sendColorText(core.getAdventure().sender(sender), core.getMessage("warp.success.all"));
+                return false;
+            } else {
+                Utilities.sendColorText(core.getAdventure().sender(sender),
+                        core.getMessage("warp.success.other", List.of(target.iterator().next().getName(), warp.name)));
+            }
 
-            target.teleport(new Location(world, warp.x, warp.y, warp.z));
+            for (Player player : target) {
+                player.teleport(new Location(world, warp.x, warp.y, warp.z));
+            }
 
-            return false;
+            return true;
         }
         return false;
     }
