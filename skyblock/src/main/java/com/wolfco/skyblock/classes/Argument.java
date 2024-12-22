@@ -3,6 +3,7 @@ package com.wolfco.skyblock.classes;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
@@ -25,18 +26,18 @@ public class Argument {
             getPlayer(main, arg);
         } else if (type == ArgumentType.GAMEMODE) {
             switch (arg.toLowerCase()) {
-                case "0":
-                case "survival":
+                case "0", "survival" -> {
                     return GameMode.SURVIVAL;
-                case "1":
-                case "creative":
+                }
+                case "1", "creative" -> {
                     return GameMode.CREATIVE;
-                case "2":
-                case "adventure":
+                }
+                case "2", "adventure" -> {
                     return GameMode.ADVENTURE;
-                case "3":
-                case "spectator":
+                }
+                case "3", "spectator" -> {
                     return GameMode.SPECTATOR;
+                }
             }
         }
         return null;
@@ -61,7 +62,7 @@ public class Argument {
                     return List.of(player);
                 }
             }
-        } else if (arg == "*"&& multiple) {
+        } else if ("*".equals(arg) && multiple) {
             List<Player> players = new ArrayList<>();
             for (Player player : main.getServer().getOnlinePlayers()) {
                 players.add(player);
@@ -72,18 +73,18 @@ public class Argument {
     }
     public GameMode getGamemode(main main, String arg) {
         switch (arg.toLowerCase()) {
-            case "0":
-            case "survival":
+            case "0", "survival" -> {
                 return GameMode.SURVIVAL;
-            case "1":
-            case "creative":
+            }
+            case "1", "creative" -> {
                 return GameMode.CREATIVE;
-            case "2":
-            case "adventure":
+            }
+            case "2", "adventure" -> {
                 return GameMode.ADVENTURE;
-            case "3":
-            case "spectator":
+            }
+            case "3", "spectator" -> {
                 return GameMode.SPECTATOR;
+            }
         }
         return null;
     }

@@ -19,8 +19,8 @@ import com.wolfco.main.classes.PlayerData;
 import dev.dejvokep.boostedyaml.YamlDocument;
 
 public class PlayerManager implements Listener {
-    public Map<UUID, PlayerData> players = new HashMap<>();
-    public Core core;
+    Map<UUID, PlayerData> players = new HashMap<>();
+    Core core;
 
     public PlayerManager(Core core) {
         this.core = core;
@@ -38,7 +38,7 @@ public class PlayerManager implements Listener {
     }
 
     private void onJoin(Player player) {
-        YamlDocument data = core.getConfig(player.getUniqueId().toString(), core.getDataFolder().toPath().resolve("userdata"));
+        YamlDocument data = core.getConfigDocument(player.getUniqueId().toString(), core.getDataFolder().toPath().resolve("userdata"));
         if (data == null) {
             core.getLogger().log(Level.WARNING, "[Wolf-Core] Player data not found for {0}", player.getName());
             player.kickPlayer("§4§lError: §cPlayer data not found, please contact an administrator.");
@@ -51,14 +51,14 @@ public class PlayerManager implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        PlayerData PlayerData = players.get(player.getUniqueId());
+        PlayerData playerData = players.get(player.getUniqueId());
 
-        if (PlayerData == null) {
+        if (playerData == null) {
             core.getLogger().log(Level.WARNING, "[Wolf-Core] Player left without data: {0}", player.getName());
             return;
         }
 
-        YamlDocument data = PlayerData.data;
+        YamlDocument data = playerData.data;
         data.set("timestamp.logout", System.currentTimeMillis());
 
         try {

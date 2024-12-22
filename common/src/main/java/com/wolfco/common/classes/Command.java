@@ -5,12 +5,15 @@ import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
-public class Command {
-    public String name, displayName, node, description;
+public class Command { // TODO Add help command support; add descriptions to commands
+    String name;
+    String  node;
+    String  displayName;
+    String  description;
 
-    public CommandTypes accessType = CommandTypes.ALL;
-    public List<ArgumentInterface> options = new ArrayList<>();
-    public CorePlugin plugin;
+    CommandTypes accessType = CommandTypes.ALL;
+    List<ArgumentInterface> options = new ArrayList<>();
+    CorePlugin plugin;
 
     public Command(String name) throws IllegalArgumentException {
         this.name = name;
@@ -27,18 +30,17 @@ public class Command {
             } else if (options.get(i).isRequired() && !required) {
                 throw new IllegalArgumentException("Required arguments must be first");
             }
-            if (options.get(i).getType() == ArgumentType.SUBCOMMAND) {
+            if (options.get(i).isSubcommand()) {
                 throw new IllegalArgumentException("Subcommand must be the last argument");
             }
         }
         return this;
     }
 
-    public Command addArgument(ArgumentInterface option) {
-        options.add(option);
-        return this;
+    public String getName() {
+        return name;
     }
-
+    
     public Command setDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
@@ -56,6 +58,15 @@ public class Command {
 
     public Command setAccessType(CommandTypes accessType) {
         this.accessType = accessType;
+        return this;
+    }
+
+    public CommandTypes getAccessType() {
+        return accessType;
+    }
+
+    public Command addArgument(ArgumentInterface option) {
+        options.add(option);
         return this;
     }
 

@@ -16,15 +16,18 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 
 public abstract class CorePlugin extends JavaPlugin {
 
-    public BukkitAudiences adventure;
-    public YamlDocument config;
-    public YamlDocument messages;
-    public CommandLoader commandLoader;
-    static public String prefix = "♆ ";
+    BukkitAudiences adventure;
+    YamlDocument config;
+    YamlDocument messages;
+    CommandLoader commandLoader;
 
-    public CorePlugin() {
+    protected CorePlugin() {
         messages = getMessageData();
         commandLoader = new CommandLoader(this);
+    }
+
+    public CommandLoader getCommandLoader() {
+        return commandLoader;
     }
 
     @Override
@@ -36,16 +39,26 @@ public abstract class CorePlugin extends JavaPlugin {
         if (this.adventure == null) {
             this.adventure = BukkitAudiences.create(this);
         }
+        
         return this.adventure;
     }
 
     public abstract List<CoreCommandExecutor> getCommands();
 
-    public YamlDocument getConfig(String fileName) {
-        return getConfig(fileName, getDataFolder().toPath());
+    public YamlDocument setMainConfig(YamlDocument config) {
+        this.config = config;
+        return config;
     }
 
-    public YamlDocument getConfig(String fileName, Path parent) {
+    public YamlDocument getMainConfig() {
+        return config;
+    }
+
+    public YamlDocument getConfigDocument(String fileName) {
+        return getConfigDocument(fileName, getDataFolder().toPath());
+    }
+
+    public YamlDocument getConfigDocument(String fileName, Path parent) {
         Path configFile = parent.resolve(fileName);
         YamlDocument configReturn;
         try (InputStream is = getClass().getClassLoader().getResourceAsStream(fileName)) {
@@ -73,7 +86,7 @@ public abstract class CorePlugin extends JavaPlugin {
     }
 
     private YamlDocument getMessageData() {
-        messages = getConfig("messages.yml");
+        messages = getConfigDocument("messages.yml");
         if (messages != null) {
             messages.setSettings(UpdaterSettings.builder().setVersioning(new BasicVersioning("version")).build());
             try {

@@ -31,8 +31,6 @@ public class ban implements Command {
             String current = args[i];
             if (i > 0) {
                 reason.append(current).append(" ");
-            } else {
-                continue;
             }
         }
         if (reason.toString().replace(" ", "").length() == 0) {
@@ -58,9 +56,9 @@ public class ban implements Command {
             }
             player.disconnect(Component.text("§6You have been banned from the server.\n§6Reason: §e" + reason.toString()));
             if (sender instanceof Player) {
-                punishManager.logPunishment(player.getUniqueId(), ((Player) sender).getUniqueId(), reason.toString(), "ban",(long) 0, code);
+                punishManager.logPunishment(player.getUniqueId(), ((Player) sender).getUniqueId(), reason.toString(), "ban",0, code);
             } else {
-                punishManager.logPunishment(player.getUniqueId(), "console", reason.toString(), "ban",(long) 0, code);
+                punishManager.logPunishment(player.getUniqueId(), "console", reason.toString(), "ban",0, code);
             }
             sender.sendMessage(Component.text("§6Player §e" + plugin.displayname(player) + "§6 has been banned. Punishment has been logged."));
         }, () -> {

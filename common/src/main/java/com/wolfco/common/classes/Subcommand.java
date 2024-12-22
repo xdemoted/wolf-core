@@ -16,8 +16,8 @@ public class Subcommand implements ArgumentInterface {
     }
 
     @Override
-    public ArgumentType getType() {
-        return ArgumentType.SUBCOMMAND;
+    public Boolean isSubcommand() {
+        return true;
     }
 
     @Override
@@ -65,6 +65,6 @@ public class Subcommand implements ArgumentInterface {
 
     @Override
     public String getError() {
-        return String.format("Argument {0} requires a valid subcommand.", name);
+        return String.format("Argument %s requires a valid subcommand.", name);
     }
 }

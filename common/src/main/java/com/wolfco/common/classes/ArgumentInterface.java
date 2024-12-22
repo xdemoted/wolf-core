@@ -5,7 +5,10 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 
 public interface ArgumentInterface {
-    abstract ArgumentType getType();
+
+    default  Boolean isSubcommand() {
+        return false;
+    }
 
     abstract String getError();
 

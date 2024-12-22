@@ -1,14 +1,1 @@
-com\wolfco\common\classes\TabCompleter.class
-com\wolfco\common\classes\Argument.class
-com\wolfco\common\Utilities.class
-com\wolfco\common\classes\ArgumentInterface.class
-com\wolfco\common\classes\CoreCommandExecutor.class
-com\wolfco\common\classes\Command.class
-com\wolfco\common\classes\Subcommand.class
-com\wolfco\common\classes\CorePlugin.class
-com\wolfco\common\classes\CoreCommandExecutor$1.class
-com\wolfco\common\classes\CoreCommandExecutor$2.class
 com\wolfco\common\classes\Argument$1.class
-com\wolfco\common\CommandLoader.class
-com\wolfco\common\classes\ArgumentType.class
-com\wolfco\common\classes\CommandTypes.class

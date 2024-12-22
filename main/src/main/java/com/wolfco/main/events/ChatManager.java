@@ -16,7 +16,7 @@ import net.luckperms.api.model.user.User;
 
 public class ChatManager implements Listener {
 
-    public Core core;
+    Core core;
 
     public ChatManager(Core core) {
         this.core = core;
@@ -27,7 +27,7 @@ public class ChatManager implements Listener {
         // Variables
         String message = event.getMessage();
         Player player = event.getPlayer();
-        User user = core.lp.getUserManager().getUser(player.getUniqueId());
+        User user = core.getLuckPerms().getUserManager().getUser(player.getUniqueId());
         CachedDataManager cacheData = user.getCachedData();
         CachedMetaData lpmetaData = cacheData.getMetaData();
         Boolean color = cacheData.getPermissionData().checkPermission("wolf-co.chat.color").asBoolean();

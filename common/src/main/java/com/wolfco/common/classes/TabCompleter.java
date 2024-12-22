@@ -19,11 +19,12 @@ public class TabCompleter {
         result = new ArrayList<>();
 
         if (args.length > command.options.size()) {
-            if (command.options.getLast().getType() == ArgumentType.SUBCOMMAND) {
+            if (command.options.getLast().isSubcommand()) {
                 Subcommand subcommand = (Subcommand) command.options.getLast();
                 Command command2 = subcommand.get(args[command.options.size() - 1].toLowerCase());
 
                 if (command2 != null) {
+                    
                     return runTabComplete(command2, sender, bukkitCommand, alias, Arrays.copyOfRange(args, command.options.size(), args.length));
                 } else {
                     return result;

@@ -12,9 +12,9 @@ import com.wolfco.common.classes.CoreCommandExecutor;
 import com.wolfco.common.classes.CorePlugin;
 
 public class CommandLoader {
-    public CorePlugin core;
-    public HashMap<String, CoreCommandExecutor> commands = new HashMap<>();
-    public List<CoreCommandExecutor> executors = new ArrayList<>();
+     CorePlugin core;
+     HashMap<String, CoreCommandExecutor> commands = new HashMap<>();
+     List<CoreCommandExecutor> executors = new ArrayList<>();
 
     public CommandLoader(CorePlugin core) {
         this.core = core;
@@ -22,16 +22,18 @@ public class CommandLoader {
 
     public void register(CoreCommandExecutor executor) {
         Command command = executor.getCommand();
-        commands.put(command.name, executor);
-        PluginCommand PluginCommand = core.getCommand(command.name);
-        if (PluginCommand != null) {
-            PluginCommand.setExecutor(executor);
-            PluginCommand.setTabCompleter(executor);
+        String name = command.getName();
+
+        commands.put(name, executor);
+        PluginCommand pluginCommand = core.getCommand(name);
+        if (pluginCommand != null) {
+            pluginCommand.setExecutor(executor);
+            pluginCommand.setTabCompleter(executor);
         }
-        else core.getLogger().log(Level.WARNING, "Command {0} cannot be found in the plugin yml.", command.name);
+        else core.getLogger().log(Level.WARNING, "Command {0} cannot be found in the plugin yml.", name);
     }
 
     public void registerAll(List<CoreCommandExecutor> executors) {
-        executors.forEach(executor -> register(executor));
+        executors.forEach(this::register);
     }
 }
