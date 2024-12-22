@@ -41,12 +41,7 @@ public class DelHome implements CoreCommandExecutor {
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
         Audience audience = core.getAdventure().sender(sender);
-        Home home;
-        try {
-            home = (Home) getArgument(0).getValue(core, sender, command, args[0]);
-        } catch (Exception e) {
-            return false;
-        }
+        Home home = (Home) argumentValues[0];
 
         if (!(sender instanceof Player)) {
             Utilities.sendColorText(audience, core.getMessage("generic.noconsole"));

@@ -11,7 +11,9 @@ import com.wolfco.main.Core;
 import com.wolfco.main.classes.Warp;
 import com.wolfco.main.classes.customargs.WarpArgument;
 
-public class WarpInfo implements CoreCommandExecutor {
+import net.kyori.adventure.audience.Audience;
+
+public class Warpinfo implements CoreCommandExecutor {
 
     @Override
     public Command getCommand() {
@@ -29,13 +31,14 @@ public class WarpInfo implements CoreCommandExecutor {
 
     Core core;
 
-    public WarpInfo(Core core) {
+    public Warpinfo(Core core) {
         this.core = core;
     }
 
     @Override
     public boolean execute(org.bukkit.command.CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
         Warp warp = (Warp) argumentValues[0];
+        Audience audience = core.getAdventure().sender(sender);
 
         World world = core.getServer().getWorld(warp.world);
         String worldName;
@@ -44,7 +47,8 @@ public class WarpInfo implements CoreCommandExecutor {
         } else {
             worldName = world.getName();
         }
-        Utilities.sendColorText(core.getAdventure().sender(sender), core.getMessage("warp.info", List.of(warp.name, worldName, String.valueOf(warp.x), String.valueOf(warp.y), String.valueOf(warp.z))));
+        
+        Utilities.sendColorText(audience, core.getMessage("warp.info", List.of(warp.name, worldName, String.valueOf(warp.x), String.valueOf(warp.y), String.valueOf(warp.z))));
         return true;
     }
 }

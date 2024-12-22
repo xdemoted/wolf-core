@@ -130,22 +130,55 @@ public class Argument implements ArgumentInterface {
             case GAMEMODE ->
                 GameMode.valueOf(searchValue.toUpperCase());
 
-            case PLAYER ->
-                Utilities.getTargets(core, name);
-            case EXCLUSIVEPLAYER ->
-                Utilities.getTarget(core, name);
-            case OTHERPLAYER ->
-                Utilities.getTargets(core, name);
-            case EXCLUSIVEOTHERPLAYER -> {
-                Collection<Player> players = Utilities.getTargets(core, name);
+            case PLAYER -> {
+                Collection<Player> players = Utilities.getTargets(core, searchValue);
+
+                if (players.isEmpty()) {
+                    throw new IllegalArgumentException("Argument " + getName() + " requires a valid player");
+                }
+
+                yield players;
+            }
+            case EXCLUSIVEPLAYER -> {
+                Player player = Utilities.getTarget(core, searchValue);
+
+                if (player == null) {
+                    throw new IllegalArgumentException("Argument " + getName() + " requires a valid player");
+                }
+
+                yield player;
+            }
+            case OTHERPLAYER -> {
+                Collection<Player> players = Utilities.getTargets(core, searchValue);
 
                 if (sender == null) {
                     yield players;
                 }
 
+                if (players.isEmpty()) {
+                    throw new IllegalArgumentException("Argument " + getName() + " requires a valid player");
+                }
+
                 players.removeIf(player -> player.getName().equalsIgnoreCase(sender.getName()));
 
                 yield players;
+            }
+            case EXCLUSIVEOTHERPLAYER -> {
+                Player player = Utilities.getTarget(core, searchValue);
+
+                if (sender == null) {
+                    yield player;
+                }
+
+                if (player == null) {
+                    throw new IllegalArgumentException("Argument " + getName() + " requires a valid player");
+                }
+
+                if (player.getName().equalsIgnoreCase(sender.getName())) {
+                    throw new IllegalArgumentException("Argument " + getName() + " cannot be the same as the sender");
+                }
+
+                yield player;
             }
 
             case WORLD ->

@@ -48,9 +48,11 @@ warp:
     <#ffff00>%2%<#ffaa00>, <#ffff00>%3%<#ffaa00>, <#ffff00>%4%<#ffaa00>."
   invalidworld: "<#ffaa00>World <#ffff00>%0%<#ffaa00> not found for warp %1%."
   notfound: "<#ffaa00>Warp <#ffff00>%0%<#ffaa00> not found."
-  othersuccess: "<#ffaa00>Warping %1% to <#ffff00>%0%"
   set: "<#ffaa00>Warp <#ffff00>%0% <#ffaa00>set."
-  success: "<#ffaa00>Warping to <#ffff00>%0%"
+  success:
+    self: "<#ffaa00>Warping to <#ffff00>%0%"
+    other: "<#ffaa00>Warping %1% to <#ffff00>%0%"
+    all: "<#ffaa00>Warping all players to <#ffff00>%0%"
 error:
   base: "<#aa0000><b>Error:</b> <#ff5555>%0%"
 
