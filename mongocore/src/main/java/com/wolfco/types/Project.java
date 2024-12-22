@@ -3,7 +3,8 @@ package com.wolfco.types;
 public class Project {
     String name;
     String description;
-    String[] parent;
+    String parent;
+    String[] objectives;
     String locations;
     State state;
 
@@ -47,5 +48,21 @@ public class Project {
                 ", locations=" + locations +
                 ", state=" + state +
                 '}';
+    }
+
+    public String getParent() {
+        return parent;
+    }
+
+    public void setParent(String parent) {
+        this.parent = parent;
+    }
+
+    public String[] getObjectives() {
+        return objectives;
+    }
+
+    public void setObjectives(String[] objectives) {
+        this.objectives = objectives;
     }
 }
