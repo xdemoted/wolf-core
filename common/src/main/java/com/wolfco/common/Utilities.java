@@ -10,17 +10,11 @@ import org.bukkit.entity.Player;
 
 import com.wolfco.common.classes.CorePlugin;
 
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.luckperms.api.cacheddata.CachedPermissionData;
 
 public class Utilities {
-    CorePlugin core;
-
-    public Utilities(CorePlugin core) {
-        this.core = core;
-    }
 
     public final static String[] gamemodes = { "survival", "creative", "adventure", "spectator" };
 
@@ -67,14 +61,6 @@ public class Utilities {
                 return player;
         }
         return null;
-    }
-
-    public void sendPlayer(Player player, String text) {
-        sendColorText(core.getAdventure().player(player), text);
-    }
-
-    public static void sendColorText(Audience audience, String text) {
-        audience.sendMessage(MiniMessage.miniMessage().deserialize(text));
     }
 
     public static String nullCheck(String text) {

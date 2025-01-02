@@ -5,14 +5,11 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.wolfco.common.Utilities;
 import com.wolfco.common.classes.Argument;
-import com.wolfco.common.classes.ArgumentType;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommandExecutor;
+import com.wolfco.common.classes.types.ArgumentType;
 import com.wolfco.main.Core;
-
-import net.kyori.adventure.audience.Audience;
 
 public class TeleportAll implements CoreCommandExecutor {
 
@@ -20,7 +17,6 @@ public class TeleportAll implements CoreCommandExecutor {
     public Command getCommand() {
         Command command = new Command("teleportall");
         command.setDescription("Teleport all players to you.");
-        command.setNode("wolfcore.teleportall");
         command.addArgument(new Argument(ArgumentType.EXCLUSIVEPLAYER, false));
 
         return command;
@@ -39,7 +35,6 @@ public class TeleportAll implements CoreCommandExecutor {
 
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
-        Audience senderAudience = core.getAdventure().sender(sender);
         Player player1 = (Player) argumentValues[0];
 
         if (args.length == 0 && sender instanceof Player) {
@@ -47,7 +42,7 @@ public class TeleportAll implements CoreCommandExecutor {
                 player.teleport((Player) sender)
             );
 
-            Utilities.sendColorText(senderAudience, core.getMessage("teleportall.success", List.of("you")));
+            core.sendPreset(sender, "teleportall.success", List.of("you"));
 
             return true;
         } else if (player1 != null) {
@@ -55,7 +50,7 @@ public class TeleportAll implements CoreCommandExecutor {
                 p.teleport(player1)
             );
 
-            Utilities.sendColorText(senderAudience, core.getMessage("teleportall.success", List.of(player1.getName())));
+            core.sendPreset(sender, "teleportall.success", List.of(player1.getName()));
             
             return true;
         }

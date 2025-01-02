@@ -7,14 +7,14 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.player.TabListEntry;
 import com.wolfco.velocity.wolfcore;
 
-import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 
 public class tablist {
     public static void update(wolfcore core) {
         Collection<Player> players = core.server.getAllPlayers();
         List<TabListEntry> entries = players.stream()
                 .map(player -> TabListEntry.builder()
-                        .displayName(Component.text(core.displayname(player)))
+                        .displayName(MiniMessage.miniMessage().deserialize(core.displayname(player)))
                         .profile(player.getGameProfile())
                         .gameMode(0)
                         .tabList(player.getTabList())

@@ -1,4 +1,4 @@
-version: 7
+version: 9
 
 gamemode:
   invalid: "♆ <#ff5555>Invalid gamemode."
@@ -53,6 +53,12 @@ warp:
     self: "<#ffaa00>Warping to <#ffff00>%0%"
     other: "<#ffaa00>Warping %1% to <#ffff00>%0%"
     all: "<#ffaa00>Warping all players to <#ffff00>%0%"
+speed:
+  success: "<#00ff00>Set %0% speed to <#ffff00>%1%<#00ff00>."
+  othersuccess: "<#00ff00>Set %0%'s <#ffff00>%1% <#00ff00>speed to <#ffff00>%2%<#00ff00>."
+fly:
+  success: "<#00ff00>Flight %0%."
+  othersuccess: "<#00ff00>Flight %0% for <#ffff00>%1%"
 error:
-  base: "<#aa0000><b>Error:</b> <#ff5555>%0%"
+  base: "<#aa0000><b>Error:</b> <red>%0%"
 

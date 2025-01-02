@@ -1,10 +1,9 @@
-package com.wolfco.common.classes;
+package com.wolfco.common.classes.types;
 
 public enum ArgumentType {
     STRING,
     ALPHANUMERICSTRING,
-    DOUBLE,
-    INTEGER,
+    NUMBER,
     BOOLEAN,
 
     GAMEMODE,

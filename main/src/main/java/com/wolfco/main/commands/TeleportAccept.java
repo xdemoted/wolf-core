@@ -4,14 +4,11 @@ import java.util.List;
 
 import org.bukkit.entity.Player;
 
-import com.wolfco.common.Utilities;
 import com.wolfco.common.classes.Command;
-import com.wolfco.common.classes.CommandTypes;
 import com.wolfco.common.classes.CoreCommandExecutor;
+import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.PlayerData;
-
-import net.kyori.adventure.audience.Audience;
 
 public class TeleportAccept implements CoreCommandExecutor {
 
@@ -19,8 +16,7 @@ public class TeleportAccept implements CoreCommandExecutor {
     public Command getCommand() {
         Command command = new Command("teleportaccept");
         command.setDescription("Accept a teleport request");
-        command.setNode("wolfcore.teleportaccept");
-        command.setAccessType(CommandTypes.PLAYER);
+        command.setAccessType(AccessType.PLAYER);
         return command;
     }
 
@@ -37,28 +33,27 @@ public class TeleportAccept implements CoreCommandExecutor {
 
     @Override
     public boolean execute(org.bukkit.command.CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
-        Audience audience = core.getAdventure().sender(sender);
         Player receiver = (Player) sender;
         PlayerData receiverData = core.getPlayerManager().getPlayerData(receiver);
 
         if (receiverData == null) {
-            Utilities.sendColorText(audience, core.getMessage("generic.invaliddata"));
+            core.sendPreset(sender, "generic.invaliddata");
             return false;
         }
 
         if (receiverData.lastRequest == null) {
-            Utilities.sendColorText(audience, core.getMessage("teleportask.norequest"));
+            core.sendPreset(sender, "teleportask.norequest");
             return false;
         }
 
         if (receiverData.lastRequest.type.equalsIgnoreCase("tpa")) {
             receiverData.lastRequest.host.teleport(receiver);
-            Utilities.sendColorText(core.getAdventure().sender(receiverData.lastRequest.host), core.getMessage("teleportask.teleporting", List.of(receiver.getName())));
-            Utilities.sendColorText(core.getAdventure().sender(receiver), core.getMessage("teleportask.accept", List.of(receiverData.lastRequest.host.getName())));
+            core.sendPreset(sender, "teleportask.teleporting", List.of(receiver.getName()));
+            core.sendPreset(sender, "teleportask.accept", List.of(receiverData.lastRequest.host.getName()));
         } else if (receiverData.lastRequest.type.equalsIgnoreCase("tpahere")) {
             receiver.teleport(receiverData.lastRequest.host);
-            Utilities.sendColorText(core.getAdventure().sender(receiverData.lastRequest.host), core.getMessage("teleportask.accept", List.of(receiver.getName())));
-            Utilities.sendColorText(core.getAdventure().sender(receiver), core.getMessage("teleportask.teleporting", List.of(receiverData.lastRequest.host.getName())));
+            core.sendPreset(sender, "teleportask.accept", List.of(receiver.getName()));
+            core.sendPreset(sender, "teleportask.teleporting", List.of(receiverData.lastRequest.host.getName()));
         }
         return true;
     }

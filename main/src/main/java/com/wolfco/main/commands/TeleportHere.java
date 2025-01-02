@@ -5,12 +5,11 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.wolfco.common.Utilities;
 import com.wolfco.common.classes.Argument;
-import com.wolfco.common.classes.ArgumentType;
 import com.wolfco.common.classes.Command;
-import com.wolfco.common.classes.CommandTypes;
 import com.wolfco.common.classes.CoreCommandExecutor;
+import com.wolfco.common.classes.types.AccessType;
+import com.wolfco.common.classes.types.ArgumentType;
 import com.wolfco.main.Core;
 
 public class TeleportHere implements CoreCommandExecutor {
@@ -19,8 +18,7 @@ public class TeleportHere implements CoreCommandExecutor {
     public Command getCommand() {
         Command command = new Command("teleporthere");
         command.setDescription("Teleport a player to you.");
-        command.setNode("wolfcore.teleporthere");
-        command.setAccessType(CommandTypes.PLAYER);
+        command.setAccessType(AccessType.PLAYER);
         command.addArgument(new Argument(ArgumentType.EXCLUSIVEOTHERPLAYER, true));
         return command;
     }
@@ -41,7 +39,7 @@ public class TeleportHere implements CoreCommandExecutor {
         Player player = (Player) argumentValues[0];
 
         player.teleport(((Player) sender));
-        Utilities.sendColorText(core.getAdventure().sender(sender), core.getMessage("teleporthere.success", List.of(player.getName())));
+        core.sendPreset(sender, "teleporthere.success", List.of(player.getName()));
         return true;
     }
 }

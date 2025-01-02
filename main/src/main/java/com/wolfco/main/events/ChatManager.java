@@ -42,10 +42,27 @@ public class ChatManager implements Listener {
         // Send to Velocity
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("globalchat");
+        out.writeUTF(player.getName());
         out.writeUTF(formatting);
         out.writeUTF(message);
         out.writeBoolean(color);
         player.sendPluginMessage(core, "core:main", out.toByteArray());
         event.setCancelled(true);
+    }
+
+    public void sendGlobalBroadcast(Player player, String message) {
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF("broadcast");
+        out.writeUTF(message);
+        out.writeBoolean(false);
+        player.sendPluginMessage(core, "core:main", out.toByteArray());
+    }
+
+    public void changeAFK(Player player, boolean afk) {
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF("afk");
+        out.writeUTF(player.getName());
+        out.writeBoolean(afk);
+        player.sendPluginMessage(core, "core:main", out.toByteArray());
     }
 }

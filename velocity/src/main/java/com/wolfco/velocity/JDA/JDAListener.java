@@ -22,9 +22,11 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Webhook;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 
 public final class JDAListener extends ListenerAdapter implements EventListener {
     private static wolfcore plugin;
@@ -95,6 +97,20 @@ public final class JDAListener extends ListenerAdapter implements EventListener 
     }
 
     @Override
+    public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
+        if (event.getAuthor().isBot()) {
+            return;
+        }
+
+        if (event.getChannel() == channel) {
+            String message = event.getMessage().getContentRaw();
+            if (message.length() > 0) {
+                plugin.broadcast(MiniMessage.miniMessage().deserialize(message));
+            }
+        }
+    }
+
+    @Override
     public void onSlashCommandInteraction(@Nonnull SlashCommandInteractionEvent event) {
         switch (event.getName()) {
             case "ping":
@@ -148,6 +164,6 @@ public final class JDAListener extends ListenerAdapter implements EventListener 
 
     public synchronized boolean sendMessage(String Name, String Message) throws MalformedURLException, IOException {
         return sendMessage(Name, Message,
-                "https://cdn.discordapp.com/attachments/758884272572071944/1124798370809118740/wolf_wback.png");
+                "https://files.catbox.moe/7458oy.png");
     }
 }

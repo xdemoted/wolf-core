@@ -16,6 +16,10 @@ commands:
     description: Delete Home Command
   delwarp:
     description: Delete Warp Command
+  fly:
+    description: Fly Command
+  flyspeed:
+    description: Fly Speed Command
   gamemode:
     aliases: [ gm ]
     description: Gamemode Command
@@ -40,6 +44,8 @@ commands:
     description: Set Home Command
   setwarp:
     description: Set Warp Command
+  speed:
+    description: Speed Command
   teleport:
     aliases: [ tp ]
     description: Teleport Command
@@ -66,6 +72,8 @@ commands:
     description: Temp Mute Command
   test:
     description: Test Command
+  top:
+    description: Top Command
   tppos:
     description: Teleport Position Command
   tptoggle:
@@ -76,6 +84,8 @@ commands:
     description: Unban IP Command
   unmute:
     description: Unmute Command
+  walkspeed:
+    description: Walk Speed Command
   warp:
     description: Warp Command
   warpinfo:

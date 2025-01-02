@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
+import com.wolfco.common.classes.types.ArgumentType;
+
 public class Subcommand implements ArgumentInterface {
     private final HashMap<String, Command> subcommands = new HashMap<>();
     private final boolean required;

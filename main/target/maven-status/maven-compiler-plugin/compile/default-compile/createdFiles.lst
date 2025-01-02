@@ -1,0 +1,6 @@
+com\wolfco\main\commands\Fly.class
+com\wolfco\main\commands\FlySpeed.class
+com\wolfco\main\commands\AFK.class
+com\wolfco\main\commands\Top.class
+com\wolfco\main\commands\Speed.class
+com\wolfco\main\commands\WalkSpeed.class

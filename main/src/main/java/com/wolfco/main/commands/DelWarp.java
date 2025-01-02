@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
-import com.wolfco.common.Utilities;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommandExecutor;
 import com.wolfco.main.Core;
@@ -18,7 +17,6 @@ public class DelWarp implements CoreCommandExecutor {
     public Command getCommand() {
         Command command = new Command("delwarp");
         command.setDescription("Used to delete warps");
-        command.setNode("wolfcore.delwarp");
         command.setArguments(Arrays.asList(new WarpArgument(true)));
 
         return command;
@@ -39,9 +37,9 @@ public class DelWarp implements CoreCommandExecutor {
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
         boolean result = core.getWarps().remove(args[0]);
         if (result) {
-            Utilities.sendColorText(core.getAdventure().sender(sender), core.getMessage("warp.deleted", List.of(args[0])));
+            core.sendPreset(sender, "warp.deleted", List.of(args[0]));
         } else {
-            Utilities.sendColorText(core.getAdventure().sender(sender), core.getMessage("warp.notfound", List.of(args[0])));
+            core.sendPreset(sender, "warp.notfound", List.of(args[0]));
         }
         
         try {

@@ -16,9 +16,11 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.wolfco.types.Program;
 import com.wolfco.types.Project;
 
 public class MongoConnector {
+
     MongoDatabase database;
     MongoCollection<Project> projects;
     MongoClient client;
@@ -43,7 +45,7 @@ public class MongoConnector {
         } catch (Exception e) {
             return false;
         }
-        
+
         return true;
     }
 
@@ -53,10 +55,11 @@ public class MongoConnector {
     }
 
     public boolean addProject(Project project) {
-    Bson filter = Filters.eq("name", project.getName());
-    if (projects.find(filter).first() != null) {
-        return false;
-    }
+        Bson filter = Filters.eq("name", project.getName());
+
+        if (projects.find(filter).first() != null) {
+            return false;
+        }
 
         projects.insertOne(project);
         return true;
@@ -64,5 +67,25 @@ public class MongoConnector {
 
     public List<Project> listProjects() {
         return projects.find().into(new ArrayList<>());
+    }
+
+    public List<Program> listPrograms() {
+        List<Program> programs = new ArrayList<>();
+
+        for (Project project : listProjects()) {
+            Program program;
+
+            if (programs.stream().noneMatch(p -> p.getName().equals(project.getParent()))) {
+                program = new Program();
+                program.setName(project.getParent());
+                programs.add(program);
+            } else {
+                program = programs.stream().filter(p -> p.getName().equals(project.getParent())).findFirst().get();
+            }
+
+            program.addProject(project);
+        }
+
+        return programs;
     }
 }

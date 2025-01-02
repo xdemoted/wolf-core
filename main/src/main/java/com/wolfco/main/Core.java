@@ -5,21 +5,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 
-import com.wolfco.common.Utilities;
 import com.wolfco.common.classes.CoreCommandExecutor;
 import com.wolfco.common.classes.CorePlugin;
 import com.wolfco.main.commands.Database;
 import com.wolfco.main.commands.DelHome;
 import com.wolfco.main.commands.DelWarp;
+import com.wolfco.main.commands.Fly;
+import com.wolfco.main.commands.FlySpeed;
 import com.wolfco.main.commands.Gamemode;
 import com.wolfco.main.commands.GamemodeAlias;
 import com.wolfco.main.commands.Home;
 import com.wolfco.main.commands.Max;
 import com.wolfco.main.commands.SetHome;
 import com.wolfco.main.commands.SetWarp;
+import com.wolfco.main.commands.Speed;
 import com.wolfco.main.commands.Teleport;
 import com.wolfco.main.commands.TeleportAccept;
 import com.wolfco.main.commands.TeleportAll;
@@ -27,6 +30,8 @@ import com.wolfco.main.commands.TeleportAsk;
 import com.wolfco.main.commands.TeleportDeny;
 import com.wolfco.main.commands.TeleportHere;
 import com.wolfco.main.commands.Test;
+import com.wolfco.main.commands.Top;
+import com.wolfco.main.commands.WalkSpeed;
 import com.wolfco.main.commands.Warp;
 import com.wolfco.main.commands.WarpInfo;
 import com.wolfco.main.commands.Warps;
@@ -42,10 +47,11 @@ import net.luckperms.api.LuckPermsProvider;
 public class Core extends CorePlugin implements Listener {
 
      LuckPerms lp;
-     Utilities utils = new Utilities(this);
      YamlDocument warps;
      PlayerManager playerManager;
      DatabaseHandler db;
+
+     List<Player> afkPlayers = new ArrayList<>();
 
     @Override
     public void onEnable() {
@@ -63,7 +69,6 @@ public class Core extends CorePlugin implements Listener {
         try {
             db = new DatabaseHandler(this);
         } catch (SQLException e) {
-            return;
         }
 
         getCommandLoader().registerAll(getCommands());
@@ -87,16 +92,16 @@ public class Core extends CorePlugin implements Listener {
         return lp;
     }
 
-    public Utilities getUtilities() {
-        return utils;
-    }
-
     public YamlDocument getWarps() {
         return warps;
     }
 
     public PlayerManager getPlayerManager() {
         return playerManager;
+    }
+
+    public ChatManager getChatManager() {
+        return new ChatManager(this);
     }
 
     @Override
@@ -133,6 +138,23 @@ public class Core extends CorePlugin implements Listener {
         list.add(new Warp(this));
         list.add(new WarpInfo(this));
         list.add(new Warps(this));
+        list.add(new Top(this));
+        list.add(new FlySpeed(this));
+        list.add(new WalkSpeed(this));
+        list.add(new Speed(this));
+        list.add(new Fly(this));
         return list;
+    }
+
+    public List<Player> getAfkPlayers() {
+        return afkPlayers;
+    }
+
+    public void addAfkPlayer(Player player) {
+        afkPlayers.add(player);
+    }
+
+    public void removeAfkPlayer(Player player) {
+        afkPlayers.remove(player);
     }
 }

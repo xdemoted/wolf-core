@@ -1,10 +1,10 @@
 package com.wolfco.main.commands;
 
 import com.wolfco.common.classes.Argument;
-import com.wolfco.common.classes.ArgumentType;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommandExecutor;
 import com.wolfco.common.classes.Subcommand;
+import com.wolfco.common.classes.types.ArgumentType;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.customargs.WarpArgument;
 

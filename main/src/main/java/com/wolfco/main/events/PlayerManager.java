@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.wolfco.main.Core;
@@ -19,6 +20,7 @@ import com.wolfco.main.classes.PlayerData;
 import dev.dejvokep.boostedyaml.YamlDocument;
 
 public class PlayerManager implements Listener {
+
     Map<UUID, PlayerData> players = new HashMap<>();
     Core core;
 
@@ -70,6 +72,16 @@ public class PlayerManager implements Listener {
 
         if (players.remove(player.getUniqueId()) == null) {
             core.getLogger().log(Level.WARNING, "[Wolf-Core] Player left without data: {0}", player.getName());
+        }
+    }
+
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event) {
+        Player player = event.getPlayer();
+
+        if (core.getAfkPlayers().contains(player)) {
+            core.getAfkPlayers().remove(player);
+            core.getChatManager().sendGlobalBroadcast(player, "§8[§aNetwork§8]§a " + player.getName() + " §eis no longer AFK.");
         }
     }
 

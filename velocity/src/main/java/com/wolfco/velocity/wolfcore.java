@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -105,12 +106,15 @@ public class wolfcore {
         return configDocument;
     }
 
-    public void loadCommands() {
-        new seen(this, server.getCommandManager());
-        new list(this, server.getCommandManager());
-        new kick(this, server.getCommandManager());
-        new ban(this, server.getCommandManager());
-        new nick(this, server.getCommandManager());
+    public List<Object> loadCommands() {
+        List<Object> commands = List.of(
+            new seen(this, server.getCommandManager()),
+            new list(this, server.getCommandManager()),
+            new kick(this, server.getCommandManager()),
+            new ban(this, server.getCommandManager()),
+            new nick(this, server.getCommandManager())
+        );
+        return commands;
     }
 
     public String displayname(Player player) {

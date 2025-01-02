@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.wolfco.common.Utilities;
+import com.wolfco.common.classes.types.ArgumentType;
 
 public class Argument implements ArgumentInterface {
 
@@ -118,10 +119,6 @@ public class Argument implements ArgumentInterface {
                 searchValue;
             case ALPHANUMERICSTRING ->
                 (searchValue.matches("^[a-zA-Z0-9]*$")) ? searchValue : null;
-            case DOUBLE ->
-                (searchValue.matches("^\\d*$")) ? Double.parseDouble(searchValue) : null;
-            case INTEGER ->
-                (searchValue.matches("^\\d*$")) ? Integer.parseInt(searchValue) : null;
             case BOOLEAN ->
                 (searchValue.equalsIgnoreCase("true") || searchValue.equalsIgnoreCase("false"))
                         ? Boolean.parseBoolean(searchValue)
@@ -194,31 +191,5 @@ public class Argument implements ArgumentInterface {
 
         return returnValue;
 
-    }
-
-    @Override
-    public String getError() {
-        return String.format("Argument %1s %2s", name, switch (type) {
-            case STRING ->
-                "requires a valid string.";
-            case ALPHANUMERICSTRING ->
-                "requires a valid alphanumeric string.";
-            case DOUBLE ->
-                "requires a valid number.";
-            case INTEGER ->
-                "requires a valid integer.";
-            case BOOLEAN ->
-                "requires true or false.";
-            case GAMEMODE ->
-                "requires a valid gamemode.";
-            case PLAYER, EXCLUSIVEPLAYER, OTHERPLAYER, EXCLUSIVEOTHERPLAYER ->
-                "expected a valid player.";
-            case WORLD ->
-                "requires a valid world.";
-            case SUBCOMMAND ->
-                "requires a valid subcommand.";
-            default ->
-                "Invalid argument implementation.";
-        });
     }
 }

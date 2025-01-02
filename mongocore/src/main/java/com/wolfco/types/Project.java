@@ -1,10 +1,12 @@
 package com.wolfco.types;
 
+import java.util.List;
+
 public class Project {
     String name;
     String description;
     String parent;
-    String[] objectives;
+    List<String> objectives;
     String locations;
     State state;
 
@@ -58,11 +60,11 @@ public class Project {
         this.parent = parent;
     }
 
-    public String[] getObjectives() {
+    public List<String> getObjectives() {
         return objectives;
     }
 
-    public void setObjectives(String[] objectives) {
+    public void setObjectives(List<String> objectives) {
         this.objectives = objectives;
     }
 }

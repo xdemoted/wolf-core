@@ -7,16 +7,14 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.wolfco.common.Utilities;
 import com.wolfco.common.classes.Argument;
-import com.wolfco.common.classes.ArgumentType;
 import com.wolfco.common.classes.Command;
-import com.wolfco.common.classes.CommandTypes;
 import com.wolfco.common.classes.CoreCommandExecutor;
+import com.wolfco.common.classes.types.AccessType;
+import com.wolfco.common.classes.types.ArgumentType;
 import com.wolfco.main.Core;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
-import net.kyori.adventure.audience.Audience;
 
 public class SetWarp implements CoreCommandExecutor {
 
@@ -24,8 +22,7 @@ public class SetWarp implements CoreCommandExecutor {
     public Command getCommand() {
         Command command = new Command("setwarp");
         command.setDescription("Set a warp");
-        command.setNode("wolfcore.setwarp");
-        command.setAccessType(CommandTypes.PLAYER);
+        command.setAccessType(AccessType.PLAYER);
         command.addArgument(new Argument(ArgumentType.ALPHANUMERICSTRING, true).setName("WARPNAME"));
 
         return command;
@@ -44,17 +41,16 @@ public class SetWarp implements CoreCommandExecutor {
 
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
-        Audience audience = core.getAdventure().sender(sender);
         YamlDocument warps = core.getWarps();
         String warpName = args[0];
         Player player = (Player) sender;
         Location location = player.getLocation();
 
         if (warps.contains(warpName)) {
-            Utilities.sendColorText(audience, core.getMessage("warp.exists", List.of(warpName)));
+            core.sendPreset(sender, "warp.exists", List.of(warpName));
             return true;
         } else if (location == null) {
-            Utilities.sendColorText(audience, core.getMessage("generic.invaliddata"));
+            core.sendPreset(sender, "generic.invaliddata");
             return true;
         }
         
@@ -66,10 +62,10 @@ public class SetWarp implements CoreCommandExecutor {
         try {
             warps.save();
         } catch (IOException e) {
-            player.sendMessage("An error occurred while saving warps");
+            core.sendMessage(sender, "<red>Failed to save warps file.");
         }
 
-        Utilities.sendColorText(audience, core.getMessage("warp.set", List.of(warpName)));
+        core.sendPreset(sender, "warp.set", List.of(warpName));
         
         return true;
     }

@@ -12,14 +12,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import com.wolfco.common.Utilities;
 import com.wolfco.common.classes.Argument;
-import com.wolfco.common.classes.ArgumentType;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommandExecutor;
+import com.wolfco.common.classes.types.ArgumentType;
 import com.wolfco.main.Core;
-
-import net.kyori.adventure.audience.Audience;
 
 public class GamemodeAlias implements CoreCommandExecutor {
 
@@ -57,33 +54,39 @@ public class GamemodeAlias implements CoreCommandExecutor {
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
         Collection<Player> target = (Collection<Player>) argumentValues[0];
-        Audience senderAudience = core.getAdventure().sender(sender);
-        GameMode mode = gamemodes.get(alias);
 
-        if (mode == null) {
-            Utilities.sendColorText(senderAudience, core.getMessage("gamemode.invalid"));
+        GameMode gamemode = switch (alias) {
+            case "gms" -> GameMode.SURVIVAL;
+            case "gmc" -> GameMode.CREATIVE;
+            case "gma" -> GameMode.ADVENTURE;
+            case "gmsp" -> GameMode.SPECTATOR;
+            default -> null;
+        };
+
+        if (gamemode == null) {
+            core.sendPreset(sender, core.getMessage("gamemode.invalid"));
             return false;
         }
 
         if (target != null) {
             for (Player tempPlayer : target) {
-                tempPlayer.setGameMode(mode);
+                tempPlayer.setGameMode(gamemode);
             }
 
             if (target.size() > 1) {
-                Utilities.sendColorText(senderAudience, core.getMessage("gamemode.multisuccess", List.of(String.valueOf(target.size()), mode.toString())));
+                core.sendPreset(sender, "gamemode.multisuccess", List.of(String.valueOf(target.size()), gamemode.toString()));
                 return true;
             }
 
-            Utilities.sendColorText(senderAudience, core.getMessage("gamemode.othersuccess", List.of(mode.toString())));
+            core.sendPreset(sender, "gamemode.othersuccess", List.of(gamemode.toString()));
             return true;
         } else {
             if (sender instanceof Player player) {
-                player.setGameMode(mode);
-                Utilities.sendColorText(senderAudience, core.getMessage("gamemode.selfsuccess", List.of(mode.toString())));
+                player.setGameMode(gamemode);
+                core.sendPreset(sender, "gamemode.selfsuccess", List.of(gamemode.toString()));
                 return false;
             } else if (sender instanceof ConsoleCommandSender) {
-                Utilities.sendColorText(core.getAdventure().sender(sender), core.getMessage("generic.consoleargs", List.of("1")));
+                core.sendPreset(sender, "generic.consoleargs", List.of("1"));
                 return false;
             }
         }

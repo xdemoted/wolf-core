@@ -1,1 +1,4 @@
+com\wolfco\common\classes\types\AccessType.class
+com\wolfco\common\classes\types\ArgumentType.class
 com\wolfco\common\classes\Argument$1.class
+com\wolfco\common\classes\argumenthandlers\StaticArg.class

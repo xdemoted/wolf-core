@@ -2,14 +2,14 @@ package com.wolfco.common.classes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.wolfco.common.Utilities;
-
-import net.kyori.adventure.audience.Audience;
+import com.wolfco.common.classes.types.AccessType;
 
 public interface CoreCommandExecutor extends CommandExecutor, org.bukkit.command.TabCompleter {
 
@@ -20,7 +20,7 @@ public interface CoreCommandExecutor extends CommandExecutor, org.bukkit.command
     default String getUsage() {
         return getUsage(getCommand().name);
     }
-    
+
     default String getUsage(String alias) {
         Command command = getCommand();
         List<String> result = new ArrayList<>();
@@ -46,7 +46,7 @@ public interface CoreCommandExecutor extends CommandExecutor, org.bukkit.command
         });
         return result[0];
     }
-    
+
     default String checkArgs(String[] args, String alias) {
         Command command = getCommand();
         Integer requiredArgs = getRequiredArgs();
@@ -57,30 +57,46 @@ public interface CoreCommandExecutor extends CommandExecutor, org.bukkit.command
         }
         return null;
     }
-    
-    @Override
-    default boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
-        Audience audience = fetchCore().getAdventure().sender(sender);
-        String result = checkArgs(args, label);
-        CommandTypes accessType = getCommand().getAccessType();
-        Utilities.sendColorText(audience, getRequiredArgs().toString());
 
-        if (accessType == CommandTypes.PLAYER && !(sender instanceof Player)) { // Access Check
-            Utilities.sendColorText(audience, fetchCore().getMessage("generic.noconsole"));
+    default String[] parseQuotation(String[] args) {
+        String joinedArgs = String.join(" ", args);
+        List<String> parsedArgs = new ArrayList<>();
+        Matcher matcher = Pattern.compile("\"([^\"]*)\"|(\\S+)").matcher(joinedArgs);
+        while (matcher.find()) {
+            if (matcher.group(1) != null) {
+                parsedArgs.add(matcher.group(1));
+            } else {
+                parsedArgs.add(matcher.group(2));
+            }
+        }
+
+        return parsedArgs.toArray(String[]::new);
+    }
+
+    @Override
+    default boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label,
+             String[] args
+    ) {
+        String result = checkArgs(args, label);
+        AccessType accessType = getCommand().getAccessType();
+        CorePlugin core = fetchCore();
+
+        if (accessType == AccessType.PLAYER && !(sender instanceof Player)) { // Access Check
+            core.sendPreset(sender, "generic.noconsole");
             return false;
-        } else if (accessType == CommandTypes.CONSOLE && sender instanceof Player) {
-            Utilities.sendColorText(audience, fetchCore().getMessage("generic.noplayer"));
+        } else if (accessType == AccessType.CONSOLE && sender instanceof Player) {
+            core.sendPreset(sender, "generic.noplayer");
             return false;
         }
 
         if (result != null) { // Argument Check
-            Utilities.sendColorText(audience, result);
+            core.sendMessage(sender, result);
             return false;
         }
 
-        if (sender instanceof Player player&&!player.hasPermission(getCommand().node)) { // Permission Check
-                Utilities.sendColorText(audience, fetchCore().getMessage("generic.nopermission"));
-                return false;
+        if (sender instanceof Player player && !player.hasPermission(getCommand().node)) { // Permission Check
+            core.sendPreset(sender, "generic.nopermission");
+            return false;
         }
 
         Object[] argumentValues;
@@ -88,17 +104,21 @@ public interface CoreCommandExecutor extends CommandExecutor, org.bukkit.command
         try {
             argumentValues = getCommand().getValues(fetchCore(), sender, command, args);
         } catch (IllegalArgumentException e) {
-            Utilities.sendColorText(audience, fetchCore().getMessage("error.base", List.of(e.getMessage())));
+            core.sendPreset(sender, "error.base", List.of(e.getMessage()));
             return false;
         }
 
         return execute(sender, command, label, args, argumentValues);
     }
-    
-    abstract boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues);
+
+    abstract boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias,
+             String[] args, Object[] argumentValues
+    );
 
     @Override
-    default List<String> onTabComplete(CommandSender sender, org.bukkit.command.Command bukkitCommand, String alias, String[] args) {
+    default List<String> onTabComplete(CommandSender sender, org.bukkit.command.Command bukkitCommand, String alias,
+             String[] args
+    ) {
         TabCompleter tabComplete = new TabCompleter(fetchCore());
         return tabComplete.runTabComplete(getCommand(), sender, bukkitCommand, alias, args);
     }

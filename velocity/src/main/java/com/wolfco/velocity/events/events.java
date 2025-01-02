@@ -2,6 +2,8 @@ package com.wolfco.velocity.events;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import com.google.common.io.ByteArrayDataInput;
@@ -24,10 +26,13 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 
 public class events {
+
     public wolfcore plugin;
     public static final MinecraftChannelIdentifier IDENTIFIER = MinecraftChannelIdentifier.from("core:main");
     public JDAListener jda;
     public Component messageComponent;
+
+    public List<Player> afkPlayers = new ArrayList<>();
 
     public events(wolfcore plugin, JDAListener jda) {
         this.plugin = plugin;
@@ -38,16 +43,48 @@ public class events {
     @Subscribe
     public void onMessage(PluginMessageEvent event) {
         plugin.logger.info(event.getIdentifier().getId());
-        if (event.getIdentifier() != IDENTIFIER)
+        if (event.getIdentifier() != IDENTIFIER) {
             return;
+        }
         ByteArrayDataInput in = ByteStreams.newDataInput(event.getData());
         String subChannel = in.readUTF();
-        if (subChannel.equals("globalchat")) {
-            String formatting = in.readUTF();
-            String message = in.readUTF();
-            Boolean color = in.readBoolean();
-            plugin.broadcast(MiniMessage.miniMessage().deserialize(formatting,
-                    (color ? Placeholder.parsed("message", message) : Placeholder.parsed("message", message))));
+        switch (subChannel) {
+            case "globalchat" -> {
+                String playerName = in.readUTF();
+                String formatting = in.readUTF();
+                String message = in.readUTF();
+                Boolean color = in.readBoolean();
+                plugin.broadcast(MiniMessage.miniMessage().deserialize(formatting,
+                        (color ? Placeholder.parsed("message", message) : Placeholder.parsed("message", message))));
+                Player player = plugin.server.getPlayer(playerName).orElse(null);
+                if (player != null) {
+                    try {
+                        jda.sendMessage(player.getUsername(), message,
+                                "https://crafthead.net/helm/" + player.getUniqueId());
+                    } catch (IOException e) {
+                    }
+                }
+            }
+            case "broadcast" -> {
+                String message = in.readUTF();
+                plugin.broadcast(MiniMessage.miniMessage().deserialize(message));
+            }
+            case "afk" -> {
+                String playerName = in.readUTF();
+                Boolean afk = in.readBoolean();
+                Player player = plugin.server.getPlayer(playerName).orElse(null);
+
+                if (player != null) {
+                    if (afk&&!afkPlayers.contains(player)) {
+                        afkPlayers.add(player);
+                    } else if (!afkPlayers.contains(player)) {
+                        afkPlayers.remove(player);
+                    }
+                    tablist.update(plugin);
+                }
+            }
+            default -> {
+            }
         }
     }
 
@@ -77,7 +114,7 @@ public class events {
                 try {
                     jda.sendMessage(
                             player.getUsername(), ":arrow_right: **Has joined the network. ["
-                                    + currentName + "]**",
+                            + currentName + "]**",
                             "https://crafthead.net/helm/" + event.getPlayer().getUniqueId());
                 } catch (IOException e) {
                     plugin.logger.warn(e.getMessage());
@@ -86,10 +123,11 @@ public class events {
                         Component.text("§8[§aWelcome§8]§e There is currently §a" + plugin.server.getPlayerCount()
                                 + "§e players online.\nRun /list to get a full list of players."));
                 plugin.server.getAllPlayers().forEach(p -> {
-                    if (!p.getUsername().equals(player.getUsername()))
+                    if (!p.getUsername().equals(player.getUsername())) {
                         p.sendMessage(
                                 Component.text(
                                         "§8[§aNetwork§8]§a " + player.getUsername() + " §eHas joined the server."));
+                    }
                 });
                 return;
             }
@@ -99,7 +137,7 @@ public class events {
             try {
                 jda.sendMessage(player.getUsername(),
                         "[" + previousName + "] :arrow_right: ["
-                                + currentName + "]",
+                        + currentName + "]",
                         "https://crafthead.net/helm/" + event.getPlayer().getUniqueId());
             } catch (IOException e) {
                 plugin.logger.warn(e.getMessage());

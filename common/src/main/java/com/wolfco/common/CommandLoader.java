@@ -1,6 +1,5 @@
 package com.wolfco.common;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -14,8 +13,7 @@ import com.wolfco.common.classes.CorePlugin;
 public class CommandLoader {
      CorePlugin core;
      HashMap<String, CoreCommandExecutor> commands = new HashMap<>();
-     List<CoreCommandExecutor> executors = new ArrayList<>();
-
+     
     public CommandLoader(CorePlugin core) {
         this.core = core;
     }

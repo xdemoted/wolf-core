@@ -3,11 +3,13 @@ package com.wolfco;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.wolfco.commands.ProjectCommand;
+
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
 public class Main extends JavaPlugin {
-    MongoConnector mongoConnector = new MongoConnector("mongodb://localhost:27017/", "projectDB");
+    MongoConnector mongoConnector = new MongoConnector("mongodb://154.29.72.91:27017/", "projectDB");
     BukkitAudiences adventure;
     boolean connected;
 
@@ -23,12 +25,14 @@ public class Main extends JavaPlugin {
 
         adventure = BukkitAudiences.create(this);
 
-        getCommand("project").setExecutor(new com.wolfco.commands.ProjectCommand(this));
+        getCommand("project").setExecutor(new ProjectCommand(this));
+
+        getLogger().info("Project Manager started successfully.");
     }
 
     @Override
     public void onDisable() {
-        getLogger().info("onDisable is called!");
+        getLogger().info("Project Manager disabled.");
     }
 
     public MongoConnector getMongoConnector() {

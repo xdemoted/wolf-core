@@ -7,15 +7,12 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.wolfco.common.Utilities;
 import com.wolfco.common.classes.Command;
-import com.wolfco.common.classes.CommandTypes;
 import com.wolfco.common.classes.CoreCommandExecutor;
+import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.PlayerData;
 import com.wolfco.main.classes.customargs.HomeArgument;
-
-import net.kyori.adventure.audience.Audience;
 
 public class Home implements CoreCommandExecutor {
 
@@ -23,8 +20,7 @@ public class Home implements CoreCommandExecutor {
     public Command getCommand() {
         Command command = new Command("home");
         command.setDescription("Used to teleport to a home");
-        command.setNode("wolfcore.home");
-        command.setAccessType(CommandTypes.PLAYER);
+        command.setAccessType(AccessType.PLAYER);
         command.addArgument(new HomeArgument(false));
 
         return command;
@@ -43,7 +39,6 @@ public class Home implements CoreCommandExecutor {
 
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
-        Audience audience = core.getAdventure().sender(sender);
         com.wolfco.main.classes.Home home = (com.wolfco.main.classes.Home) argumentValues[0];
 
         if (home == null) {
@@ -51,26 +46,26 @@ public class Home implements CoreCommandExecutor {
             if (playerData != null) {
                 home = playerData.homes.get("home");
             } else {
-                Utilities.sendColorText(audience, core.getMessage("generic.invaliddata"));
+                core.sendPreset(sender, "generic.invaliddata");
                 return true;
             }
         }
 
         if (home == null) {
-            Utilities.sendColorText(audience, core.getMessage("home.notfound", List.of("home")));
+            core.sendPreset(sender, "home.notfound", List.of("home"));
             return true;
         }
 
         World world = core.getServer().getWorld(home.world);
 
         if (world == null) {
-            Utilities.sendColorText(audience, core.getMessage("home.worldinvalid", List.of(home.world.toString(), home.name)));
+            core.sendPreset(sender, "home.worldinvalid", List.of(home.world.toString(), home.name));
             return true;
         }
 
         Location location = new Location(world, home.x, home.y, home.z, home.yaw, home.pitch);
         ((Player) sender).teleport(location);
-        Utilities.sendColorText(audience, core.getMessage("home.teleported", List.of(home.name)));
+        core.sendPreset(sender, "home.teleported", List.of(home.name));
 
         return true;
     }
