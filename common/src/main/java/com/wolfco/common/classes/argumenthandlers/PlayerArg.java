@@ -1,7 +1,7 @@
 package com.wolfco.common.classes.argumenthandlers;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -42,17 +42,20 @@ public class PlayerArg implements ArgumentInterface {
 
     @Override
     public List<String> getOptions(CorePlugin core, CommandSender sender, Command bukkitCommand, String[] args) {
-        Collection<? extends String> players = core.getServer().getOnlinePlayers().stream().map(p -> p.getName()).toList();
+        List<String> players = core.getServer().getOnlinePlayers().stream().map(p -> p.getName()).collect(Collectors.toList());
 
         if (!self) {
             players.remove(sender.getName());
         }
 
-        return (List<String>) players;
+        return players;
     }
 
     @Override
     public Object getValue(CorePlugin core, CommandSender sender, Command bukkitCommand, String searchValue) {
+        if ("*".equals(searchValue)) {
+            throw error("Argument %s requires a valid online player.",name);
+        }
         if (core.getServer().getPlayer(searchValue) != null) {
             return core.getServer().getPlayer(searchValue);
         }

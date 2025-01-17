@@ -19,9 +19,8 @@ public class Home implements CoreCommandExecutor {
     @Override
     public Command getCommand() {
         Command command = new Command("home");
-        command.setDescription("Used to teleport to a home");
         command.setAccessType(AccessType.PLAYER);
-        command.addArgument(new HomeArgument(false));
+        command.addArguments(new HomeArgument(false));
 
         return command;
     }

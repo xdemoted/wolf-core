@@ -9,6 +9,7 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import com.wolfco.common.Utilities;
 import com.wolfco.main.Core;
+import com.wolfco.main.utility.FontUtil;
 
 import net.luckperms.api.cacheddata.CachedDataManager;
 import net.luckperms.api.cacheddata.CachedMetaData;
@@ -35,7 +36,7 @@ public class ChatManager implements Listener {
         String chatPrefix = metaData[0];
         String chatSuffix = metaData[1];
 
-        String formatting = Utilities.nullCheck(lpmetaData.getPrefix()) + player.getName()
+        String formatting = FontUtil.parseNameTag(Utilities.nullCheck(lpmetaData.getPrefix())) + player.getName()
                 + Utilities.nullCheck(lpmetaData.getSuffix()) + " <#555555>»<#aaaaaa> "
                 + Utilities.nullCheck(chatPrefix) + "<message>" + chatSuffix;
 

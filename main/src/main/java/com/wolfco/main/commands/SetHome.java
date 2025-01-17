@@ -5,11 +5,10 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.wolfco.common.classes.Argument;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommandExecutor;
+import com.wolfco.common.classes.argumenthandlers.StringArg;
 import com.wolfco.common.classes.types.AccessType;
-import com.wolfco.common.classes.types.ArgumentType;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.Home;
 import com.wolfco.main.classes.PlayerData;
@@ -23,9 +22,8 @@ public class SetHome implements CoreCommandExecutor {
     @Override
     public Command getCommand() {
         Command command = new Command("sethome");
-        command.setDescription("Set a home location");
         command.setAccessType(AccessType.PLAYER);
-        command.addArgument(new Argument(ArgumentType.ALPHANUMERICSTRING, false).setName("HOME"));
+        command.addArguments(new StringArg(false, true, false).setName("HOME"));
 
         return command;
     }

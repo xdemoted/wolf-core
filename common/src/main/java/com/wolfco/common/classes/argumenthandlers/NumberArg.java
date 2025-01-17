@@ -13,8 +13,8 @@ public class NumberArg implements ArgumentInterface {
 
     final boolean required;
     String name = "NUMBER";
-    double min = -1;
-    double max = -1;
+    Double min = Double.NaN;
+    Double max = Double.NaN;
     int accuracy = 0;
 
     public NumberArg(boolean required, int accuracy) {
@@ -44,9 +44,9 @@ public class NumberArg implements ArgumentInterface {
 
     public double evalConstraints(double input) {
 
-        if (min > 0 && input < min) {
+        if (!Double.isNaN(min) && input < min) {
             return min;
-        } else if (max > 0 && input > max) {
+        } else if (!Double.isNaN(max) && input > max) {
             return max;
         }
 
@@ -64,7 +64,7 @@ public class NumberArg implements ArgumentInterface {
     }
 
     @Override
-    public ArgumentInterface setName(String name) {
+    public NumberArg setName(String name) {
         this.name = name;
         return this;
     }

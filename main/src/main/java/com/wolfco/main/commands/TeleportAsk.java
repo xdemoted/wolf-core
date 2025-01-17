@@ -6,11 +6,10 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.wolfco.common.classes.Argument;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommandExecutor;
+import com.wolfco.common.classes.argumenthandlers.PlayerArg;
 import com.wolfco.common.classes.types.AccessType;
-import com.wolfco.common.classes.types.ArgumentType;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.PlayerData;
 
@@ -30,9 +29,8 @@ public class TeleportAsk implements CoreCommandExecutor {
     @Override
     public Command getCommand() {
         Command command = new Command("teleportask");
-        command.setDescription("Request a teleport to a player");
         command.setAccessType(AccessType.PLAYER);
-        command.addArgument(new Argument(ArgumentType.EXCLUSIVEOTHERPLAYER, true));
+        command.addArguments(new PlayerArg(true).includeSender(false));
 
         return command;
     }

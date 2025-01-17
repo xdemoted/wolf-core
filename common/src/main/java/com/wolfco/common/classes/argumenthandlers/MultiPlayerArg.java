@@ -1,7 +1,9 @@
 package com.wolfco.common.classes.argumenthandlers;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -43,24 +45,26 @@ public class MultiPlayerArg implements ArgumentInterface {
 
     @Override
     public List<String> getOptions(CorePlugin core, CommandSender sender, Command bukkitCommand, String[] args) {
-        Collection<String> players = core.getServer().getOnlinePlayers().stream().map(p -> p.getName()).toList();
+        List<String> players = core.getServer().getOnlinePlayers().stream().map(p -> p.getName()).collect(Collectors.toList());
+        
         players.add("*");
 
         if (!self) {
             players.remove(sender.getName());
         }
 
-        return (List<String>) players;
+        return players;
     }
 
     @Override
     public Collection<? extends Player> getValue(CorePlugin core, CommandSender sender, Command bukkitCommand, String searchValue) {
-        Collection<? extends Player> players;
+        List<Player> players;
 
         if (searchValue.equals("*")) {
-            players = core.getServer().getOnlinePlayers();
+            players = new ArrayList<>(core.getServer().getOnlinePlayers());
         } else {
-            players = List.of(core.getServer().getPlayer(searchValue));
+            players = new ArrayList<>();
+            players.add(core.getServer().getPlayer(searchValue));
         }
 
         if (sender instanceof Player && !self) {

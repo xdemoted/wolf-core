@@ -1,6 +1,5 @@
 package com.wolfco.main.commands;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -9,11 +8,9 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.wolfco.common.classes.Argument;
-import com.wolfco.common.classes.ArgumentInterface;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommandExecutor;
-import com.wolfco.common.classes.types.ArgumentType;
+import com.wolfco.common.classes.argumenthandlers.MultiPlayerArg;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.customargs.WarpArgument;
 
@@ -22,12 +19,11 @@ public class Warp implements CoreCommandExecutor {
     @Override
     public Command getCommand() {
         Command command = new Command("warp");
-        command.setDescription("Teleport to a warp");
-
-        List<ArgumentInterface> arguments = new ArrayList<>();
-        arguments.add(new WarpArgument(true));
-        arguments.add(new Argument(ArgumentType.PLAYER, false));
-        command.setArguments(arguments);
+        
+        command.addArguments(
+            new WarpArgument(true),
+            new MultiPlayerArg(false)
+        );
 
         return command;
     }
@@ -46,6 +42,7 @@ public class Warp implements CoreCommandExecutor {
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
         com.wolfco.main.classes.Warp warp = (com.wolfco.main.classes.Warp) argumentValues[0];
+        @SuppressWarnings("unchecked")
         Collection<Player> target = (Collection<Player>) argumentValues[1];
 
         World world = core.getServer().getWorld(warp.world);

@@ -30,16 +30,12 @@ commands:
     description: Help Command
   home:
     description: Home Command
-  kick:
-    description: Kick Command
-  kickall:
-    description: Kick All Command
   lag:
     description: Lag Command
   max:
     description: Max Command
-  mute:
-    description: Mute Command
+  reach:
+    description: Reach Command
   sethome:
     description: Set Home Command
   setwarp:
@@ -64,12 +60,6 @@ commands:
   teleporthere:
     aliases: [ tphere ]
     description: Teleport Here Command
-  tempban:
-    description: Temp Ban Command
-  tempbanip:
-    description: Temp Ban IP Command
-  tempmute:
-    description: Temp Mute Command
   test:
     description: Test Command
   top:
@@ -78,12 +68,6 @@ commands:
     description: Teleport Position Command
   tptoggle:
     description: Teleport Toggle Command
-  unban:
-    description: Unban Command
-  unbanip:
-    description: Unban IP Command
-  unmute:
-    description: Unmute Command
   walkspeed:
     description: Walk Speed Command
   warp:
@@ -92,6 +76,6 @@ commands:
     description: Warp Info Command
   warps:
     description: Warps List
-  whois:
-    description: Whois Command
+  world:
+    description: World Command
 

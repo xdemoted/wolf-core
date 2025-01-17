@@ -24,14 +24,12 @@ public final class playerManager {
     public wolfcore core;
     public YamlDocument offlineData;
     public YamlDocument punishmentData;
-    public punishManager punishManager;
 
     public playerManager(wolfcore core) {
         this.core = core;
         Collection<Player> onlinePlayers = core.server.getAllPlayers();
         offlineData = core.getConfig("playerHistory.yml", core.dataDirectory);
         punishmentData = core.getConfig("punishments.yml", core.dataDirectory);
-        punishManager = new punishManager(this);
 
         if (!onlinePlayers.isEmpty()) {
             for (Player player : onlinePlayers) {
@@ -47,8 +45,7 @@ public final class playerManager {
     }
 
     @Subscribe
-    public void onJoin(ServerPostConnectEvent event
-    ) {
+    public void onJoin(ServerPostConnectEvent event) {
         core.logger.warn(String.format("[Wolf-Core] Player joined: {0}", event.getPlayer().getUsername()));
         checkPlayer(event.getPlayer());
         onJoin(event.getPlayer());
@@ -65,7 +62,8 @@ public final class playerManager {
             data.set("timestamp.login", System.currentTimeMillis());
             Punishment punishment = PlayerData.isBanned();
             if (punishment != null) {
-                player.disconnect(Component.text("§4§lError: §cYou are banned from this server.\n§6Reason: §e" + punishment.reason));
+                player.disconnect(Component
+                        .text("§4§lError: §cYou are banned from this server.\n§6Reason: §e" + punishment.reason));
             }
         }
     }

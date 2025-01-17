@@ -20,6 +20,7 @@ import com.wolfco.main.commands.Gamemode;
 import com.wolfco.main.commands.GamemodeAlias;
 import com.wolfco.main.commands.Home;
 import com.wolfco.main.commands.Max;
+import com.wolfco.main.commands.Reach;
 import com.wolfco.main.commands.SetHome;
 import com.wolfco.main.commands.SetWarp;
 import com.wolfco.main.commands.Speed;
@@ -35,6 +36,7 @@ import com.wolfco.main.commands.WalkSpeed;
 import com.wolfco.main.commands.Warp;
 import com.wolfco.main.commands.WarpInfo;
 import com.wolfco.main.commands.Warps;
+import com.wolfco.main.commands.WorldCMD;
 import com.wolfco.main.events.ChatManager;
 import com.wolfco.main.events.PlayerManager;
 import com.wolfco.main.handlers.DatabaseHandler;
@@ -46,12 +48,12 @@ import net.luckperms.api.LuckPermsProvider;
 
 public class Core extends CorePlugin implements Listener {
 
-     LuckPerms lp;
-     YamlDocument warps;
-     PlayerManager playerManager;
-     DatabaseHandler db;
+    LuckPerms lp;
+    YamlDocument warps;
+    PlayerManager playerManager;
+    DatabaseHandler db;
 
-     List<Player> afkPlayers = new ArrayList<>();
+    List<Player> afkPlayers = new ArrayList<>();
 
     @Override
     public void onEnable() {
@@ -143,6 +145,8 @@ public class Core extends CorePlugin implements Listener {
         list.add(new WalkSpeed(this));
         list.add(new Speed(this));
         list.add(new Fly(this));
+        list.add(new WorldCMD(this));
+        list.add(new Reach(this));
         return list;
     }
 

@@ -16,7 +16,6 @@ public class TeleportDeny implements CoreCommandExecutor {
     @Override
     public Command getCommand() {
         Command command = new Command("teleportdeny");
-        command.setDescription("Deny a teleport request");
         command.setAccessType(AccessType.PLAYER);
 
         return command;

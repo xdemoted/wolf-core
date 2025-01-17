@@ -14,13 +14,12 @@ public class tablist {
         Collection<Player> players = core.server.getAllPlayers();
         List<TabListEntry> entries = players.stream()
                 .map(player -> TabListEntry.builder()
-                        .displayName(MiniMessage.miniMessage().deserialize(core.displayname(player)))
+                        .displayName(MiniMessage.miniMessage().deserialize(player.getUsername()))
                         .profile(player.getGameProfile())
                         .gameMode(0)
                         .tabList(player.getTabList())
                         .latency((int) (player.getPing() * 1000))
-                        .build())
-                .toList();
+                        .build()).toList();
         for (Player player : core.server.getAllPlayers()) {
             player.getTabList().clearAll();
             player.getTabList().addEntries(entries);

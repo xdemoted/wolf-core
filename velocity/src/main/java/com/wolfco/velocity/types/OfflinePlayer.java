@@ -18,9 +18,11 @@ public class OfflinePlayer {
     public OfflinePlayer(@Nonnull YamlDocument data) {
         this.data = data;
     }
+
     public void set(String key, Object value) {
         changes.put(key, value);
     }
+
     public void save() {
         for (String key : changes.keySet()) {
             data.set(key, changes.get(key));
@@ -36,18 +38,23 @@ public class OfflinePlayer {
     public long login() {
         return data.getLong("timestamp.login", (long) 0);
     }
+
     public long logout() {
         return data.getLong("timestamp.logout", (long) 0);
     }
+
     public String username() {
-        return data.getString("username", "");
+        return data.getString("username", "<default>");
     }
+
     public String nickname() {
         return data.getString("nickname", username());
     }
+
     public String ipaddress() {
-        return data.getString("ipaddress","");
+        return data.getString("ipaddress", "");
     }
+
     public List<Punishment> punishments() {
         List<Punishment> punishmentsList = new ArrayList<>();
         Section punishmentRoute = data.getSection("punishments");
@@ -65,7 +72,7 @@ public class OfflinePlayer {
         }
         return punishmentsList;
     }
-    
+
     public Punishment isBanned() {
         for (Punishment punishment : punishments()) {
             if (punishment.type.equals("ban")) {
@@ -80,23 +87,29 @@ public class OfflinePlayer {
     public void setLogin(long time) {
         set("timestamp.login", time);
     }
+
     public void setLogout(long time) {
         set("timestamp.logout", time);
     }
+
     public void setNickname(String nickname) {
         set("nickname", nickname);
     }
+
     public void setUsername(String name) {
         set("username", name);
     }
+
     public void setIP(String ip) {
         set("ipaddress", ip);
     }
+
     public void addPunishment(Punishment punishment) {
         set("punishments." + punishment.id + ".endTime", punishment.endTime);
         set("punishments." + punishment.id + ".reason", punishment.reason);
         set("punishments." + punishment.id + ".type", punishment.type);
     }
+
     public void removePunishment(String id) {
         data.remove("punishments." + id);
     }

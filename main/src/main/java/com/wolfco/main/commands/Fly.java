@@ -5,11 +5,11 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.wolfco.common.classes.Argument;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommandExecutor;
+import com.wolfco.common.classes.argumenthandlers.BooleanArg;
+import com.wolfco.common.classes.argumenthandlers.PlayerArg;
 import com.wolfco.common.classes.types.AccessType;
-import com.wolfco.common.classes.types.ArgumentType;
 import com.wolfco.main.Core;
 
 public class Fly implements CoreCommandExecutor {
@@ -17,10 +17,10 @@ public class Fly implements CoreCommandExecutor {
     @Override
     public Command getCommand() {
         Command command = new Command("fly");
-        command.setDescription("Set your fly toggle");
         command.setAccessType(AccessType.PLAYER);
-        command.addArgument(new Argument(ArgumentType.EXCLUSIVEOTHERPLAYER, false));
-        command.addArgument(new Argument(ArgumentType.BOOLEAN, false).setName("TOGGLE"));
+        command.addArguments(
+                new PlayerArg(false).includeSender(false),
+                new BooleanArg(false).setName("TOGGLE"));
 
         return command;
     }
@@ -37,8 +37,8 @@ public class Fly implements CoreCommandExecutor {
     }
 
     @Override
-    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
-        boolean toggle = (boolean) argumentValues[1];
+    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args,
+            Object[] argumentValues) {
         Player target = (Player) argumentValues[0];
 
         if (!(target instanceof Player)) {
@@ -47,9 +47,13 @@ public class Fly implements CoreCommandExecutor {
             core.sendPreset(sender, "generic.nopermission");
             return false;
         }
+        
+        boolean toggle;
 
         if (argumentValues[1] == null) {
             toggle = !target.getAllowFlight();
+        } else {
+            toggle = (boolean) argumentValues[1];
         }
 
         target.setAllowFlight(toggle);

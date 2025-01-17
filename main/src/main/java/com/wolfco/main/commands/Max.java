@@ -2,11 +2,10 @@ package com.wolfco.main.commands;
 
 import org.bukkit.command.CommandSender;
 
-import com.wolfco.common.classes.Argument;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommandExecutor;
+import com.wolfco.common.classes.argumenthandlers.StringArg;
 import com.wolfco.common.classes.types.AccessType;
-import com.wolfco.common.classes.types.ArgumentType;
 import com.wolfco.main.Core;
 import com.wolfco.main.handlers.PermissionHandler;
 
@@ -17,9 +16,8 @@ public class Max implements CoreCommandExecutor {
     @Override
     public Command getCommand() {
         Command command = new Command("max");
-        command.setDescription("Used to get the max value of a permission.");
         command.setAccessType(AccessType.PLAYER);
-        command.addArgument(new Argument(ArgumentType.STRING, true).setName("PERMISSION"));
+        command.addArguments(new StringArg(true,true,false).setName("PERMISSION"));
 
         return command;
     }

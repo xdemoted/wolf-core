@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
+import com.wolfco.common.classes.argumenthandlers.SubCommandArg;
+
 public class TabCompleter {
     private final CorePlugin core;
 
@@ -19,12 +21,10 @@ public class TabCompleter {
         result = new ArrayList<>();
 
         if (args.length > command.options.size()) {
-            if (command.options.getLast().isSubcommand()) {
-                Subcommand subcommand = (Subcommand) command.options.getLast();
+            if (command.options.getLast() instanceof SubCommandArg subcommand) {
                 Command command2 = subcommand.get(args[command.options.size() - 1].toLowerCase());
 
                 if (command2 != null) {
-                    
                     return runTabComplete(command2, sender, bukkitCommand, alias, Arrays.copyOfRange(args, command.options.size(), args.length));
                 } else {
                     return result;

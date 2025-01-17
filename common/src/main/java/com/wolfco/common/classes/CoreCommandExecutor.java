@@ -38,7 +38,7 @@ public interface CoreCommandExecutor extends CommandExecutor, org.bukkit.command
 
     default Integer getRequiredArgs() {
         Command command = getCommand();
-        final int[] result = {0};
+        final int[] result = { 0 };
         command.options.forEach(option -> {
             if (option.isRequired()) {
                 result[0]++;
@@ -75,11 +75,15 @@ public interface CoreCommandExecutor extends CommandExecutor, org.bukkit.command
 
     @Override
     default boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label,
-             String[] args
-    ) {
+            String[] args) {
         String result = checkArgs(args, label);
         AccessType accessType = getCommand().getAccessType();
         CorePlugin core = fetchCore();
+
+        if (sender instanceof Player player && !player.hasPermission(getCommand().node)) { // Permission Check
+            core.sendPreset(sender, "generic.nopermission");
+            return false;
+        }
 
         if (accessType == AccessType.PLAYER && !(sender instanceof Player)) { // Access Check
             core.sendPreset(sender, "generic.noconsole");
@@ -91,11 +95,6 @@ public interface CoreCommandExecutor extends CommandExecutor, org.bukkit.command
 
         if (result != null) { // Argument Check
             core.sendMessage(sender, result);
-            return false;
-        }
-
-        if (sender instanceof Player player && !player.hasPermission(getCommand().node)) { // Permission Check
-            core.sendPreset(sender, "generic.nopermission");
             return false;
         }
 
@@ -112,13 +111,11 @@ public interface CoreCommandExecutor extends CommandExecutor, org.bukkit.command
     }
 
     abstract boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias,
-             String[] args, Object[] argumentValues
-    );
+            String[] args, Object[] argumentValues);
 
     @Override
     default List<String> onTabComplete(CommandSender sender, org.bukkit.command.Command bukkitCommand, String alias,
-             String[] args
-    ) {
+            String[] args) {
         TabCompleter tabComplete = new TabCompleter(fetchCore());
         return tabComplete.runTabComplete(getCommand(), sender, bukkitCommand, alias, args);
     }

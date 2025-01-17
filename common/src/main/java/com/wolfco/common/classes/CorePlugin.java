@@ -113,4 +113,8 @@ public abstract class CorePlugin extends JavaPlugin {
     public void log(String log) {
         getLogger().info(log);
     }
+
+    public static CorePlugin get() {
+        return CorePlugin.getPlugin(CorePlugin.class);
+    }
 }

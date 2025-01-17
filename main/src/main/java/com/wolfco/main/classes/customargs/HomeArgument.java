@@ -59,9 +59,4 @@ public class HomeArgument implements ArgumentInterface {
 
         return playerData.homes.get(searchValue);
     }
-
-    @Override
-    public String getError() {
-        return String.format("Argument %s requires a valid home.", name);
-    }
 }

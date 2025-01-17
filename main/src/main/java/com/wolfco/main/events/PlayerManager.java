@@ -16,6 +16,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.PlayerData;
+import com.wolfco.main.handlers.TeamHandler;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 
@@ -23,9 +24,11 @@ public class PlayerManager implements Listener {
 
     Map<UUID, PlayerData> players = new HashMap<>();
     Core core;
+    TeamHandler teamHandler;
 
     public PlayerManager(Core core) {
         this.core = core;
+        teamHandler = new TeamHandler(core);
         Collection<? extends Player> onlinePlayers = core.getServer().getOnlinePlayers();
         if (!onlinePlayers.isEmpty()) {
             for (Player player : onlinePlayers) {
@@ -37,6 +40,7 @@ public class PlayerManager implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         onJoin(event.getPlayer());
+        teamHandler.updatePrefix(event.getPlayer());
     }
 
     private void onJoin(Player player) {

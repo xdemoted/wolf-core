@@ -13,7 +13,7 @@ public class BooleanArg implements ArgumentInterface {
     final boolean required;
     String name = "BOOLEAN";
 
-    public BooleanArg(boolean required, int accuracy) {
+    public BooleanArg(boolean required) {
         this.required = required;
     }
 

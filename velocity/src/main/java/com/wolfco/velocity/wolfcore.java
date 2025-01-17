@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -15,14 +14,7 @@ import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
-import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
-import com.wolfco.velocity.JDA.JDAListener;
-import com.wolfco.velocity.commands.ban;
-import com.wolfco.velocity.commands.kick;
-import com.wolfco.velocity.commands.list;
-import com.wolfco.velocity.commands.nick;
-import com.wolfco.velocity.commands.seen;
 import com.wolfco.velocity.events.events;
 import com.wolfco.velocity.events.playerManager;
 
@@ -41,9 +33,9 @@ public class wolfcore {
     public final Logger logger;
 
     public playerManager playerManager;
+    public events events;
     public LuckPerms lp;
     public YamlDocument config;
-    private JDAListener jda;
     public Map<UUID, String> playerChannels = new HashMap<>();
 
     @Inject
@@ -63,19 +55,10 @@ public class wolfcore {
             logger.warn(e.getMessage());
         }
 
-        try {
-            jda = new JDAListener(this);
-        } catch (InterruptedException e) {
-            logger.warn(e.getMessage());
-
-            Thread.currentThread().interrupt();
-        }
-        if (jda != null) {
-            server.getEventManager().register(this, new events(this, jda));
-        }
-
-        loadCommands();
         playerManager = new playerManager(this);
+
+        server.getEventManager().register(this, new events(this));
+
         logger.info("Wolf-Core Loaded Successfully");
     }
 
@@ -104,20 +87,5 @@ public class wolfcore {
             }
         }
         return configDocument;
-    }
-
-    public List<Object> loadCommands() {
-        List<Object> commands = List.of(
-            new seen(this, server.getCommandManager()),
-            new list(this, server.getCommandManager()),
-            new kick(this, server.getCommandManager()),
-            new ban(this, server.getCommandManager()),
-            new nick(this, server.getCommandManager())
-        );
-        return commands;
-    }
-
-    public String displayname(Player player) {
-        return utils.displayname(player, this);
     }
 }

@@ -15,7 +15,6 @@ public class TeleportAccept implements CoreCommandExecutor {
     @Override
     public Command getCommand() {
         Command command = new Command("teleportaccept");
-        command.setDescription("Accept a teleport request");
         command.setAccessType(AccessType.PLAYER);
         return command;
     }

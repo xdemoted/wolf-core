@@ -61,9 +61,4 @@ public class WarpArgument implements ArgumentInterface {
         warp.z = warps.getDouble(searchValue + ".z");
         return warp;
     }
-
-        @Override
-    public String getError() {
-        return String.format("Argument %s requires a valid warp.", name);
-    }
 }

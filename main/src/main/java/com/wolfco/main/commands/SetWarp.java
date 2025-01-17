@@ -7,11 +7,10 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.wolfco.common.classes.Argument;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommandExecutor;
+import com.wolfco.common.classes.argumenthandlers.StringArg;
 import com.wolfco.common.classes.types.AccessType;
-import com.wolfco.common.classes.types.ArgumentType;
 import com.wolfco.main.Core;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
@@ -21,9 +20,8 @@ public class SetWarp implements CoreCommandExecutor {
     @Override
     public Command getCommand() {
         Command command = new Command("setwarp");
-        command.setDescription("Set a warp");
         command.setAccessType(AccessType.PLAYER);
-        command.addArgument(new Argument(ArgumentType.ALPHANUMERICSTRING, true).setName("WARPNAME"));
+        command.addArguments(new StringArg(true, true, false).setName("WARP"));
 
         return command;
     }

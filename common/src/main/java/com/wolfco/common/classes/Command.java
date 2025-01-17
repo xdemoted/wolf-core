@@ -6,14 +6,13 @@ import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
+import com.wolfco.common.classes.argumenthandlers.SubCommandArg;
 import com.wolfco.common.classes.types.AccessType;
 
 public class Command { // TODO Add help command support; add descriptions to commands
 
     String name;
-    String node;
-    String displayName;
-    String description;
+    String node = null;
 
     AccessType accessType = AccessType.ALL;
     List<ArgumentInterface> options = new ArrayList<>();
@@ -27,18 +26,16 @@ public class Command { // TODO Add help command support; add descriptions to com
         return name;
     }
 
-    public Command setDisplayName(String displayName) {
-        this.displayName = displayName;
-        return this;
+    public void usePermissions(boolean use) {
+        if (use) {
+            node = "wolfcore." + name;
+        } else {
+            node = null;
+        }
     }
 
     public Command setNode(String node) {
         this.node = node;
-        return this;
-    }
-
-    public Command setDescription(String description) {
-        this.description = description;
         return this;
     }
 
@@ -62,7 +59,7 @@ public class Command { // TODO Add help command support; add descriptions to com
             } else if (this.options.get(i).isRequired() && !required) {
                 throw new IllegalArgumentException("Required arguments must be first");
             }
-            if (this.options.get(i).isSubcommand()) {
+            if (this.options.get(i) instanceof SubCommandArg) {
                 throw new IllegalArgumentException("Subcommand must be the last argument");
             }
         }

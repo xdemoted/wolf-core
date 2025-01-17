@@ -15,8 +15,7 @@ public class WarpInfo implements CoreCommandExecutor {
     @Override
     public Command getCommand() {
         Command command = new Command("warpinfo");
-        command.setDescription("Get information about a warp");
-        command.addArgument(new WarpArgument(true));
+        command.addArguments(new WarpArgument(true));
         return command;
     }
 

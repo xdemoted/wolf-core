@@ -1,6 +1,5 @@
 package com.wolfco.main.commands;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -12,10 +11,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import com.wolfco.common.classes.Argument;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommandExecutor;
-import com.wolfco.common.classes.types.ArgumentType;
+import com.wolfco.common.classes.argumenthandlers.MultiPlayerArg;
 import com.wolfco.main.Core;
 
 public class GamemodeAlias implements CoreCommandExecutor {
@@ -32,9 +30,8 @@ public class GamemodeAlias implements CoreCommandExecutor {
     @Override
     public Command getCommand() {
         Command command = new Command("gms");
-        command.setDescription("Used to modify player's gamemode.");
         command.setNode("wolfcore.gamemode");
-        command.setArguments(Arrays.asList(new Argument(ArgumentType.OTHERPLAYER, false)));
+        command.addArguments(new MultiPlayerArg(false).includeSender(false));
 
         return command;
     }

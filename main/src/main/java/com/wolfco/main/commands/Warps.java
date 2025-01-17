@@ -10,7 +10,6 @@ public class Warps implements CoreCommandExecutor {
     @Override
     public Command getCommand() {
         Command command = new Command("warps");
-        command.setDescription("Lists available warps.");
 
         return command;
     }

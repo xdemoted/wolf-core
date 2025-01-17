@@ -14,7 +14,6 @@ public class Database implements CoreCommandExecutor {
     @Override
     public Command getCommand() {
         Command command = new Command("database");
-        command.setDescription("Manage the schematic database");
         return command;
     }
 

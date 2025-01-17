@@ -1,7 +1,6 @@
 package com.wolfco.main.commands;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
@@ -16,8 +15,7 @@ public class DelWarp implements CoreCommandExecutor {
     @Override
     public Command getCommand() {
         Command command = new Command("delwarp");
-        command.setDescription("Used to delete warps");
-        command.setArguments(Arrays.asList(new WarpArgument(true)));
+        command.addArguments(new WarpArgument(true));
 
         return command;
     }

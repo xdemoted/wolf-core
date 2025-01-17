@@ -1,7 +1,5 @@
 package com.wolfco.velocity.events;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +15,7 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ServerConnection;
 import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
-import com.wolfco.velocity.JDA.JDAListener;
+import com.wolfco.velocity.managers.WebhookManager;
 import com.wolfco.velocity.modules.tablist;
 import com.wolfco.velocity.wolfcore;
 
@@ -29,14 +27,12 @@ public class events {
 
     public wolfcore plugin;
     public static final MinecraftChannelIdentifier IDENTIFIER = MinecraftChannelIdentifier.from("core:main");
-    public JDAListener jda;
     public Component messageComponent;
 
     public List<Player> afkPlayers = new ArrayList<>();
 
-    public events(wolfcore plugin, JDAListener jda) {
+    public events(wolfcore plugin) {
         this.plugin = plugin;
-        this.jda = jda;
         plugin.server.getChannelRegistrar().register(IDENTIFIER);
     }
 
@@ -57,12 +53,9 @@ public class events {
                 plugin.broadcast(MiniMessage.miniMessage().deserialize(formatting,
                         (color ? Placeholder.parsed("message", message) : Placeholder.parsed("message", message))));
                 Player player = plugin.server.getPlayer(playerName).orElse(null);
+                
                 if (player != null) {
-                    try {
-                        jda.sendMessage(player.getUsername(), message,
-                                "https://crafthead.net/helm/" + player.getUniqueId());
-                    } catch (IOException e) {
-                    }
+                    WebhookManager.sendMessage(player, message);
                 }
             }
             case "broadcast" -> {
@@ -75,7 +68,7 @@ public class events {
                 Player player = plugin.server.getPlayer(playerName).orElse(null);
 
                 if (player != null) {
-                    if (afk&&!afkPlayers.contains(player)) {
+                    if (afk && !afkPlayers.contains(player)) {
                         afkPlayers.add(player);
                     } else if (!afkPlayers.contains(player)) {
                         afkPlayers.remove(player);
@@ -91,14 +84,7 @@ public class events {
     @Subscribe
     public void onLogout(DisconnectEvent event) {
         Player player = event.getPlayer();
-        try {
-            jda.sendMessage(player.getUsername(), ":arrow_left: **Has left the network.**",
-                    "https://crafthead.net/helm/" + player.getUniqueId());
-        } catch (MalformedURLException e) {
-            plugin.logger.warn(e.getMessage());
-        } catch (IOException e) {
-            plugin.logger.warn(e.getMessage());
-        }
+        WebhookManager.sendMessage(player, "## :arrow_left: **Has left the network.**", false);
         Component text = Component.text("§8[§aNetwork§8]§a " + player.getUsername() + " §eHas left the server.");
         plugin.broadcast(text);
     }
@@ -111,14 +97,8 @@ public class events {
             String currentName = player.getCurrentServer().get().getServerInfo().getName();
             RegisteredServer previous = event.getPreviousServer();
             if (previous == null) {
-                try {
-                    jda.sendMessage(
-                            player.getUsername(), ":arrow_right: **Has joined the network. ["
-                            + currentName + "]**",
-                            "https://crafthead.net/helm/" + event.getPlayer().getUniqueId());
-                } catch (IOException e) {
-                    plugin.logger.warn(e.getMessage());
-                }
+                WebhookManager.sendMessage(player, "## :arrow_right: **Has joined the network. ["
+                        + currentName + "]**", false);
                 player.sendMessage(
                         Component.text("§8[§aWelcome§8]§e There is currently §a" + plugin.server.getPlayerCount()
                                 + "§e players online.\nRun /list to get a full list of players."));
@@ -134,14 +114,8 @@ public class events {
             String previousName = previous.getServerInfo().getName();
             plugin.broadcast(Component.text("§8[§aNetwork§8]§a " + player.getUsername() + " §eswitched to §8[§a"
                     + player.getCurrentServer().get().getServerInfo().getName() + "§8]"));
-            try {
-                jda.sendMessage(player.getUsername(),
-                        "[" + previousName + "] :arrow_right: ["
-                        + currentName + "]",
-                        "https://crafthead.net/helm/" + event.getPlayer().getUniqueId());
-            } catch (IOException e) {
-                plugin.logger.warn(e.getMessage());
-            }
+            WebhookManager.sendMessage(player, "## [" + previousName + "] :arrow_right: ["
+                    + currentName + "]", false);
         } else {
             plugin.logger.warn("No current server found.");
         }

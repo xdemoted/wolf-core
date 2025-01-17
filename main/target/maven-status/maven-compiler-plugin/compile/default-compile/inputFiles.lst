@@ -1,35 +1,41 @@
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\classes\customArgs\WarpArgument.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\commands\Database.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\commands\TeleportDeny.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\commands\WarpInfo.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\classes\Request.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\commands\Max.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\commands\TeleportAsk.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\handlers\DatabaseHandler.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\commands\SetHome.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\commands\Top.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\classes\Home.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\events\PlayerManager.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\events\ChatManager.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\commands\Warps.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\commands\SetWarp.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\commands\TeleportHere.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\commands\DelWarp.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\commands\Test.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\classes\PlayerData.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\commands\GamemodeAlias.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\commands\TeleportAll.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\commands\Fly.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\commands\Warp.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\Core.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\commands\Speed.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\commands\WalkSpeed.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\commands\DelHome.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\commands\Teleport.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\commands\FlySpeed.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\commands\Gamemode.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\handlers\PermissionHandler.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\classes\customArgs\HomeArgument.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\commands\Home.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\commands\TeleportAccept.java
-C:\Users\Adam\OneDrive\Documents\workspace\wolf-co temp\wolf-core\main\src\main\java\com\wolfco\main\classes\Warp.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\AFK.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\Test.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\Reach.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\Teleport.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\Warps.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\events\PlayerManager.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\utility\FontUtil.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\handlers\TeamHandler.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\utility\ColorUtil.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\classes\PlayerData.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\Warp.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\events\ChatManager.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\classes\Warp.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\WalkSpeed.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\handlers\DatabaseHandler.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\classes\Home.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\handlers\PermissionHandler.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\Database.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\TeleportAccept.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\SetHome.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\DelHome.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\TeleportHere.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\WarpInfo.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\TeleportAsk.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\Top.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\SetWarp.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\WorldCMD.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\GamemodeAlias.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\DelWarp.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\Core.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\Gamemode.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\TeleportAll.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\TeleportDeny.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\Speed.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\classes\customargs\HomeArgument.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\Max.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\classes\Request.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\Home.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\classes\customargs\WarpArgument.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\Fly.java
+C:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\FlySpeed.java

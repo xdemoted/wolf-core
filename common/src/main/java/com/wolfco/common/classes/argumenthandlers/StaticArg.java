@@ -14,9 +14,9 @@ public class StaticArg implements ArgumentInterface {
     List<String> options;
 
 
-    public StaticArg(boolean required, List<String> options) {
+    public StaticArg(boolean required, String... options) {
         this.required = required;
-        this.options = options;
+        this.options = List.of(options);
     }
 
     @Override

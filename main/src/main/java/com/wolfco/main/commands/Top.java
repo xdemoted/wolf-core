@@ -15,8 +15,6 @@ public class Top implements CoreCommandExecutor {
     @Override
     public Command getCommand() {
         Command command = new Command("top");
-
-        command.setDescription("Move to the highest block at your location");
         command.setAccessType(AccessType.PLAYER);
 
         return command;

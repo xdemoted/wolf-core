@@ -18,9 +18,8 @@ public class DelHome implements CoreCommandExecutor {
     @Override
     public Command getCommand() {
         Command command = new Command("delhome");
-        command.setDescription("Used to delete homes");
         command.setAccessType(AccessType.PLAYER);
-        command.addArgument(new HomeArgument(true));
+        command.addArguments(new HomeArgument(true));
 
         return command;
     }

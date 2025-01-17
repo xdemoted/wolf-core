@@ -15,11 +15,12 @@ public interface ArgumentInterface {
             if (part.isBlank()) {
                 continue;
             }
+
             if (i >= args.length) {
                 break;
             }
 
-            formattedMessage.append(String.format(part, args[i]));
+            formattedMessage.append(String.format("%" + part, args[i]));
         }
 
         message = formattedMessage.toString();

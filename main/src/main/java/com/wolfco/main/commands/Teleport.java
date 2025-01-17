@@ -1,15 +1,13 @@
 package com.wolfco.main.commands;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.wolfco.common.classes.Argument;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommandExecutor;
-import com.wolfco.common.classes.types.ArgumentType;
+import com.wolfco.common.classes.argumenthandlers.PlayerArg;
 import com.wolfco.main.Core;
 
 public class Teleport implements CoreCommandExecutor {
@@ -17,10 +15,10 @@ public class Teleport implements CoreCommandExecutor {
     @Override
     public Command getCommand() {
         Command command = new Command("teleport");
-        command.setDescription("Teleport to a player or teleport a player to another player.");
-        command.setArguments(Arrays.asList(
-                new Argument(ArgumentType.EXCLUSIVEPLAYER, true).setName("PLAYER1"),
-                new Argument(ArgumentType.EXCLUSIVEOTHERPLAYER, false).setName("PLAYER2")));
+        command.addArguments(
+                new PlayerArg(true).includeSender(false).setName("PLAYER1"),
+                new PlayerArg(false).includeSender(false).setName("PLAYER2")
+                );
 
         return command;
     }

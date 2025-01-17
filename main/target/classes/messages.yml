@@ -60,5 +60,5 @@ fly:
   success: "<#00ff00>Flight %0%."
   othersuccess: "<#00ff00>Flight %0% for <#ffff00>%1%"
 error:
-  base: "<#aa0000><b>Error:</b> <#ff5555>%0%"
+  base: "<#aa0000><b>Error:</b> <red>%0%"
 
