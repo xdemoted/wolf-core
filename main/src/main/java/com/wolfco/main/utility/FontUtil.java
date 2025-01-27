@@ -37,7 +37,7 @@ public class FontUtil {
         fontMap.put("Y", "ꑪ");
         fontMap.put("Z", "ꑫ");
     }
-
+ 
     static public String createNameTag(String name, String textColor) {
         StringBuilder sb = new StringBuilder();
         String colorStart = "<#" + textColor + ">";
