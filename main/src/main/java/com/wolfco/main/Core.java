@@ -1,17 +1,16 @@
 package com.wolfco.main;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 import com.wolfco.common.classes.CoreCommandExecutor;
 import com.wolfco.common.classes.CorePlugin;
-import com.wolfco.main.commands.Database;
 import com.wolfco.main.commands.DelHome;
 import com.wolfco.main.commands.DelWarp;
 import com.wolfco.main.commands.Fly;
@@ -39,7 +38,8 @@ import com.wolfco.main.commands.Warps;
 import com.wolfco.main.commands.WorldCMD;
 import com.wolfco.main.events.ChatManager;
 import com.wolfco.main.events.PlayerManager;
-import com.wolfco.main.handlers.DatabaseHandler;
+import com.wolfco.main.handlers.MongoDatabase;
+import com.wolfco.main.handlers.WebhookManager;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
@@ -51,7 +51,7 @@ public class Core extends CorePlugin implements Listener {
     LuckPerms lp;
     YamlDocument warps;
     PlayerManager playerManager;
-    DatabaseHandler db;
+    MongoDatabase db;
 
     List<Player> afkPlayers = new ArrayList<>();
 
@@ -68,11 +68,6 @@ public class Core extends CorePlugin implements Listener {
         setMainConfig(getConfigDocument("config.yml"));
         warps = getConfigDocument("warps.yml");
 
-        try {
-            db = new DatabaseHandler(this);
-        } catch (SQLException e) {
-        }
-
         getCommandLoader().registerAll(getCommands());
         playerManager = new PlayerManager(this);
 
@@ -84,9 +79,32 @@ public class Core extends CorePlugin implements Listener {
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "core:main");
 
         this.getLogger().info("[Wolf-Core] Plugin enabled");
+
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            WebhookManager webhook = new WebhookManager(this);
+
+            String out = "# " + getMainConfig().getString("server-name","Unknown Server") + " has started up.\n\n";
+
+            out += "## Plugins loaded:\n";
+
+            for (Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
+                String message = "- **" + plugin.getName() + "** v" + plugin.getDescription().getVersion();
+
+                if (plugin.isEnabled() == false) {
+                    message += " **(Disabled)**";
+                }
+                message += "\n";
+
+                out += message;
+            }
+
+            out += "\n## [ End Log ]";
+
+            webhook.sendLog(out);
+        }, 20L * 10L);
     }
 
-    public DatabaseHandler getDatabaseHandler() {
+    public MongoDatabase getDatabaseHandler() {
         return db;
     }
 
@@ -116,12 +134,15 @@ public class Core extends CorePlugin implements Listener {
 
         Bukkit.getMessenger().unregisterOutgoingPluginChannel(this, "core:main");
         this.getLogger().info("[Wolf-Core] Plugin disabled");
+
+        WebhookManager webhook = new WebhookManager(this);
+
+        webhook.sendLog("# " + getMainConfig().getString("server-name","Unknown Server") + " has shutdown.");
     }
 
     @Override
     public List<CoreCommandExecutor> getCommands() {
         List<CoreCommandExecutor> list = new ArrayList<>();
-        list.add(new Database(this));
         list.add(new DelHome(this));
         list.add(new DelWarp(this));
         list.add(new Gamemode(this));

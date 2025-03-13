@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.bukkit.entity.Player;
 
@@ -113,5 +114,13 @@ public class Utilities {
 
     public static Component colorizeText(String string) {
         return MiniMessage.miniMessage().deserialize(string);
+    }
+
+    public static double getRandomDouble(double min, double max) {
+        return Math.random() * (max - min) + min;
+    }
+
+    public static <T> T getRandomValue(List<T> list) {
+        return list.get(new Random().nextInt(list.size()));
     }
 }

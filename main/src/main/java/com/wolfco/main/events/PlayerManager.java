@@ -39,6 +39,8 @@ public class PlayerManager implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
+        event.setJoinMessage(null);
+
         onJoin(event.getPlayer());
         teamHandler.updatePrefix(event.getPlayer());
     }
@@ -56,6 +58,8 @@ public class PlayerManager implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
+        event.setQuitMessage(null);
+
         Player player = event.getPlayer();
         PlayerData playerData = players.get(player.getUniqueId());
 

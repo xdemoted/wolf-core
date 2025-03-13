@@ -34,7 +34,7 @@ public abstract class CorePlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        commandLoader.registerAll(getCommands());
+        // commandLoader.registerAll(getCommands());
     }
 
     public BukkitAudiences getAdventure() {

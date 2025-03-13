@@ -2,4 +2,9 @@ name: wolf-core-smp
 version: "1.0-SNAPSHOT"
 api-version: 1.20
 author: Demoted
-main: com.wolfco.main
+main: com.wolfco.survival.Core
+commands:
+  raycast:
+    description: Raycast Command
+  resistance:
+    description: Resistance Command
