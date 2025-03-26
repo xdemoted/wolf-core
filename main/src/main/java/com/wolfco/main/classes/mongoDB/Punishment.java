@@ -8,9 +8,9 @@ public class Punishment {
     private ObjectId id;
     
     @BsonProperty(value="end_time")
-    private String endTime;
+    private Long endTime;
     @BsonProperty(value="start_time")
-    private String startTime;
+    private Long startTime;
     private ObjectId appeal;
     private String reason;
     private String status;
@@ -18,83 +18,84 @@ public class Punishment {
     private String moderator;
     private String uuid;
 
-    public long getEndTime() {
-        return Long.parseLong(endTime);
+    public Long getEndTime() {
+        return endTime;
     }
 
-    public void setEndTime(long endTime) {
-        this.endTime = Long.toString(endTime);
-    }
-
-    public void setEndTime(String endTime) {
+    public Punishment setEndTime(Long endTime) {
         this.endTime = endTime;
+        return this;
     }
 
-    public long getStartTime() {
-        return Long.parseLong(startTime);
+    public Long getStartTime() {
+        return startTime;
     }
 
-    public void setStartTime(long startTime) {
-        this.startTime = Long.toString(startTime);
-    }
-
-    public void setStartTime(String startTime) {
+    public Punishment setStartTime(Long startTime) {
         this.startTime = startTime;
+        return this;
     }
 
     public ObjectId getAppeal() {
         return appeal;
     }
 
-    public void setAppeal(ObjectId appeal) {
+    public Punishment setAppeal(ObjectId appeal) {
         this.appeal = appeal;
+        return this;
     }
 
     public String getReason() {
         return reason;
     }
 
-    public void setReason(String reason) {
+    public Punishment setReason(String reason) {
         this.reason = reason;
+        return this;
     }
 
     public String getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public Punishment setStatus(String status) {
         this.status = status;
+        return this;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public Punishment setType(String type) {
         this.type = type;
+        return this;
     }
 
     public String getModerator() {
         return moderator;
     }
 
-    public void setModerator(String moderator) {
+    public Punishment setModerator(String moderator) {
         this.moderator = moderator;
+        return this;
     }
 
     public String getUUID() {
         return uuid;
     }
 
-    public void setUUID(String uuid) {
+    public Punishment setUUID(String uuid) {
         this.uuid = uuid;
+        return this;
     }
 
     public ObjectId getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public Punishment setId(ObjectId id) {
         this.id = id;
+        return this;
     }
 }
