@@ -1,6 +1,7 @@
 package com.wolfco.main.handlers;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
@@ -19,6 +20,7 @@ import com.wolfco.main.Core;
 import com.wolfco.main.classes.mongoDB.Appeal;
 import com.wolfco.main.classes.mongoDB.GlobalPlayer;
 import com.wolfco.main.classes.mongoDB.Punishment;
+import com.wolfco.main.classes.mongoDB.subtypes.Address;
 
 import reactor.core.publisher.Flux;
 
@@ -61,30 +63,37 @@ public class MongoDatabase {
             punishments = database.getCollection("Punishments", Punishment.class);
             appeals = database.getCollection("Appeals", Appeal.class);
 
-            Punishment punishment = new Punishment()
-                    .setUUID("2cbf357d-5038-4115-a868-e4dfd6c7538b")
-                    .setModerator("Wolf")
-                    .setReason("Hacking")
-                    .setType("Ban")
-                    .setStatus("Active")
-                    .setStartTime(System.currentTimeMillis())
-                    .setEndTime(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7)
-                    .setAppeal(null);
+            GlobalPlayer player = new GlobalPlayer()
+            .setUUID("2cbf357d-5038-4444-a868-e4dfd6c7538b")
+            .setDiscordID("123456789")
+            .setNickname("Test")
+            .setLastLogin(System.currentTimeMillis())
+            .setLastLogout(System.currentTimeMillis())
+            .setPunishments(List.of())
+            .setAddresses(List.of(
+                new Address()
+                .setIp(uri)
+                .setLastUsed(System.currentTimeMillis())
+                .setUses(1)
+            ))
+            .setUsernames(List.of("Demoted__"))
+            .setFriends(List.of("2cbf357d-5038-4444-a868-e4dfd6c7538b"));
 
-            Publisher<InsertOneResult> insertPublisher = punishments.insertOne(punishment);
+
+            Publisher<InsertOneResult> insertPublisher = players.insertOne(player);
 
             Flux.from(insertPublisher)
                     .doOnNext(s -> {
-                        System.out.println("Inserted punishment: " + s);
+                        System.out.println("Inserted player: " + s);
                     })
                     .blockLast();
 
-            FindPublisher<Punishment> findPublisher = punishments
+            FindPublisher<GlobalPlayer> findPublisher = players
                     .find(eq("uuid", "2cbf357d-5038-4444-a868-e4dfd6c7538b"));
 
             Flux.from(findPublisher)
                     .doOnNext(s -> {
-                        System.out.println("Found punishment: " + s.getReason());
+                        System.out.println("Found punishment: " + s.getNickname());
                     })
                     .blockLast();
         }

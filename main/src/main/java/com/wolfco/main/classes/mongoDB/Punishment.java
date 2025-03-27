@@ -16,7 +16,9 @@ public class Punishment {
     private String status;
     private String type;
     private String moderator;
-    private String uuid;
+
+    @BsonProperty(value="uuid_text")
+    private String UUID;
 
     public Long getEndTime() {
         return endTime;
@@ -82,11 +84,11 @@ public class Punishment {
     }
 
     public String getUUID() {
-        return uuid;
+        return UUID;
     }
 
     public Punishment setUUID(String uuid) {
-        this.uuid = uuid;
+        this.UUID = uuid;
         return this;
     }
 
