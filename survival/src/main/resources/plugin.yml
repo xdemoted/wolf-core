@@ -8,3 +8,5 @@ commands:
     description: Raycast Command
   resistance:
     description: Resistance Command
+  findlog:
+    description: Find Log Command

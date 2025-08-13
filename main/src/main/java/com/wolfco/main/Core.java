@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -39,10 +38,10 @@ import com.wolfco.main.commands.WorldCMD;
 import com.wolfco.main.events.ChatManager;
 import com.wolfco.main.events.PlayerManager;
 import com.wolfco.main.handlers.MongoDatabase;
+import com.wolfco.main.handlers.RedisManager;
 import com.wolfco.main.handlers.WebhookManager;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 
@@ -51,9 +50,8 @@ public class Core extends CorePlugin implements Listener {
     LuckPerms lp;
     YamlDocument warps;
     PlayerManager playerManager;
-    MongoDatabase db;
-
-    List<Player> afkPlayers = new ArrayList<>();
+    MongoDatabase mongoDatabase;
+    RedisManager redisManager;
 
     @Override
     public void onEnable() {
@@ -66,78 +64,46 @@ public class Core extends CorePlugin implements Listener {
         getAdventure();
 
         setMainConfig(getConfigDocument("config.yml"));
+
         warps = getConfigDocument("warps.yml");
 
-        getCommandLoader().registerAll(getCommands());
+        registerCommands();
+
+        /*
+        try {
+            mongoDatabase = new MongoDatabase(this);
+            redisManager = new RedisManager(getMainConfig().getString("server-name", "Unknown Server"));
+        } catch (IOException e) {
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
+        */
+
         playerManager = new PlayerManager(this);
 
-        PluginManager pm = getServer().getPluginManager();
-        pm.registerEvents(this, this);
-        pm.registerEvents(playerManager, this);
-        pm.registerEvents(new ChatManager(this), this);
+        registerEvents();
 
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "core:main");
 
-        this.getLogger().info("[Wolf-Core] Plugin enabled");
-
         Bukkit.getScheduler().runTaskLater(this, () -> {
-            WebhookManager webhook = new WebhookManager(this);
-
-            String out = "# " + getMainConfig().getString("server-name","Unknown Server") + " has started up.\n\n";
-
-            out += "## Plugins loaded:\n";
-
-            for (Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
-                String message = "- **" + plugin.getName() + "** v" + plugin.getDescription().getVersion();
-
-                if (plugin.isEnabled() == false) {
-                    message += " **(Disabled)**";
-                }
-                message += "\n";
-
-                out += message;
-            }
-
-            out += "\n## [ End Log ]";
-
-            webhook.sendLog(out);
+            sendStartUpMessage();
+            this.getLogger().info("[Wolf-Core] Plugin enabled");
         }, 20L * 10L);
-    }
-
-    public MongoDatabase getDatabaseHandler() {
-        return db;
-    }
-
-    public LuckPerms getLuckPerms() {
-        return lp;
-    }
-
-    public YamlDocument getWarps() {
-        return warps;
-    }
-
-    public PlayerManager getPlayerManager() {
-        return playerManager;
-    }
-
-    public ChatManager getChatManager() {
-        return new ChatManager(this);
     }
 
     @Override
     public void onDisable() {
-        BukkitAudiences adventure = getAdventure();
+        redisManager.sendSystemMessage("offline");
+        redisManager.close();
 
-        if (adventure != null) {
-            adventure.close();
-        }
+        mongoDatabase.close();
+
+        getAdventure().close();
 
         Bukkit.getMessenger().unregisterOutgoingPluginChannel(this, "core:main");
+
         this.getLogger().info("[Wolf-Core] Plugin disabled");
 
-        WebhookManager webhook = new WebhookManager(this);
-
-        webhook.sendLog("# " + getMainConfig().getString("server-name","Unknown Server") + " has shutdown.");
+        sendShutDownMessage();
     }
 
     @Override
@@ -171,15 +137,80 @@ public class Core extends CorePlugin implements Listener {
         return list;
     }
 
-    public List<Player> getAfkPlayers() {
-        return afkPlayers;
+    private void registerEvents() {
+        PluginManager pm = getServer().getPluginManager();
+        pm.registerEvents(this, this);
+        pm.registerEvents(playerManager, this);
+        pm.registerEvents(new ChatManager(this), this);
     }
 
-    public void addAfkPlayer(Player player) {
-        afkPlayers.add(player);
+    private void registerCommands() {
+        getCommandLoader().registerAll(getCommands());
     }
 
-    public void removeAfkPlayer(Player player) {
-        afkPlayers.remove(player);
+    private void sendStartUpMessage() {
+        WebhookManager webhook = new WebhookManager(this);
+
+        String out = "# " + getMainConfig().getString("server-name", "Unknown Server") + " has started up.\n\n";
+
+        out += "## Plugins loaded:\n";
+
+        for (Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
+            String message = "- **" + plugin.getName() + "** v" + plugin.getDescription().getVersion();
+
+            if (plugin.isEnabled() == false) {
+                message += " **(Disabled)**";
+            }
+            message += "\n";
+
+            out += message;
+        }
+
+        out += "\n## [ End Log ]";
+
+        webhook.sendLog(out);
+    }
+
+    private void sendShutDownMessage() {
+        WebhookManager webhook = new WebhookManager(this);
+        webhook.sendLog("# " + getMainConfig().getString("server-name", "Unknown Server") + " has shutdown.");
+    }
+
+    public String getServerName() {
+        return getMainConfig().getString("server-name", "Unknown Server");
+    }
+
+    public MongoDatabase getDatabaseHandler() {
+        return mongoDatabase;
+    }
+
+    public RedisManager getRedisManager() {
+        return redisManager;
+    }
+
+    public LuckPerms getLuckPerms() {
+        return lp;
+    }
+
+    public YamlDocument getWarps() {
+        return warps;
+    }
+
+    public PlayerManager getPlayerManager() {
+        return playerManager;
+    }
+
+    public ChatManager getChatManager() {
+        return new ChatManager(this);
+    }
+
+    public void disable() {
+        this.log("Forced disable called internally.");
+        Bukkit.getPluginManager().disablePlugin(this);
+    }
+
+    public void disable(String reason) {
+        this.log("Forced disable called internally. Reason: " + reason);
+        Bukkit.getPluginManager().disablePlugin(this);
     }
 }

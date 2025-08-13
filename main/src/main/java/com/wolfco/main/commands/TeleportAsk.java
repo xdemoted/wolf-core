@@ -1,7 +1,6 @@
 package com.wolfco.main.commands;
 
 import java.util.HashMap;
-import java.util.List;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -11,7 +10,6 @@ import com.wolfco.common.classes.CoreCommandExecutor;
 import com.wolfco.common.classes.argumenthandlers.PlayerArg;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.main.Core;
-import com.wolfco.main.classes.PlayerData;
 
 public class TeleportAsk implements CoreCommandExecutor {
 
@@ -46,29 +44,13 @@ public class TeleportAsk implements CoreCommandExecutor {
         this.core = core;
     }
 
+    // TODO: Finish teleport ask command
+
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
         Player receiver = (Player) argumentValues[0];
-        PlayerData receiverData = core.getPlayerManager().getPlayerData(receiver);
+        var receiverData = core.getPlayerManager().getPlayerData(receiver);
 
-        if (receiverData == null) {
-            core.sendPreset(sender, "generic.playernotfound");
-            return false;
-        }
-
-        if (receiverData.lastRequest.host == sender
-                && System.currentTimeMillis() - receiverData.lastRequest.startTime < 30000) {
-            core.sendPreset(sender, "teleportask.existing");
-            return false;
-        } else {
-            receiverData.sendRequest((Player) sender, requestTypes.get(command.getName()));
-            core.sendPreset(sender, "teleportask.sent", List.of(receiver.getName()));
-            if (receiverData.lastRequest.type.equalsIgnoreCase("tpa")) {
-                core.sendPreset(sender, "teleportask.received", List.of(sender.getName()));
-            } else if (receiverData.lastRequest.type.equalsIgnoreCase("tpahere")) {
-                core.sendPreset(sender, "teleportask.receivedhere", List.of(sender.getName()));
-            }
-            return true;
-        }
+        return true;
     }
 }

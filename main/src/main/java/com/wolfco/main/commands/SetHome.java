@@ -1,6 +1,7 @@
 package com.wolfco.main.commands;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -10,9 +11,7 @@ import com.wolfco.common.classes.CoreCommandExecutor;
 import com.wolfco.common.classes.argumenthandlers.StringArg;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.main.Core;
-import com.wolfco.main.classes.Home;
-import com.wolfco.main.classes.PlayerData;
-import com.wolfco.main.handlers.PermissionHandler;
+import com.wolfco.main.classes.mongoDB.subtypes.NamedLocation;
 
 import net.luckperms.api.model.user.User;
 
@@ -39,29 +38,28 @@ public class SetHome implements CoreCommandExecutor {
         return core;
     }
 
+    // TODO: Finish Sethome Command
+
+    @SuppressWarnings("unchecked")
     @Override
-    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
-        String home = (String) argumentValues[0];
+    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args,
+            Object[] argumentValues) {
+        var homeFuture = (CompletableFuture<NamedLocation>) argumentValues[0];
+        var dataFuture = core.getPlayerManager().getPlayerData((Player) sender);
         User user = fetchCore().getLuckPerms().getUserManager().getUser(sender.getName());
 
-        if (home == null) {
-            home = "home";
-        }
-
-        PlayerData playerData = core.getPlayerManager().getPlayerData((Player) sender);
-
-        if (playerData != null) {
-            if (playerData.homes.size() == PermissionHandler.getNumberValue(NODE, user).intValue()) {
-                core.sendPreset(sender, "home.limit", List.of(PermissionHandler.getNumberValue(NODE, user).toString()));
-                return true;
+        dataFuture.thenAccept(data -> {
+            if (data == null) {
+                core.sendPreset(sender, "generic.invaliddata");
+                return;
             }
 
-            playerData.homes.put(home, new Home(home, ((Player) sender).getLocation()));
-            
-            core.sendPreset(sender, "home.set", List.of(home));
-        } else {
-            core.sendPreset(sender, "generic.invaliddata");
-        }
+            homeFuture.thenAccept(home -> {
+                if (home == null) {
+                    core.sendPreset(sender, "home.notfound", List.of(args[0]));
+                }
+            });
+        });
         return true;
     }
 

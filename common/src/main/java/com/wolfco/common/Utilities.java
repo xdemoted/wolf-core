@@ -6,7 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
+import org.bukkit.Location;
+import org.bukkit.Server;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import com.wolfco.common.classes.CorePlugin;
@@ -122,5 +126,40 @@ public class Utilities {
 
     public static <T> T getRandomValue(List<T> list) {
         return list.get(new Random().nextInt(list.size()));
+    }
+
+    public static Location stringToLocation(String string, Server server) {
+        String[] parts = string.split(",");
+        if (parts.length != 6) {
+            return null;
+        }
+        World world = server.getWorld(UUID.fromString(parts[0]));
+        double x = Double.parseDouble(parts[1]);
+        double y = Double.parseDouble(parts[2]);
+        double z = Double.parseDouble(parts[3]);
+        float yaw = Float.parseFloat(parts[4]);
+        float pitch = Float.parseFloat(parts[5]);
+        return new Location(world, x, y, z, yaw, pitch);
+    }
+
+    public static String locationToString(Location location) {
+        return location.getWorld().getUID().toString() + "," +
+                location.getX() + "," +
+                location.getY() + "," +
+                location.getZ() + "," +
+                location.getYaw() + "," +
+                location.getPitch();
+    }
+
+    public static List<Player> getStaff(CorePlugin core) {
+        List<Player> staff = new ArrayList<>();
+
+        for (Player player : core.getServer().getOnlinePlayers()) {
+            if (player.hasPermission("wolfcore.staff")) {
+                staff.add(player);
+            }
+        }
+        
+        return staff;
     }
 }

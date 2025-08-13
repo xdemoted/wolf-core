@@ -1,6 +1,7 @@
 package com.wolfco.main.classes.customargs;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -8,7 +9,7 @@ import org.bukkit.entity.Player;
 import com.wolfco.common.classes.ArgumentInterface;
 import com.wolfco.common.classes.CorePlugin;
 import com.wolfco.main.Core;
-import com.wolfco.main.classes.PlayerData;
+import com.wolfco.main.classes.mongoDB.subtypes.NamedLocation;
 
 public class HomeArgument implements ArgumentInterface {
     private boolean required = true;
@@ -40,11 +41,9 @@ public class HomeArgument implements ArgumentInterface {
         Core plugin = (Core) core;
 
         if (!(sender instanceof Player))
-            List.of();
-
-        PlayerData playerData = plugin.getPlayerManager().getPlayerData((Player) sender);
-
-        return playerData.homes.keySet().stream().toList();
+            return List.of();
+ 
+        return plugin.getPlayerManager().getHomes((Player) sender);
     }
 
     @Override
@@ -52,11 +51,35 @@ public class HomeArgument implements ArgumentInterface {
             String searchValue) {
         Core plugin = (Core) core;
 
-        if (!(sender instanceof Player))
+        if (!(sender instanceof Player)) {
             return null;
+        }
 
-        PlayerData playerData = plugin.getPlayerManager().getPlayerData((Player) sender);
+        CompletableFuture<NamedLocation> home = new CompletableFuture<>();
 
-        return playerData.homes.get(searchValue);
+        plugin.getRedisManager().getPlayerAsync(((Player) sender).getUniqueId().toString()).thenAccept(playerData -> {
+            String[] searchValueInner = {searchValue.toLowerCase()};
+
+            if (playerData == null) {
+                plugin.sendPreset(sender, "generic.invaliddata");
+                return;
+            }
+
+            if ("".equals(searchValueInner[0])) {
+                searchValueInner[0] = "home";
+            }
+
+            playerData.getHomes().forEach(location -> {
+                if (location.getName().equalsIgnoreCase(searchValueInner[0])) {
+                    home.complete(location);
+                }
+            });
+
+            if (!home.isDone()) {
+                home.complete(null);
+            }
+        });
+
+        return home;
     }
 }

@@ -4,8 +4,9 @@ import java.util.List;
 
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
+import org.bukkit.entity.Player;
 
-import com.wolfco.main.classes.mongoDB.subtypes.Address;
+import com.wolfco.main.classes.mongoDB.subtypes.NamedLocation;
 import com.wolfco.main.classes.mongoDB.subtypes.Session;
 
 public class GlobalPlayer {
@@ -20,14 +21,6 @@ public class GlobalPlayer {
 
     private String nickname;
 
-    @BsonProperty(value="last_login")
-    private long lastLogin;
-
-    @BsonProperty(value="last_logout")
-    private long lastLogout;
-
-    private List<Address> addresses;
-
     private List<String> punishments;
 
     private List<Session> sessions;
@@ -35,6 +28,33 @@ public class GlobalPlayer {
     private List<String> usernames;
 
     private List<String> friends;
+
+    private List<NamedLocation> homes;
+
+    public GlobalPlayer() {
+    }
+
+    public GlobalPlayer(Player player) {
+        this.UUID = player.getUniqueId().toString();
+        this.discordID = "";
+        this.nickname = "";
+        this.punishments = List.of();
+        this.sessions = List.of(new Session(player));
+        this.usernames = List.of(player.getName());
+        this.friends = List.of();
+        this.homes = List.of();
+    }
+
+    public GlobalPlayer(GlobalPlayer player) {
+        this.UUID = player.getUUID();
+        this.discordID = player.getDiscordID();
+        this.nickname = player.getNickname();
+        this.punishments = player.getPunishments();
+        this.sessions = player.getSessions();
+        this.usernames = player.getUsernames();
+        this.friends = player.getFriends();
+        this.homes = player.getHomes();
+    }
 
     public ObjectId getId() {
         return id;
@@ -72,33 +92,6 @@ public class GlobalPlayer {
         return this;
     }
 
-    public long getLastLogin() {
-        return lastLogin;
-    }
-
-    public GlobalPlayer setLastLogin(long lastLogin) {
-        this.lastLogin = lastLogin;
-        return this;
-    }
-
-    public long getLastLogout() {
-        return lastLogout;
-    }
-
-    public GlobalPlayer setLastLogout(long lastLogout) {
-        this.lastLogout = lastLogout;
-        return this;
-    }
-
-    public List<Address> getAddresses() {
-        return addresses;
-    }
-
-    public GlobalPlayer setAddresses(List<Address> addresses) {
-        this.addresses = addresses;
-        return this;
-    }
-
     public List<String> getPunishments() {
         return punishments;
     }
@@ -132,6 +125,15 @@ public class GlobalPlayer {
 
     public GlobalPlayer setFriends(List<String> friends) {
         this.friends = friends;
+        return this;
+    }
+
+    public List<NamedLocation> getHomes() {
+        return homes;
+    }
+
+    public GlobalPlayer setHomes(List<NamedLocation> homes) {
+        this.homes = homes;
         return this;
     }
 }

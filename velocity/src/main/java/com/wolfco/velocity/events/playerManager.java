@@ -24,9 +24,14 @@ public final class playerManager {
     public wolfcore core;
     public YamlDocument offlineData;
     public YamlDocument punishmentData;
+    public boolean lockdown;
 
     public playerManager(wolfcore core) {
         this.core = core;
+        this.lockdown = core.config.getBoolean("lockdown", false);
+        if (lockdown) {
+            core.logger.warn("[Wolf-Core] Lockdown is enabled, no players will be able to join.");
+        }
         Collection<Player> onlinePlayers = core.server.getAllPlayers();
         offlineData = core.getConfig("playerHistory.yml", core.dataDirectory);
         punishmentData = core.getConfig("punishments.yml", core.dataDirectory);

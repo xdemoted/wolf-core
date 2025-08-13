@@ -2,6 +2,7 @@ main: com.wolfco.main.Core
 name: wolf-core
 version: 0.1
 api-version: 1.21
+depend: ["LuckPerms"]
 commands:
   ban:
     description: Ban Command
