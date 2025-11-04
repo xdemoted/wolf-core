@@ -21,7 +21,8 @@ import com.wolfco.velocity.wolfcore;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 
 public class events {
 
@@ -31,9 +32,18 @@ public class events {
 
     public List<Player> afkPlayers = new ArrayList<>();
 
+    public MiniMessage serializer;
+
     public events(wolfcore plugin) {
         this.plugin = plugin;
         plugin.server.getChannelRegistrar().register(IDENTIFIER);
+        serializer = MiniMessage.builder()
+        .tags(TagResolver.builder()
+                .resolver(StandardTags.color())
+                .resolver(StandardTags.decorations())
+                .build()
+        )
+        .build();
     }
 
     @Subscribe
@@ -50,8 +60,21 @@ public class events {
                 String formatting = in.readUTF();
                 String message = in.readUTF();
                 Boolean color = in.readBoolean();
-                plugin.broadcast(MiniMessage.miniMessage().deserialize(formatting,
-                        (color ? Placeholder.parsed("message", message) : Placeholder.parsed("message", message))));
+
+                String[] formattingParts = formatting.split("<message>", 2);
+
+                if (formattingParts.length != 2) {
+                    plugin.logger.warn("Invalid formatting string received: " + formatting);
+                    return;
+                }
+
+                plugin.logger.info(formattingParts[0] + message + formattingParts[1]);
+
+                Component preMessage = MiniMessage.miniMessage().deserialize(formattingParts[0] + "<reset>");
+                Component postMessage = MiniMessage.miniMessage().deserialize(formattingParts[1]);
+                Component fullMessage = preMessage.append(color ? serializer.deserialize(message) : Component.text(message)).append(postMessage);
+
+                plugin.broadcast(fullMessage);
                 Player player = plugin.server.getPlayer(playerName).orElse(null);
                 
                 if (player != null) {

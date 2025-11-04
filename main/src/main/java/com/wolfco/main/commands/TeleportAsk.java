@@ -47,7 +47,8 @@ public class TeleportAsk implements CoreCommandExecutor {
     }
 
     @Override
-    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
+    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args,
+            Object[] argumentValues) {
         Player receiver = (Player) argumentValues[0];
         PlayerData receiverData = core.getPlayerManager().getPlayerData(receiver);
 
@@ -56,19 +57,19 @@ public class TeleportAsk implements CoreCommandExecutor {
             return false;
         }
 
-        if (receiverData.lastRequest.host == sender
+        if (receiverData.lastRequest != null && receiverData.lastRequest.host == sender
                 && System.currentTimeMillis() - receiverData.lastRequest.startTime < 30000) {
             core.sendPreset(sender, "teleportask.existing");
             return false;
-        } else {
-            receiverData.sendRequest((Player) sender, requestTypes.get(command.getName()));
-            core.sendPreset(sender, "teleportask.sent", List.of(receiver.getName()));
-            if (receiverData.lastRequest.type.equalsIgnoreCase("tpa")) {
-                core.sendPreset(sender, "teleportask.received", List.of(sender.getName()));
-            } else if (receiverData.lastRequest.type.equalsIgnoreCase("tpahere")) {
-                core.sendPreset(sender, "teleportask.receivedhere", List.of(sender.getName()));
-            }
-            return true;
         }
+
+        receiverData.sendRequest((Player) sender, requestTypes.get(command.getName()));
+        core.sendPreset(sender, "teleportask.sent", List.of(receiver.getName()));
+        if (receiverData.lastRequest.type.equalsIgnoreCase("tpa")) {
+            core.sendPreset(sender, "teleportask.received", List.of(sender.getName()));
+        } else if (receiverData.lastRequest.type.equalsIgnoreCase("tpahere")) {
+            core.sendPreset(sender, "teleportask.receivedhere", List.of(sender.getName()));
+        }
+        return true;
     }
 }

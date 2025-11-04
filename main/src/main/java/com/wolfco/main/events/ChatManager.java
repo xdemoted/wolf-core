@@ -32,13 +32,23 @@ public class ChatManager implements Listener {
         CachedDataManager cacheData = user.getCachedData();
         CachedMetaData lpmetaData = cacheData.getMetaData();
         Boolean color = cacheData.getPermissionData().checkPermission("wolf-co.chat.color").asBoolean();
-        String[] metaData = Utilities.getMetaData(cacheData.getPermissionData(), player);
-        String chatPrefix = metaData[0];
-        String chatSuffix = metaData[1];
+        String prefix = Utilities.nullCheck(lpmetaData.getPrefix());
+        String suffix = Utilities.nullCheck(lpmetaData.getSuffix());
+        String chatPrefix = "";
+        String chatSuffix = "";
 
-        String formatting = FontUtil.parseNameTag(Utilities.nullCheck(lpmetaData.getPrefix())) + player.getName()
-                + Utilities.nullCheck(lpmetaData.getSuffix()) + " <#555555>»<#aaaaaa> "
-                + Utilities.nullCheck(chatPrefix) + "<message>" + chatSuffix;
+        if (prefix.contains(";")) {
+            chatPrefix = prefix.split(";")[1];
+            prefix = prefix.split(";")[0];
+        }
+        if (suffix.contains(";")) {
+            chatPrefix = suffix.split(";")[1];
+            suffix = suffix.split(";")[0];
+        }
+
+        String formatting = FontUtil.parseNameTag(prefix + player.getName())
+                + suffix + " <#555555>» "
+                + chatPrefix + "<message>" + chatSuffix;
 
         // Send to Velocity
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
