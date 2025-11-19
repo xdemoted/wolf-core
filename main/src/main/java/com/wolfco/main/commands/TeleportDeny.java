@@ -7,9 +7,11 @@ import org.bukkit.entity.Player;
 
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommandExecutor;
+import com.wolfco.common.classes.argumenthandlers.PlayerArg;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.PlayerData;
+import com.wolfco.main.classes.Request;
 
 public class TeleportDeny implements CoreCommandExecutor {
 
@@ -17,7 +19,7 @@ public class TeleportDeny implements CoreCommandExecutor {
     public Command getCommand() {
         Command command = new Command("teleportdeny");
         command.setAccessType(AccessType.PLAYER);
-
+        command.addArguments(new PlayerArg(false).includeSender(false));
         return command;
     }
 
@@ -34,6 +36,7 @@ public class TeleportDeny implements CoreCommandExecutor {
 
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
+        Player target = (Player) argumentValues[0];
         PlayerData playerData = core.getPlayerManager().getPlayerData((Player) sender);
 
         if (playerData == null) {
@@ -41,13 +44,21 @@ public class TeleportDeny implements CoreCommandExecutor {
             return false;
         }
 
-        if (playerData.lastRequest == null) {
+        if (playerData.pendingRequests.isEmpty()) {
             core.sendPreset(sender, "teleportask.norequest");
             return false;
         }
-        core.sendPreset(sender, "teleportask.deny", List.of(playerData.lastRequest.host.getName()));
+
+        Request targetRequest = playerData.getRequest(target);
+
+        if (targetRequest == null) {
+            core.sendPreset(sender, "teleportask.norequest");
+            return false;
+        }
+        
+        core.sendPreset(sender, "teleportask.deny", List.of(targetRequest.name));
         core.sendPreset(sender, "teleportask.deny", List.of(sender.getName()));
-        playerData.lastRequest = null;
+        playerData.denyRequest(target);
 
         return true;
     }

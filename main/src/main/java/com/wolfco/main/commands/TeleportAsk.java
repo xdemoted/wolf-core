@@ -1,7 +1,6 @@
 package com.wolfco.main.commands;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.Arrays;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -12,19 +11,11 @@ import com.wolfco.common.classes.argumenthandlers.PlayerArg;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.PlayerData;
+import com.wolfco.main.classes.Request;
 
 public class TeleportAsk implements CoreCommandExecutor {
-
-    HashMap<String, String> requestTypes = new HashMap<>();
     static final String TPA = "tpa";
     static final String TPAHERE = TPA + "here";
-
-    public TeleportAsk() {
-        requestTypes.put("teleportask", TPA);
-        requestTypes.put(TPA, TPA);
-        requestTypes.put(TPAHERE, TPAHERE);
-        requestTypes.put("teleportaskhere", TPAHERE);
-    }
 
     @Override
     public Command getCommand() {
@@ -49,6 +40,7 @@ public class TeleportAsk implements CoreCommandExecutor {
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args,
             Object[] argumentValues) {
+        core.log(alias);
         Player receiver = (Player) argumentValues[0];
         PlayerData receiverData = core.getPlayerManager().getPlayerData(receiver);
 
@@ -57,19 +49,35 @@ public class TeleportAsk implements CoreCommandExecutor {
             return false;
         }
 
-        if (receiverData.lastRequest != null && receiverData.lastRequest.host == sender
-                && System.currentTimeMillis() - receiverData.lastRequest.startTime < 30000) {
+        Request existingRequest = receiverData.getRequest((Player) sender);
+
+        if (existingRequest != null && existingRequest.type.equalsIgnoreCase(alias)
+                && System.currentTimeMillis() - existingRequest.startTime < 30000) {
             core.sendPreset(sender, "teleportask.existing");
             return false;
         }
 
-        receiverData.sendRequest((Player) sender, requestTypes.get(command.getName()));
-        core.sendPreset(sender, "teleportask.sent", List.of(receiver.getName()));
-        if (receiverData.lastRequest.type.equalsIgnoreCase("tpa")) {
-            core.sendPreset(sender, "teleportask.received", List.of(sender.getName()));
-        } else if (receiverData.lastRequest.type.equalsIgnoreCase("tpahere")) {
-            core.sendPreset(sender, "teleportask.receivedhere", List.of(sender.getName()));
+        String message = "";
+        String requestType = "";
+
+        switch (alias) {
+            case "tpahere", "teleportaskhere" -> {
+                requestType = TPAHERE;
+                message = core.getPreset("teleportask.receivedhere", Arrays.asList(sender.getName()));
+                core.sendPreset(sender, "teleportask.receivedhere", Arrays.asList(sender.getName()));
+            }
+            case "tpa", "teleportask" -> {
+                requestType = TPA;
+                message = core.getPreset("teleportask.received", Arrays.asList(sender.getName()));
+                core.sendPreset(sender, "teleportask.received", Arrays.asList(sender.getName()));
+            }
+            default -> {
+            }
         }
+
+        receiverData.sendRequest((Player) sender, requestType);
+        core.sendPreset(sender, "teleportask.sent", Arrays.asList(receiver.getName()));
+        core.sendMessage(receiver, message);
         return true;
     }
 }

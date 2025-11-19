@@ -84,13 +84,17 @@ public abstract class CorePlugin extends JavaPlugin {
     }
 
     public void sendPreset(CommandSender sender, String key, List<String> input) {
+        sendMessage(sender, getPreset(key, input));
+    }
+
+    public String getPreset(String key, List<String> input) {
         String message = messages.getString(key, key);
 
         for (int i = 0; i < input.size(); i++) {
-            message = message.replace("%" + i + "%", input.get(i));
+            message = message.replaceAll("%" + i + "%", input.get(i));
         }
 
-        sendMessage(sender, message);
+        return message;
     }
 
     private YamlDocument getMessageData() {

@@ -2,6 +2,7 @@ package com.wolfco.main.classes;
 
 import java.net.InetSocketAddress;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -30,7 +31,7 @@ public class PlayerData {
 
     public Map<String, Home> homes = new HashMap<>();
 
-    public Request lastRequest;
+    public Map<Player, Request> pendingRequests = new LinkedHashMap<>();
 
     public timestamp timestamp = new timestamp();
 
@@ -44,7 +45,7 @@ public class PlayerData {
         this.muted = false;
 
         InetSocketAddress tempHost = host.getAddress();
-        
+
         if (tempHost != null) {
             this.ipaddress = tempHost.getAddress().getHostAddress();
         } else {
@@ -72,29 +73,58 @@ public class PlayerData {
         // The host is the player sending the request, the target is this instance of
         // the player
         Request request = new Request();
-        request.host = sender;
         request.type = type;
         request.startTime = System.currentTimeMillis();
-        lastRequest = request;
-        return lastRequest;
+        request.name = sender.getName();
+        pendingRequests.put(sender, request);
+        return request;
+    }
+
+    public Request getRequest(Player sender) {
+        if (sender == null) {
+            return pendingRequests.values().stream().findFirst().orElse(null);
+        } else {
+            return pendingRequests.get(sender);
+        }
+    }
+
+    public Player getRequestSender(Request request) {
+        for (Map.Entry<Player, Request> entry : pendingRequests.entrySet()) {
+            if (entry.getValue() == request) {
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 
     public boolean denyLastRequest() {
-        if (System.currentTimeMillis() - lastRequest.startTime > 30000) {
-            lastRequest = null;
+        return denyRequest(null);
+    }
+
+    public boolean denyRequest(Player sender) {
+        Request targetRequest = getRequest(sender);
+
+        if (targetRequest == null) {
             return false;
-        } else {
-            lastRequest = null;
-            return true;
         }
+
+        pendingRequests.remove(sender);
+
+        return System.currentTimeMillis() - targetRequest.startTime <= 30000;
     }
 
     public Request acceptLastRequest() {
-        if (System.currentTimeMillis() - lastRequest.startTime > 30000) {
-            lastRequest = null;
+        return acceptRequest(null);
+    }
+
+    public Request acceptRequest(Player sender) {
+        Request targetRequest = getRequest(sender);
+
+        if (System.currentTimeMillis() - targetRequest.startTime > 30000) {
+            pendingRequests.remove(sender);
             return null;
         }
-        return lastRequest;
+        return targetRequest;
     }
 
     public YamlDocument save() {
@@ -119,7 +149,7 @@ public class PlayerData {
         data.set("lastPosition.x", lastPosition.getX());
         data.set("lastPosition.y", lastPosition.getY());
         data.set("lastPosition.z", lastPosition.getZ());
-        
+
         return data;
     }
 }

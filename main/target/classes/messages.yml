@@ -35,8 +35,7 @@ teleportask:
   deny: "♆ <#ff0000>Teleport request denied."
   existing: "♆ <#ffaa00>You already have an outgoing teleport request to this person."
   norequest: "♆ <#ffaa00>You have no pending teleport requests."
-  received: "♆ <#00ff00>%0% <#00ff00>requested to teleport to you. <#00ff00>Use
-    <#ffff00>/tpaccept <#00ff00>or <#ff0000>/tpdeny"
+  received: "♆ <#00ff00>%0% <#00ff00>requested to teleport to you. <n><#00aa00><click:run_commmand:tpaccept %0%>[Accept]</click> <#00ff00>| <#aa0000><click:run_command:tpdeny %0%>[Deny]</click>"
   receivedhere: "♆ <#00ff00>%0% <#00ff00>requested you to teleport to them.
     <#00ff00>Use <#ffff00>/tpaccept <#00ff00>or <#ff0000>/tpdeny"
   sent: "♆ <#00ff00>Teleport request sent to <#ffff00>%0%"
@@ -47,7 +46,7 @@ warp:
   info: "<#ffaa00>Warp <#ffff00>%0%<#ffaa00> is in world <#ffff00>%1%<#ffaa00> at
     <#ffff00>%2%<#ffaa00>, <#ffff00>%3%<#ffaa00>, <#ffff00>%4%<#ffaa00>."
   invalidworld: "<#ffaa00>World <#ffff00>%0%<#ffaa00> not found for warp %1%."
-  notfound: "<#ffaa00>Warp <#ffff00>%0%<#ffaa00> not found."
+  notfound: "<#ffaa00>Warp <#ffff00>%0%<#ffaa00> not found." 
   set: "<#ffaa00>Warp <#ffff00>%0% <#ffaa00>set."
   success:
     self: "<#ffaa00>Warping to <#ffff00>%0%"

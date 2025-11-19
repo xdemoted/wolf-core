@@ -19,38 +19,52 @@ public class BasicExplosion {
     List<List<Block>> blockGroups = new ArrayList<>();
 
     Location center;
+    double intensity;
 
     public BasicExplosion(Location loc, int rayCount, double intensity) {
         this.center = loc;
+        this.intensity = intensity;
         Core.get().log("Creating explosion at " + loc.toString());
         createRays(rayCount, intensity);
         Core.get().log("Created " + rays.size() + " rays");
         doPreCalculation();
     }
 
-    public void start(int ticksPerStep) {
+    public void start(double ticksPerStep) {
         World world = center.getWorld();
 
         if (world == null)
             return;
 
+        doNextStep(ticksPerStep);
+    }
+
+    public void doNextStep(double ticksPerStep) {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (blockGroups.isEmpty()) {
-                    this.cancel();
-                    return;
+                if (doStep()) {
+                    cancel();
+                } else {
+                    doNextStep(ticksPerStep + 0.25);
                 }
-
-                List<Block> blockGroup = blockGroups.get(0);
-
-                for (Block block : blockGroup) {
-                    block.setType(Material.AIR);
-                }
-
-                blockGroups.remove(0);
             }
-        }.runTaskTimer((Core) Core.get(), 0, ticksPerStep);
+        }.runTaskLater((Core) Core.get(), (int) Math.floor(ticksPerStep));
+    }
+
+    public boolean doStep() { // returns isFinished
+        if (blockGroups.isEmpty())
+            return true;
+
+        List<Block> blockGroup = blockGroups.get(0);
+
+        for (Block block : blockGroup) {
+            block.setType(Material.AIR);
+        }
+
+        blockGroups.remove(0);
+
+        return false;
     }
 
     public double getMaxDistance() {
@@ -75,7 +89,7 @@ public class BasicExplosion {
         for (Vector3d point : points) {
             rays.add(IterableRay.createRay(center,
                     GeometricUtils.locationFromVector(point, center.getWorld()).add(center),
-                    intensity + (Math.random() * 0.4 + 0.3)));
+                    intensity * 1.2 + (Math.random() * 0.4 + 0.3)));
         }
     }
 
@@ -85,17 +99,14 @@ public class BasicExplosion {
         for (IterableRay ray : rays) {
             double rayIntensity = ray.getIntensity();
             List<Block> blocks = ray.getBlocks();
+            int i = 0;
 
-            for (int i = 0; i < blocks.size(); i++) {
-                Block block = blocks.get(i);
+            while (rayIntensity > 0) {
+                Block block = blocks.get(i++);
 
                 double resistance = core.getResistance(block);
 
                 rayIntensity -= (resistance + 0.3) * 0.3 + 0.225;
-
-                if (rayIntensity < 0) {
-                    break;
-                }
 
                 List<Block> destroyedBlocks = new ArrayList<>();
                 destroyedBlocks.add(block);
