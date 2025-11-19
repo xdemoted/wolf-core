@@ -21,16 +21,6 @@ public class utils {
         return blocks;
     }
 
-    public static List<Material> hoes = new ArrayList<Material>();
-    static {
-        hoes.add(Material.WOODEN_HOE);
-        hoes.add(Material.STONE_HOE);
-        hoes.add(Material.IRON_HOE);
-        hoes.add(Material.GOLDEN_HOE);
-        hoes.add(Material.DIAMOND_HOE);
-        hoes.add(Material.NETHERITE_HOE);
-    }
-
     public static Block[] getRelativeBlocks(Block block) {
         return new Block[] {
                 block.getRelative(0, 1, 0),
