@@ -71,6 +71,7 @@ public class TeleportAccept implements CoreCommandExecutor {
             core.sendPreset(sender, "teleportask.accept", List.of(receiver.getName()));
             core.sendPreset(sender, "teleportask.teleporting", List.of(requestSender.getName()));
         }
+        receiverData.pendingRequests.remove(requestSender);
         return true;
     }
 }
