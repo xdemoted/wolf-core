@@ -67,7 +67,7 @@ public class PlayerData {
             }
         }
 
-        if (data.contains("lastTeleport")&&!data.getString("lastTeleport.world").equals("null")) {
+        if (data.contains("lastTeleport")&&data.getString("lastTeleport.world")!=null) {
             this.lastWorld = UUID.fromString(data.getString("lastTeleport.world"));
             this.lastPosition[0] = data.getDouble("lastTeleport.x", 0.0);
             this.lastPosition[1] = data.getDouble("lastTeleport.y", 0.0);
