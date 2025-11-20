@@ -11,6 +11,7 @@ import org.bukkit.plugin.PluginManager;
 
 import com.wolfco.common.classes.CoreCommandExecutor;
 import com.wolfco.common.classes.CorePlugin;
+import com.wolfco.main.commands.Back;
 import com.wolfco.main.commands.DelHome;
 import com.wolfco.main.commands.DelWarp;
 import com.wolfco.main.commands.Fly;
@@ -168,6 +169,7 @@ public class Core extends CorePlugin implements Listener {
         list.add(new Fly(this));
         list.add(new WorldCMD(this));
         list.add(new Reach(this));
+        list.add(new Back(this));
         return list;
     }
 

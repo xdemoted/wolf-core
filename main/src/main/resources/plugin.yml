@@ -3,6 +3,8 @@ name: wolf-core
 version: 0.1
 api-version: 1.21
 commands:
+  back:
+    description: Back Command
   ban:
     description: Ban Command
   banip:

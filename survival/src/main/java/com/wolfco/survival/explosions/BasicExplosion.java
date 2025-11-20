@@ -46,7 +46,7 @@ public class BasicExplosion {
                 if (doStep()) {
                     cancel();
                 } else {
-                    doNextStep(ticksPerStep + 0.25);
+                    doNextStep(ticksPerStep);
                 }
             }
         }.runTaskLater((Core) Core.get(), (int) Math.floor(ticksPerStep));
@@ -89,7 +89,7 @@ public class BasicExplosion {
         for (Vector3d point : points) {
             rays.add(IterableRay.createRay(center,
                     GeometricUtils.locationFromVector(point, center.getWorld()).add(center),
-                    intensity * 1.2 + (Math.random() * 0.4 + 0.3)));
+                    intensity + (Math.random() * 0.4 + 0.3)));
         }
     }
 
@@ -101,12 +101,12 @@ public class BasicExplosion {
             List<Block> blocks = ray.getBlocks();
             int i = 0;
 
-            while (rayIntensity > 0) {
+            while (rayIntensity > 0&& i + 1 < blocks.size()) {
                 Block block = blocks.get(i++);
 
-                double resistance = core.getResistance(block);
-
-                rayIntensity -= (resistance + 0.3) * 0.3 + 0.225;
+                double resistance = (core.getResistance(block) + 0.3) * 0.3 + 0.225;
+                if (Math.random() < 0.01) Core.get().log("Block " + block.getType().name() + " has resistance " + core.getResistance(block)); 
+                rayIntensity -= resistance;
 
                 List<Block> destroyedBlocks = new ArrayList<>();
                 destroyedBlocks.add(block);
@@ -127,7 +127,7 @@ public class BasicExplosion {
 
                     resistance = core.getResistance(b);
 
-                    if (rayIntensity - (resistance + 0.3) * 0.3 + 0.225 > 0) {
+                    if (rayIntensity - resistance > 0) {
                         destroyedBlocks.add(b);
                     }
                 }

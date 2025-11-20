@@ -25,6 +25,8 @@ public class PlayerData {
     public boolean teleportEnabled;
     public boolean godmode;
     public boolean muted;
+    public double[] lastPosition = new double[5]; // x, y, z, yaw, pitch
+    public UUID lastWorld = null;
 
     public String ipaddress;
     public String username;
@@ -140,15 +142,25 @@ public class PlayerData {
         data.set("teleportEnabled", this.teleportEnabled);
         data.set("ipaddress", this.ipaddress);
         data.set("username", this.username);
-        Location lastPosition = host.getLocation();
+        Location logoutLocation = host.getLocation();
 
-        if (lastPosition == null) {
-            lastPosition = host.getWorld().getSpawnLocation();
+        if (logoutLocation == null) {
+            logoutLocation = host.getWorld().getSpawnLocation();
         }
 
-        data.set("lastPosition.x", lastPosition.getX());
-        data.set("lastPosition.y", lastPosition.getY());
-        data.set("lastPosition.z", lastPosition.getZ());
+        data.set("lastPosition.x", logoutLocation.getX());
+        data.set("lastPosition.y", logoutLocation.getY());
+        data.set("lastPosition.z", logoutLocation.getZ());
+        data.set("lastPosition.yaw", logoutLocation.getYaw());
+        data.set("lastPosition.pitch", logoutLocation.getPitch());
+        data.set("lastPosition.world", logoutLocation.getWorld().getUID().toString());
+
+        data.set("lastTeleport.x", lastPosition[0]);
+        data.set("lastTeleport.y", lastPosition[1]);
+        data.set("lastTeleport.z", lastPosition[2]);
+        data.set("lastTeleport.yaw", lastPosition[3]);
+        data.set("lastTeleport.pitch", lastPosition[4]);
+        data.set("lastTeleport.world", lastWorld != null ? lastWorld.toString() : null);
 
         return data;
     }

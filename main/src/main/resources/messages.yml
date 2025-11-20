@@ -60,4 +60,7 @@ fly:
   othersuccess: "<#00ff00>Flight %0% for <#ffff00>%1%"
 error:
   base: "<#aa0000><b>Error:</b> <red>%0%"
+back:
+  success: "<#ffaa00>Successfully tped back."
+  noposition: "<#ffaa00>Couldn't find last position."
 

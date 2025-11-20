@@ -13,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.PlayerData;
@@ -90,6 +91,21 @@ public class PlayerManager implements Listener {
         if (core.getAfkPlayers().contains(player)) {
             core.getAfkPlayers().remove(player);
             core.getChatManager().sendGlobalBroadcast(player, "§8[§aNetwork§8]§a " + player.getName() + " §eis no longer AFK.");
+        }
+    }
+
+    @EventHandler
+    public void onPlayerTeleport(PlayerTeleportEvent event) {
+        Player player = event.getPlayer();
+        PlayerData playerData = players.get(player.getUniqueId());
+
+        if (playerData != null) {
+            playerData.lastPosition[0] = event.getFrom().getX();
+            playerData.lastPosition[1] = event.getFrom().getY();
+            playerData.lastPosition[2] = event.getFrom().getZ();
+            playerData.lastPosition[3] = event.getFrom().getYaw();
+            playerData.lastPosition[4] = event.getFrom().getPitch();
+            playerData.lastWorld = event.getFrom().getWorld().getUID();
         }
     }
 

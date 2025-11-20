@@ -34,6 +34,7 @@ public class Core extends CorePlugin {
     @Override
     public void onEnable() {
         this.getLogger().info("[Wolf-Core] Plugin enabled");
+        getServer().getPluginManager().registerEvents(new Harvest(), this);
 
         clearTempEntities();
 
