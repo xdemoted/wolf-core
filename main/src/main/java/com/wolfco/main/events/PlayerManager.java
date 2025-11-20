@@ -69,11 +69,10 @@ public class PlayerManager implements Listener {
             return;
         }
 
-        YamlDocument data = playerData.data;
-        data.set("timestamp.logout", System.currentTimeMillis());
+        playerData.save();
 
         try {
-            data.save();
+            playerData.data.save();
         } catch (IOException ex) {
             core.getLogger().log(Level.SEVERE, "[Wolf-Core] Error saving player data for {0}", player.getName());
             return;

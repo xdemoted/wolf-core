@@ -66,6 +66,28 @@ public class PlayerData {
                 this.homes.put(key, home);
             }
         }
+
+        if (data.contains("lastTeleport")&&!data.getString("lastTeleport.world").equals("null")) {
+            this.lastWorld = UUID.fromString(data.getString("lastTeleport.world"));
+            this.lastPosition[0] = data.getDouble("lastTeleport.x", 0.0);
+            this.lastPosition[1] = data.getDouble("lastTeleport.y", 0.0);
+            this.lastPosition[2] = data.getDouble("lastTeleport.z", 0.0);
+            this.lastPosition[3] = data.getDouble("lastTeleport.yaw", 0.0);
+            this.lastPosition[4] = data.getDouble("lastTeleport.pitch", 0.0);
+        }
+
+        if (data.contains("lastPosition")&&data.getString("lastPosition.world")!=null) {
+            Location logoutLocation = new Location(
+                host.getServer().getWorld(UUID.fromString(data.getString("lastPosition.world"))),
+                data.getDouble("lastPosition.x", 0.0),
+                data.getDouble("lastPosition.y", 0.0),
+                data.getDouble("lastPosition.z", 0.0),
+                data.getDouble("lastPosition.yaw", 0.0).floatValue(),
+                data.getDouble("lastPosition.pitch", 0.0).floatValue()
+            );
+            host.teleport(logoutLocation);
+        }
+
         timestamp.login = data.getLong("timestamp.login", (long) 0);
         timestamp.logout = data.getLong("timestamp.logout", (long) 0);
         timestamp.mute = data.getLong("timestamp.mute", (long) 0);
