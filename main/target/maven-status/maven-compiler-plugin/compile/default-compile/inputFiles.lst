@@ -10,10 +10,12 @@ c:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco
 c:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\utility\ColorUtil.java
 c:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\classes\PlayerData.java
 c:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\Warp.java
+c:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\OfflineTeleport.java
 c:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\events\ChatManager.java
 c:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\classes\Warp.java
 c:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\WalkSpeed.java
 c:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\classes\Home.java
+c:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\Enchant.java
 c:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\handlers\PermissionHandler.java
 c:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\TeleportAccept.java
 c:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\SetHome.java
@@ -21,6 +23,7 @@ c:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco
 c:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\Back.java
 c:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\TeleportHere.java
 c:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\WarpInfo.java
+c:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\classes\customargs\OfflinePlayerArg.java
 c:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\TeleportAsk.java
 c:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\Top.java
 c:\Users\risin\OneDrive\Documents\GitHub\wolf-core\main\src\main\java\com\wolfco\main\commands\SetWarp.java

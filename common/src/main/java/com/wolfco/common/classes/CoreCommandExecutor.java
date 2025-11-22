@@ -103,6 +103,7 @@ public interface CoreCommandExecutor extends CommandExecutor, org.bukkit.command
         try {
             argumentValues = getCommand().getValues(fetchCore(), sender, command, args);
         } catch (IllegalArgumentException e) {
+            core.log(e.toString());
             core.sendPreset(sender, "error.base", List.of(e.getMessage()));
             return false;
         }

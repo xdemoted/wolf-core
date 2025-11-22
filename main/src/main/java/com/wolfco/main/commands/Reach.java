@@ -38,8 +38,8 @@ public class Reach implements CoreCommandExecutor {
         Double distance = (Double) argumentValues[0];
         Player player = (Player) sender;
 
-        AttributeInstance attInstance = player.getAttribute(Attribute.PLAYER_BLOCK_INTERACTION_RANGE);
-        AttributeInstance attInstance2 = player.getAttribute(Attribute.PLAYER_ENTITY_INTERACTION_RANGE);
+        AttributeInstance attInstance = player.getAttribute(Attribute.BLOCK_INTERACTION_RANGE);
+        AttributeInstance attInstance2 = player.getAttribute(Attribute.ENTITY_INTERACTION_RANGE);
 
         if (attInstance != null) {
             attInstance.setBaseValue(distance);

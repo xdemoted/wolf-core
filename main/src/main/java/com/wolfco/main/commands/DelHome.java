@@ -42,6 +42,7 @@ public class DelHome implements CoreCommandExecutor {
         PlayerData playerData = core.getPlayerManager().getPlayerData((Player) sender);
 
         if (playerData != null) {
+            playerData.homes.remove(home.name);
             core.sendPreset(sender, "home.deleted", List.of(home.name));
         }
         return true;

@@ -14,12 +14,14 @@ import com.wolfco.common.classes.CorePlugin;
 import com.wolfco.main.commands.Back;
 import com.wolfco.main.commands.DelHome;
 import com.wolfco.main.commands.DelWarp;
+import com.wolfco.main.commands.Enchant;
 import com.wolfco.main.commands.Fly;
 import com.wolfco.main.commands.FlySpeed;
 import com.wolfco.main.commands.Gamemode;
 import com.wolfco.main.commands.GamemodeAlias;
 import com.wolfco.main.commands.Home;
 import com.wolfco.main.commands.Max;
+import com.wolfco.main.commands.OfflineTeleport;
 import com.wolfco.main.commands.Reach;
 import com.wolfco.main.commands.SetHome;
 import com.wolfco.main.commands.SetWarp;
@@ -170,6 +172,8 @@ public class Core extends CorePlugin implements Listener {
         list.add(new WorldCMD(this));
         list.add(new Reach(this));
         list.add(new Back(this));
+        list.add(new Enchant(this));
+        list.add(new OfflineTeleport(this));
         return list;
     }
 

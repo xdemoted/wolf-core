@@ -1,4 +1,4 @@
-version: 9
+version: 10
 
 gamemode:
   invalid: "♆ <#ff5555>Invalid gamemode."
@@ -63,4 +63,6 @@ error:
 back:
   success: "<#ffaa00>Successfully tped back."
   noposition: "<#ffaa00>Couldn't find last position."
+enderpearl:
+  blocked: "♆ <#ffaa00>Enderpearl blocked. Pearls cannot teleport you %0% the inside of blocks."
 

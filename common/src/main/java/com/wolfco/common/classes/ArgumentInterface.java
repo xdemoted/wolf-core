@@ -5,26 +5,11 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 
 public interface ArgumentInterface {
-    default IllegalArgumentException error(String message, Object... args) { // Convert string array into formattable segments
-        String[] parts = message.split("%");
-        StringBuilder formattedMessage = new StringBuilder();
-
-        for (int i = 0; i < parts.length; i++) {
-            String part = parts[i];
-
-            if (part.isBlank()) {
-                continue;
-            }
-
-            if (i >= args.length) {
-                break;
-            }
-
-            formattedMessage.append(String.format("%" + part, args[i]));
+    default IllegalArgumentException error(String message, Object... args) {
+        if (args == null || args.length == 0) {
+            return new IllegalArgumentException(message);
         }
-
-        message = formattedMessage.toString();
-        return new IllegalArgumentException(message);
+        return new IllegalArgumentException(String.format(message, args));
     }
 
     abstract Boolean isRequired();

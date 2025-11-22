@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -26,7 +27,9 @@ public class PlayerData {
     public boolean godmode;
     public boolean muted;
     public double[] lastPosition = new double[5]; // x, y, z, yaw, pitch
+    public double[] logoutPosition = new double[5]; // x, y, z, yaw, pitch
     public UUID lastWorld = null;
+    public UUID logoutWorld = null;
 
     public String ipaddress;
     public String username;
@@ -38,21 +41,27 @@ public class PlayerData {
     public timestamp timestamp = new timestamp();
 
     public PlayerData(Player host, YamlDocument data) {
-        this.host = host;
-        this.username = host.getName();
+        this(host, data, false);
+    }
+
+    public PlayerData(Player host, YamlDocument data, Boolean offline) {
+        if (!offline) {
+            this.host = host;
+            this.username = host.getName();
+            InetSocketAddress tempHost = host.getAddress();
+
+            if (tempHost != null) {
+                this.ipaddress = tempHost.getAddress().getHostAddress();
+            } else {
+                this.ipaddress = null;
+            }
+        }
+
         this.data = data;
         this.afk = false;
         this.teleportEnabled = true;
         this.godmode = false;
         this.muted = false;
-
-        InetSocketAddress tempHost = host.getAddress();
-
-        if (tempHost != null) {
-            this.ipaddress = tempHost.getAddress().getHostAddress();
-        } else {
-            this.ipaddress = null;
-        }
 
         if (data.contains("home")) {
             for (String key : data.getSection("home").getRoutesAsStrings(false)) {
@@ -67,25 +76,30 @@ public class PlayerData {
             }
         }
 
-        if (data.contains("lastTeleport")&&data.getString("lastTeleport.world")!=null) {
-            this.lastWorld = UUID.fromString(data.getString("lastTeleport.world"));
-            this.lastPosition[0] = data.getDouble("lastTeleport.x", 0.0);
-            this.lastPosition[1] = data.getDouble("lastTeleport.y", 0.0);
-            this.lastPosition[2] = data.getDouble("lastTeleport.z", 0.0);
-            this.lastPosition[3] = data.getDouble("lastTeleport.yaw", 0.0);
-            this.lastPosition[4] = data.getDouble("lastTeleport.pitch", 0.0);
+        if (data.getString("lastTeleport.world", null) != null) {
+            this.lastWorld = UUID.fromString(data.getString("lastTeleport.world","unknown"));
+            if (Bukkit.getWorld(lastWorld) != null) {
+                this.lastPosition[0] = data.getDouble("lastTeleport.x", 0.0);
+                this.lastPosition[1] = data.getDouble("lastTeleport.y", 0.0);
+                this.lastPosition[2] = data.getDouble("lastTeleport.z", 0.0);
+                this.lastPosition[3] = data.getDouble("lastTeleport.yaw", 0.0);
+                this.lastPosition[4] = data.getDouble("lastTeleport.pitch", 0.0);
+            } else {
+                this.lastWorld = null;
+            }
         }
 
-        if (data.contains("lastPosition")&&data.getString("lastPosition.world")!=null) {
-            Location logoutLocation = new Location(
-                host.getServer().getWorld(UUID.fromString(data.getString("lastPosition.world"))),
-                data.getDouble("lastPosition.x", 0.0),
-                data.getDouble("lastPosition.y", 0.0),
-                data.getDouble("lastPosition.z", 0.0),
-                data.getDouble("lastPosition.yaw", 0.0).floatValue(),
-                data.getDouble("lastPosition.pitch", 0.0).floatValue()
-            );
-            host.teleport(logoutLocation);
+        if (data.getString("lastPosition.world", null) != null) {
+            this.logoutWorld = UUID.fromString(data.getString("lastTeleport.world","unknown"));
+            if (Bukkit.getWorld(logoutWorld) != null) {
+                this.logoutPosition[0] = data.getDouble("lastTeleport.x", 0.0);
+                this.logoutPosition[1] = data.getDouble("lastTeleport.y", 0.0);
+                this.logoutPosition[2] = data.getDouble("lastTeleport.z", 0.0);
+                this.logoutPosition[3] = data.getDouble("lastTeleport.yaw", 0.0);
+                this.logoutPosition[4] = data.getDouble("lastTeleport.pitch", 0.0);
+            } else {
+                this.logoutWorld = null;
+            }
         }
 
         timestamp.login = data.getLong("timestamp.login", (long) 0);
@@ -149,6 +163,15 @@ public class PlayerData {
             return null;
         }
         return targetRequest;
+    }
+
+    public Location getLogoutLocation() {
+        if (logoutWorld != null && Bukkit.getWorld(logoutWorld) != null) {
+            return new Location(Bukkit.getWorld(logoutWorld), logoutPosition[0], logoutPosition[1],
+                    logoutPosition[2], (float) logoutPosition[3], (float) logoutPosition[4]);
+        } else {
+            return null;
+        }
     }
 
     public YamlDocument save() {

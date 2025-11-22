@@ -51,7 +51,7 @@ public class SetHome implements CoreCommandExecutor {
         PlayerData playerData = core.getPlayerManager().getPlayerData((Player) sender);
 
         if (playerData != null) {
-            if (playerData.homes.size() == PermissionHandler.getNumberValue(NODE, user).intValue()) {
+            if (playerData.homes.size() >= PermissionHandler.getNumberValue(NODE, user).intValue() && !playerData.homes.containsKey(home)) {
                 core.sendPreset(sender, "home.limit", List.of(PermissionHandler.getNumberValue(NODE, user).toString()));
                 return true;
             }

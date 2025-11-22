@@ -3,6 +3,11 @@ name: wolf-core
 version: 0.1
 api-version: 1.21
 commands:
+  offlineteleport:
+    aliases: [ otp ]
+    description: Offline Teleport Command
+  kill:
+    description: Kill Command
   back:
     description: Back Command
   ban:
@@ -18,6 +23,8 @@ commands:
     description: Delete Home Command
   delwarp:
     description: Delete Warp Command
+  enchant:
+    description: Enchant Command
   fly:
     description: Fly Command
   flyspeed:

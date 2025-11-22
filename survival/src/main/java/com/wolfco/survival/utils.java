@@ -2,6 +2,7 @@ package com.wolfco.survival;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -23,8 +24,6 @@ public class utils {
         int minZ = Math.min(pos1.getBlockZ(), pos2.getBlockZ());
         int maxZ = Math.max(pos1.getBlockZ(), pos2.getBlockZ());
 
-        Core.get().log("Getting blocks from (" + minX + ", " + minY + ", " + minZ + ") to (" + maxX + ", " + maxY + ", " + maxZ + ")");
-
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
                 for (int z = minZ; z <= maxZ; z++) {
@@ -33,6 +32,37 @@ public class utils {
             }
         }
         return blocks;
+    }
+
+    public static <T> void randomize(List<T> list) {
+        if (list == null || list.size() <= 1)
+            return;
+        for (int i = list.size() - 1; i > 0; i--) {
+            int j = java.util.concurrent.ThreadLocalRandom.current().nextInt(i + 1);
+            T tmp = list.get(i);
+            list.set(i, list.get(j));
+            list.set(j, tmp);
+        }
+    }
+
+    public static void randomizeListTowardsHeight(List<Block> list) {
+        Random random = new Random();
+
+        list.sort((a, b) -> {
+            double scoreA = random.nextDouble()*a.getY() + a.getY(); // bias toward higher Y
+            double scoreB = random.nextDouble()*b.getY() + b.getY();
+            return Double.compare(scoreB, scoreA); // higher scores first
+        });
+    }
+
+    public static void randomizeListAgainstHeight(List<Block> list) {
+        Random random = new Random();
+
+        list.sort((a, b) -> {
+            double scoreA = random.nextDouble()*a.getY() - a.getY(); // bias toward higher Y
+            double scoreB = random.nextDouble()*b.getY() - b.getY();
+            return Double.compare(scoreB, scoreA); // higher scores first
+        });
     }
 
     public static Block[] getRelativeBlocks(Block block) {
@@ -47,23 +77,25 @@ public class utils {
     }
 
     public static void damageItem(ItemStack item, int damage) {
-    if (item == null || item.getType().getMaxDurability() <= 0) return;
+        if (item == null || item.getType().getMaxDurability() <= 0)
+            return;
 
-    ItemMeta meta = item.getItemMeta();
-    if (!(meta instanceof Damageable)) return;
+        ItemMeta meta = item.getItemMeta();
+        if (!(meta instanceof Damageable))
+            return;
 
-    Damageable damageable = (Damageable) meta;
-    int unbreakingLevel = item.getEnchantmentLevel(Enchantment.UNBREAKING);
+        Damageable damageable = (Damageable) meta;
+        int unbreakingLevel = item.getEnchantmentLevel(Enchantment.UNBREAKING);
 
-    int appliedDamage = 0;
+        int appliedDamage = 0;
 
-    for (int i = 0; i < damage; i++) {
-        if (unbreakingLevel <= 0 || Math.random() < (1.0 / (unbreakingLevel + 1))) {
-            appliedDamage++;
+        for (int i = 0; i < damage; i++) {
+            if (unbreakingLevel <= 0 || Math.random() < (1.0 / (unbreakingLevel + 1))) {
+                appliedDamage++;
+            }
         }
-    }
 
-    damageable.setDamage(damageable.getDamage() + appliedDamage);
-    item.setItemMeta(damageable);
-}
+        damageable.setDamage(damageable.getDamage() + appliedDamage);
+        item.setItemMeta(damageable);
+    }
 }

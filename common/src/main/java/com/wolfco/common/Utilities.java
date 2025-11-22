@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import com.wolfco.common.classes.CorePlugin;
 
@@ -122,5 +124,10 @@ public class Utilities {
 
     public static <T> T getRandomValue(List<T> list) {
         return list.get(new Random().nextInt(list.size()));
+    }
+
+    public static Vector getUnitLocation(Location from, Location to) {
+        Location direction = to.clone().subtract(from);
+        return direction.toVector().normalize(); // returns unit vector
     }
 }
