@@ -13,17 +13,16 @@ public class FontUtil {
         String colorEnd = "</#" + textColor + ">";
         char[] chars = name.toCharArray();
 
-        sb.append("<font:block>¥");
+        sb.append("<glyph:").append(((Core) Core.get()).getServerName()).append(":c>");
 
         sb.append(colorStart).append(chars[0]).append(colorEnd);
 
         for (int i = 1; i < chars.length; i++) {
-            sb.append("¤");
-            String letter = String.valueOf(chars[i]);
-            sb.append(colorStart).append(letter).append(colorEnd);
+            String letter = String.valueOf(chars[i]).toLowerCase();
+            sb.append("<shift:-2><glyph:").append(letter).append(":c>");
         }
 
-        sb.append("¢</font>");
+        sb.append("<shift:-2><glyph:end:c>");
 
         return sb.toString();
     }

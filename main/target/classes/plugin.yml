@@ -3,6 +3,11 @@ name: wolf-core
 version: 0.1
 api-version: 1.21
 commands:
+  minimessage:
+    description: MiniMessage Command
+  inventorysee:
+    aliases: [ invsee, isee ]
+    description: Inventory See Command
   offlineteleport:
     aliases: [ otp ]
     description: Offline Teleport Command

@@ -75,6 +75,9 @@ public class events {
                 Component fullMessage = preMessage.append(color ? serializer.deserialize(message) : Component.text(message)).append(postMessage);
 
                 plugin.broadcast(fullMessage);
+                plugin.server.getAllServers().forEach(server -> {
+                    event.getTarget().sendPluginMessage(IDENTIFIER, event.getData());
+                });
                 Player player = plugin.server.getPlayer(playerName).orElse(null);
                 
                 if (player != null) {

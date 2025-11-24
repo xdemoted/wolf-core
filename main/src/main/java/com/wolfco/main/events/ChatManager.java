@@ -4,7 +4,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.plugin.messaging.PluginMessageListener;
 
+import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import com.wolfco.common.Utilities;
@@ -15,7 +17,7 @@ import net.luckperms.api.cacheddata.CachedDataManager;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.model.user.User;
 
-public class ChatManager implements Listener {
+public class ChatManager implements Listener, PluginMessageListener {
 
     Core core;
 
@@ -42,7 +44,7 @@ public class ChatManager implements Listener {
             prefix = prefix.split(";")[0];
         }
         if (suffix.contains(";")) {
-            chatPrefix = suffix.split(";")[1];
+            chatSuffix = suffix.split(";")[1];
             suffix = suffix.split(";")[0];
         }
 
@@ -59,6 +61,26 @@ public class ChatManager implements Listener {
         out.writeBoolean(color);
         player.sendPluginMessage(core, "core:main", out.toByteArray());
         event.setCancelled(true);
+    }
+
+    @Override
+    public void onPluginMessageReceived(String channel, Player player, byte[] message) {
+        if (!"core:main".equals(channel))
+            return;
+
+        ByteArrayDataInput in = ByteStreams.newDataInput(message);
+        String subchannel = in.readUTF();
+
+        if (!subchannel.equals("globalchat"))
+            return;
+
+        String senderName = in.readUTF();
+        String formatting = in.readUTF(); // formatting string (contains <message>)
+        String msg = in.readUTF();
+        boolean color = in.readBoolean();
+        // Example: replace placeholder and broadcast (adjust color handling as needed)
+        String out = formatting.replace("<message>", msg).replace(senderName, senderName);
+        Core.get().getServer().broadcastMessage(out);
     }
 
     public void sendGlobalBroadcast(Player player, String message) {

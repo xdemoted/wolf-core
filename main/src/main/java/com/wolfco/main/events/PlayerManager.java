@@ -172,7 +172,7 @@ public class PlayerManager implements Listener {
             if (block.getType().isSolid()) {
                 Vector vector = Utilities.getUnitLocation(from, to).multiply(0.3);
                 int iterations = 0;
-                while ((!to.getBlock().isPassable()) && iterations < 11) {
+                while ((!isAllowedBlock(to.getBlock())) && iterations < 11) {
                     to.subtract(vector);
                     iterations++;
                 }
@@ -185,10 +185,18 @@ public class PlayerManager implements Listener {
             }
 
             if (upperBlock.getType().isSolid()) {
-                to.setY(Math.min(to.getY(), upperBlock.getY() - 1));
+                to.setY(Math.min(to.getY(), upperBlock.getY() - 1.1));
             }
             event.setTo(to);
         }
+    }
+
+    public static Boolean isAllowedBlock(Block block) {
+        return block.isPassable() && block.getType() != Material.LADDER
+                && block.getType() != Material.VINE
+                && block.getType() != Material.WEEPING_VINES
+                && block.getType() != Material.TWISTING_VINES
+                && block.getType() != Material.CAVE_VINES_PLANT;
     }
 
     public static List<reducedPlayerInfo> getAllPlayerDataDocuments() {

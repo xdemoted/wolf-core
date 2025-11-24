@@ -20,7 +20,9 @@ import com.wolfco.main.commands.FlySpeed;
 import com.wolfco.main.commands.Gamemode;
 import com.wolfco.main.commands.GamemodeAlias;
 import com.wolfco.main.commands.Home;
+import com.wolfco.main.commands.InventorySee;
 import com.wolfco.main.commands.Max;
+import com.wolfco.main.commands.MiniMessage;
 import com.wolfco.main.commands.OfflineTeleport;
 import com.wolfco.main.commands.Reach;
 import com.wolfco.main.commands.SetHome;
@@ -55,6 +57,7 @@ public class Core extends CorePlugin implements Listener {
     YamlDocument warps;
     PlayerManager playerManager;
     MongoDatabase db;
+    String serverName;
 
     List<Player> afkPlayers = new ArrayList<>();
 
@@ -69,6 +72,7 @@ public class Core extends CorePlugin implements Listener {
         getAdventure();
 
         setMainConfig(getConfigDocument("config.yml"));
+        serverName = getMainConfig().getString("server-name", "unknown");
         warps = getConfigDocument("warps.yml");
 
         getCommandLoader().registerAll(getCommands());
@@ -81,12 +85,12 @@ public class Core extends CorePlugin implements Listener {
 
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "core:main");
 
-        this.getLogger().info("[Wolf-Core] Plugin enabled");
+        this.getLogger().info("[Wolf-Core] Plugin horny");
 
         Bukkit.getScheduler().runTaskLater(this, () -> {
             WebhookManager webhook = new WebhookManager(this);
 
-            String out = "# " + getMainConfig().getString("server-name","Unknown Server") + " has started up.\n\n";
+            String out = "# " + serverName + " has started up.\n\n";
 
             out += "## Plugins loaded:\n";
 
@@ -105,6 +109,10 @@ public class Core extends CorePlugin implements Listener {
 
             webhook.sendLog(out);
         }, 20L * 10L);
+    }
+
+    public String getServerName() {
+        return serverName;
     }
 
     public MongoDatabase getDatabaseHandler() {
@@ -140,7 +148,7 @@ public class Core extends CorePlugin implements Listener {
 
         WebhookManager webhook = new WebhookManager(this);
 
-        webhook.sendLog("# " + getMainConfig().getString("server-name","Unknown Server") + " has shutdown.");
+        webhook.sendLog("# " + serverName + " has shutdown.");
     }
 
     @Override
@@ -174,6 +182,8 @@ public class Core extends CorePlugin implements Listener {
         list.add(new Back(this));
         list.add(new Enchant(this));
         list.add(new OfflineTeleport(this));
+        list.add(new InventorySee(this));
+        list.add(new MiniMessage(this));
         return list;
     }
 
