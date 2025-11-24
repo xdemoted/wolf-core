@@ -1,8 +1,0 @@
-version: 1
-server-name: Unknown Server
-
-mongo: replace
-
-webhook:
-  general: replace
-  logging: replace
