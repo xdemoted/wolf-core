@@ -13,6 +13,7 @@ import com.wolfco.common.classes.CoreCommandExecutor;
 import com.wolfco.common.classes.argumenthandlers.GameModeArg;
 import com.wolfco.common.classes.argumenthandlers.MultiPlayerArg;
 import com.wolfco.main.Core;
+import com.wolfco.main.utility.FontUtil;
 
 public class Gamemode implements CoreCommandExecutor {
 
@@ -64,7 +65,7 @@ public class Gamemode implements CoreCommandExecutor {
             return true;
         } else if (target instanceof Collection) {
             if (target.size() == 1) {
-                core.sendPreset(sender, "gamemode.othersuccess", List.of(target.iterator().next().getName(), mode.toString()));
+                core.sendPreset(sender, "gamemode.othersuccess", List.of(FontUtil.getPlayerTag(target.iterator().next()), mode.toString()));
             } else {
                 core.sendPreset(sender, "gamemode.multisuccess", List.of(String.valueOf(target.size()), mode.toString()));
             }

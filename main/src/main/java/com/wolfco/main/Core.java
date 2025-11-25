@@ -43,6 +43,7 @@ import com.wolfco.main.commands.Warps;
 import com.wolfco.main.commands.WorldCMD;
 import com.wolfco.main.events.ChatManager;
 import com.wolfco.main.events.PlayerManager;
+import com.wolfco.main.events.RedisManager;
 import com.wolfco.main.handlers.MongoDatabase;
 import com.wolfco.main.handlers.WebhookManager;
 
@@ -56,6 +57,7 @@ public class Core extends CorePlugin implements Listener {
     LuckPerms lp;
     YamlDocument warps;
     PlayerManager playerManager;
+    RedisManager redisManager;
     MongoDatabase db;
     String serverName;
 
@@ -86,6 +88,7 @@ public class Core extends CorePlugin implements Listener {
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "core:main");
 
         this.getLogger().info("[Wolf-Core] Plugin horny");
+        this.redisManager = new RedisManager(serverName);
 
         Bukkit.getScheduler().runTaskLater(this, () -> {
             WebhookManager webhook = new WebhookManager(this);
@@ -113,6 +116,10 @@ public class Core extends CorePlugin implements Listener {
 
     public String getServerName() {
         return serverName;
+    }
+
+    public RedisManager getRedisManager() {
+        return redisManager;
     }
 
     public MongoDatabase getDatabaseHandler() {

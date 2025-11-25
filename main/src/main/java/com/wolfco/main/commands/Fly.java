@@ -11,6 +11,7 @@ import com.wolfco.common.classes.argumenthandlers.BooleanArg;
 import com.wolfco.common.classes.argumenthandlers.PlayerArg;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.main.Core;
+import com.wolfco.main.utility.FontUtil;
 
 public class Fly implements CoreCommandExecutor {
 
@@ -60,7 +61,7 @@ public class Fly implements CoreCommandExecutor {
         target.setFlying(toggle);
 
         if (sender != target) {
-            core.sendPreset(sender, "fly.othersuccess", List.of(toggle ? "enabled" : "disabled", target.getName()));
+            core.sendPreset(sender, "fly.othersuccess", List.of(toggle ? "enabled" : "disabled", FontUtil.getPlayerTag(target)));
             core.sendPreset(target, "fly.success", List.of(toggle ? "enabled" : "disabled"));
         } else {
             core.sendPreset(sender, "fly.success", List.of(toggle ? "enabled" : "disabled"));

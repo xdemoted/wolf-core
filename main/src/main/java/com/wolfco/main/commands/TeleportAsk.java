@@ -12,6 +12,7 @@ import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.PlayerData;
 import com.wolfco.main.classes.Request;
+import com.wolfco.main.utility.FontUtil;
 
 public class TeleportAsk implements CoreCommandExecutor {
     static final String TPA = "tpa";
@@ -40,7 +41,7 @@ public class TeleportAsk implements CoreCommandExecutor {
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args,
             Object[] argumentValues) {
-        core.log(alias);
+        Player player = (Player) sender;
         Player receiver = (Player) argumentValues[0];
         PlayerData receiverData = core.getPlayerManager().getPlayerData(receiver);
 
@@ -63,20 +64,20 @@ public class TeleportAsk implements CoreCommandExecutor {
         switch (alias) {
             case "tpahere", "teleportaskhere" -> {
                 requestType = TPAHERE;
-                message = core.getPreset("teleportask.receivedhere", Arrays.asList(sender.getName()));
-                core.sendPreset(sender, "teleportask.receivedhere", Arrays.asList(sender.getName()));
+                message = core.getPreset("teleportask.receivedhere", Arrays.asList(FontUtil.getPlayerTag(player)));
+                core.sendPreset(sender, "teleportask.receivedhere", Arrays.asList(FontUtil.getPlayerTag(player)));
             }
             case "tpa", "teleportask" -> {
                 requestType = TPA;
-                message = core.getPreset("teleportask.received", Arrays.asList(sender.getName()));
-                core.sendPreset(sender, "teleportask.received", Arrays.asList(sender.getName()));
+                message = core.getPreset("teleportask.received", Arrays.asList(FontUtil.getPlayerTag(player)));
+                core.sendPreset(sender, "teleportask.received", Arrays.asList(FontUtil.getPlayerTag(player)));
             }
             default -> {
             }
         }
 
         receiverData.sendRequest((Player) sender, requestType);
-        core.sendPreset(sender, "teleportask.sent", Arrays.asList(receiver.getName()));
+        core.sendPreset(sender, "teleportask.sent", Arrays.asList(FontUtil.getPlayerTag(receiver)));
         core.sendMessage(receiver, message);
         return true;
     }

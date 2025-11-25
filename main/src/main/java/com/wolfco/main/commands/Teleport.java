@@ -9,6 +9,7 @@ import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommandExecutor;
 import com.wolfco.common.classes.argumenthandlers.PlayerArg;
 import com.wolfco.main.Core;
+import com.wolfco.main.utility.FontUtil;
 
 public class Teleport implements CoreCommandExecutor {
 
@@ -58,7 +59,7 @@ public class Teleport implements CoreCommandExecutor {
             }
 
             ((Player) sender).teleport(player1);
-            core.sendPreset(sender, "teleport.success", List.of(player1.getName()));
+            core.sendPreset(sender, "teleport.success", List.of(FontUtil.getPlayerTag(player1)));
         } else {
             if (player1.getUniqueId() == player2.getUniqueId()) {
                 core.sendPreset(sender, "teleport.self");
@@ -67,7 +68,7 @@ public class Teleport implements CoreCommandExecutor {
                 player1.teleport(player2);
             }
 
-            core.sendPreset(sender, "teleport.othersuccess", List.of(player1.getName(), player2.getName()));
+            core.sendPreset(sender, "teleport.othersuccess", List.of(FontUtil.getPlayerTag(player1), FontUtil.getPlayerTag(player2)));
             return true;
         }
         return true;

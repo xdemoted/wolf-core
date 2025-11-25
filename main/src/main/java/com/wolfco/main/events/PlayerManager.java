@@ -27,6 +27,7 @@ import com.wolfco.common.Utilities;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.PlayerData;
 import com.wolfco.main.handlers.TeamHandler;
+import com.wolfco.main.utility.FontUtil;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 
@@ -115,7 +116,7 @@ public class PlayerManager implements Listener {
         if (core.getAfkPlayers().contains(player)) {
             core.getAfkPlayers().remove(player);
             core.getChatManager().sendGlobalBroadcast(player,
-                    "§8[§aNetwork§8]§a " + player.getName() + " §eis no longer AFK.");
+                    "§8[§aNetwork§8]§a " + FontUtil.getPlayerTag(player) + " §eis no longer AFK.");
         }
     }
 

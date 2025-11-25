@@ -10,6 +10,7 @@ import com.wolfco.common.classes.CoreCommandExecutor;
 import com.wolfco.common.classes.argumenthandlers.PlayerArg;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.main.Core;
+import com.wolfco.main.utility.FontUtil;
 
 public class InventorySee implements CoreCommandExecutor {
 
@@ -38,7 +39,7 @@ public class InventorySee implements CoreCommandExecutor {
         Player target = (Player) argumentValues[0];
 
         PlayerInventory targetInventory = target.getInventory();
-        Inventory chestInventory = core.getServer().createInventory(null, 54, target.getName() + "'s Inventory");
+        Inventory chestInventory = core.getServer().createInventory(null, 54, FontUtil.getPlayerTag(target) + "'s Inventory");
         chestInventory.setContents(targetInventory.getContents());
 
         

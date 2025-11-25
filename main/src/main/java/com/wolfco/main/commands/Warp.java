@@ -13,6 +13,7 @@ import com.wolfco.common.classes.CoreCommandExecutor;
 import com.wolfco.common.classes.argumenthandlers.MultiPlayerArg;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.customargs.WarpArgument;
+import com.wolfco.main.utility.FontUtil;
 
 public class Warp implements CoreCommandExecutor {
 
@@ -63,7 +64,7 @@ public class Warp implements CoreCommandExecutor {
                 core.sendPreset(sender, "warp.success.all");
                 return false;
             } else {
-                core.sendPreset(sender, "warp.success.other", List.of(target.iterator().next().getName(), warp.name));
+                core.sendPreset(sender, "warp.success.other", List.of(FontUtil.getPlayerTag(target.iterator().next()), warp.name));
             }
 
             for (Player player : target) {

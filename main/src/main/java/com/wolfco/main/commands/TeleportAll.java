@@ -9,6 +9,7 @@ import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommandExecutor;
 import com.wolfco.common.classes.argumenthandlers.PlayerArg;
 import com.wolfco.main.Core;
+import com.wolfco.main.utility.FontUtil;
 
 public class TeleportAll implements CoreCommandExecutor {
 
@@ -48,7 +49,7 @@ public class TeleportAll implements CoreCommandExecutor {
                 p.teleport(player1)
             );
 
-            core.sendPreset(sender, "teleportall.success", List.of(player1.getName()));
+            core.sendPreset(sender, "teleportall.success", List.of(FontUtil.getPlayerTag(player1)));
             
             return true;
         }

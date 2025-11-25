@@ -11,6 +11,7 @@ import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.PlayerData;
 import com.wolfco.main.classes.Request;
+import com.wolfco.main.utility.FontUtil;
 
 public class TeleportAccept implements CoreCommandExecutor {
 
@@ -64,12 +65,12 @@ public class TeleportAccept implements CoreCommandExecutor {
 
         if (targetRequest.type.equalsIgnoreCase("tpa")) {
             requestSender.teleport(receiver);
-            core.sendPreset(sender, "teleportask.teleporting", List.of(receiver.getName()));
-            core.sendPreset(sender, "teleportask.accept", List.of(requestSender.getName()));
+            core.sendPreset(sender, "teleportask.teleporting", List.of(FontUtil.getPlayerTag(receiver)));
+            core.sendPreset(sender, "teleportask.accept", List.of(FontUtil.getPlayerTag(requestSender)));
         } else if (targetRequest.type.equalsIgnoreCase("tpahere")) {
             receiver.teleport(requestSender);
-            core.sendPreset(sender, "teleportask.accept", List.of(receiver.getName()));
-            core.sendPreset(sender, "teleportask.teleporting", List.of(requestSender.getName()));
+            core.sendPreset(sender, "teleportask.accept", List.of(FontUtil.getPlayerTag(receiver)));
+            core.sendPreset(sender, "teleportask.teleporting", List.of(FontUtil.getPlayerTag(requestSender)));
         }
         receiverData.pendingRequests.remove(requestSender);
         return true;

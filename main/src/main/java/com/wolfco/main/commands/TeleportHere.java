@@ -10,6 +10,7 @@ import com.wolfco.common.classes.CoreCommandExecutor;
 import com.wolfco.common.classes.argumenthandlers.PlayerArg;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.main.Core;
+import com.wolfco.main.utility.FontUtil;
 
 public class TeleportHere implements CoreCommandExecutor {
 
@@ -37,7 +38,7 @@ public class TeleportHere implements CoreCommandExecutor {
         Player player = (Player) argumentValues[0];
 
         player.teleport(((Player) sender));
-        core.sendPreset(sender, "teleporthere.success", List.of(player.getName()));
+        core.sendPreset(sender, "teleporthere.success", List.of(FontUtil.getPlayerTag(player)));
         return true;
     }
 }

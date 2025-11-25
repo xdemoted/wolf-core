@@ -1,5 +1,7 @@
 package com.wolfco.main.events;
 
+import java.util.logging.Level;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,8 +13,14 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import com.wolfco.common.Utilities;
 import com.wolfco.main.Core;
+import com.wolfco.main.classes.redis.ChatMessage;
+import com.wolfco.main.classes.redis.GlobalMessageEvent;
 import com.wolfco.main.utility.FontUtil;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 import net.luckperms.api.cacheddata.CachedDataManager;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.model.user.User;
@@ -20,9 +28,16 @@ import net.luckperms.api.model.user.User;
 public class ChatManager implements Listener, PluginMessageListener {
 
     Core core;
+    MiniMessage serializer;
 
     public ChatManager(Core core) {
         this.core = core;
+        serializer = MiniMessage.builder()
+                .tags(TagResolver.builder()
+                        .resolver(StandardTags.color())
+                        .resolver(StandardTags.decorations())
+                        .build())
+                .build();
     }
 
     @EventHandler
@@ -52,15 +67,37 @@ public class ChatManager implements Listener, PluginMessageListener {
                 + suffix + " <#555555>» "
                 + chatPrefix + "<message>" + chatSuffix;
 
-        // Send to Velocity
-        ByteArrayDataOutput out = ByteStreams.newDataOutput();
-        out.writeUTF("globalchat");
-        out.writeUTF(player.getName());
-        out.writeUTF(formatting);
-        out.writeUTF(message);
-        out.writeBoolean(color);
-        player.sendPluginMessage(core, "core:main", out.toByteArray());
+        core.getRedisManager().sendChatMessage(formatting, message, color);
+
+        core.getAdventure().players().sendMessage(formatChatMessage(formatting, message, color));
+
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onGlobalMessage(GlobalMessageEvent event) {
+        ChatMessage chatMessage = event.getChatMessage();
+        Component formattedMessage = formatChatMessage(chatMessage.getFormatData(), chatMessage.getMessageData(),
+                chatMessage.getColorEnabled());
+
+        core.getAdventure().players().sendMessage(formattedMessage);
+    }
+
+    public Component formatChatMessage(String formatData, String messageData, boolean colorEnabled) {
+        String[] formattingParts = formatData.split("<message>", 2);
+
+        if (formattingParts.length != 2) {
+            core.getLogger().log(Level.WARNING, "Invalid formatting string received: {0}", formatData);
+            return Component.text(messageData);
+        }
+
+        Component preMessage = MiniMessage.miniMessage().deserialize(formattingParts[0] + "<reset>");
+        Component postMessage = MiniMessage.miniMessage().deserialize(formattingParts[1]);
+        Component fullMessage = preMessage
+                .append(colorEnabled ? serializer.deserialize(messageData) : Component.text(messageData))
+                .append(postMessage);
+
+        return fullMessage;
     }
 
     @Override
