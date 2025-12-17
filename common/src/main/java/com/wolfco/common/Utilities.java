@@ -6,13 +6,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import com.wolfco.common.classes.CorePlugin;
 
+import dev.dejvokep.boostedyaml.YamlDocument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.luckperms.api.cacheddata.CachedPermissionData;
@@ -129,5 +132,33 @@ public class Utilities {
     public static Vector getUnitLocation(Location from, Location to) {
         Location direction = to.clone().subtract(from);
         return direction.toVector().normalize(); // returns unit vector
+    }
+
+    public static Location loadLocation(YamlDocument document, String path) {
+        String world = document.getString(path + ".world", "world");
+        UUID worldUUID;
+
+        try {
+            worldUUID = UUID.fromString(world);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+        
+        double x = document.getDouble(path + ".x", 0d);
+        double y = document.getDouble(path + ".y", 0d);
+        double z = document.getDouble(path + ".z", 0d);
+
+        float yaw = document.getFloat(path + ".yaw", 0f);
+        float pitch = document.getFloat(path + ".pitch", 0f);
+
+        World w = org.bukkit.Bukkit.getWorld(worldUUID);
+
+        if (w == null) {
+            return null;
+        }
+
+        Location location = new Location(org.bukkit.Bukkit.getWorld(worldUUID), x, y, z, yaw, pitch);
+
+        return location;
     }
 }

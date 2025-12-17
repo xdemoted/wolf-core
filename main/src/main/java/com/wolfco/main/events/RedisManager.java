@@ -4,13 +4,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
 
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.json.JSONException;
 
 import com.wolfco.main.Core;
+import com.wolfco.main.classes.redis.AsyncGlobalMessageEvent;
 import com.wolfco.main.classes.redis.BaseMessage;
 import com.wolfco.main.classes.redis.ChatMessage;
-import com.wolfco.main.classes.redis.GlobalMessageEvent;
 
 import redis.clients.jedis.DefaultJedisClientConfig;
 import redis.clients.jedis.HostAndPort;
@@ -22,7 +23,7 @@ public class RedisManager {
     public String serverName;
     Core core = (Core) Core.get();
     JedisPool jedisPool;
-    final Jedis publisher;
+    Jedis publisher;
     String password;
 
     final ExecutorService executorService = Executors.newFixedThreadPool(10);
@@ -44,13 +45,35 @@ public class RedisManager {
 
         // publish initial online message using the dedicated publisher
         executorService.execute(() -> {
-            synchronized (publisher) {
-                try {
-                    core.log("Redis Publish!");
-                    publisher.publish("System", new BaseMessage(serverName, "online").toJson());
-                } catch (Exception e) {
-                    core.log("Failed to publish initial Redis message: " + e.getMessage());
-                }
+            try {
+                core.log("Redis Publish!");
+                publisher.publish("System", new BaseMessage(serverName, "online").toJson());
+            } catch (Exception e) {
+                core.log("Failed to publish initial Redis message: " + e.getMessage());
+            }
+        });
+    }
+
+    public void restartRedis() {
+        core.log("Restarting Redis connection...");
+        close();
+        HostAndPort hostAndPort = getDetails();
+        jedisPool = new JedisPool(hostAndPort, DefaultJedisClientConfig.builder()
+                .password(password)
+                .build());
+
+        publisher = new Jedis(hostAndPort, DefaultJedisClientConfig.builder()
+                .password(password)
+                .build());
+
+        openChannels();
+
+        executorService.execute(() -> {
+            try {
+                core.log("Redis Publish!");
+                publisher.publish("System", new BaseMessage(serverName, "online").toJson());
+            } catch (Exception e) {
+                core.log("Failed to publish initial Redis message: " + e.getMessage());
             }
         });
     }
@@ -72,17 +95,23 @@ public class RedisManager {
     }
 
     public void sendMessage(String channel, BaseMessage message) {
-        publisher.publish(channel, message.toJson());
+        try {
+            publisher.publish(channel, message.toJson());
+        } catch (Exception e) {
+            core.log("Failed to publish Redis message: " + e.getMessage());
+        }
     }
 
-    public void sendChatMessageAsync(String formatData, String messageData, Boolean colorEnabled) {
-        executorService.execute(() -> sendChatMessage(formatData, messageData, colorEnabled));
+    public void sendChatMessageAsync(ChatMessage chatMessage) {
+        executorService.execute(() -> sendMessage("ChatMessage", chatMessage));
     }
 
-    public void sendChatMessage(String formatData, String messageData, Boolean colorEnabled) {
-        ChatMessage chatMessage = new ChatMessage(serverName, formatData, messageData);
-        if (colorEnabled)
-            chatMessage.enableColor();
+    public void sendChatMessageAsync(Player player, String message) {
+        executorService.execute(() -> sendChatMessage(player, message));
+    }
+
+    void sendChatMessage(Player player, String message) {
+        ChatMessage chatMessage = new ChatMessage(serverName, player, message);
         sendMessage("ChatMessage", chatMessage);
     }
 
@@ -120,7 +149,8 @@ public class RedisManager {
                                         + redisMessage.data);
                             }
                             case "ChatMessage" -> {
-                                GlobalMessageEvent event = new GlobalMessageEvent(ChatMessage.fromJson(message));
+                                AsyncGlobalMessageEvent event = new AsyncGlobalMessageEvent(
+                                        ChatMessage.fromJson(message));
                                 new BukkitRunnable() {
                                     @Override
                                     public void run() {

@@ -1,5 +1,7 @@
-version: 10
+version: 11
 
+core:
+  prefix: "<glyph:system:c><shift:-1><glyph:w:c><shift:-2><glyph:o:c><shift:-2><glyph:l:c><shift:-2><glyph:f:c><shift:-2><glyph:c:c><shift:-2><glyph:o:c><shift:-2><glyph:end2:c>"
 gamemode:
   invalid: "♆ <#ff5555>Invalid gamemode."
   multisuccess: "♆ <#55ff55>Set <#ffff00>%0% <#55ff55>players' gamemode to <#ffff00>%1%"

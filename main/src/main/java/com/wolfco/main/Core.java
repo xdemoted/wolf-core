@@ -53,6 +53,8 @@ import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 
 public class Core extends CorePlugin implements Listener {
+    private final static List<String> SERVER_ICONS = List.of(
+            "creative", "survival");
 
     LuckPerms lp;
     YamlDocument warps;
@@ -60,6 +62,7 @@ public class Core extends CorePlugin implements Listener {
     RedisManager redisManager;
     MongoDatabase db;
     String serverName;
+    String icon = null;
 
     List<Player> afkPlayers = new ArrayList<>();
 
@@ -78,17 +81,13 @@ public class Core extends CorePlugin implements Listener {
         warps = getConfigDocument("warps.yml");
 
         getCommandLoader().registerAll(getCommands());
-        playerManager = new PlayerManager(this);
 
-        PluginManager pm = getServer().getPluginManager();
-        pm.registerEvents(this, this);
-        pm.registerEvents(playerManager, this);
-        pm.registerEvents(new ChatManager(this), this);
+        registerEvents();
 
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "core:main");
+        this.redisManager = new RedisManager(serverName);
 
         this.getLogger().info("[Wolf-Core] Plugin horny");
-        this.redisManager = new RedisManager(serverName);
 
         Bukkit.getScheduler().runTaskLater(this, () -> {
             WebhookManager webhook = new WebhookManager(this);
@@ -112,6 +111,25 @@ public class Core extends CorePlugin implements Listener {
 
             webhook.sendLog(out);
         }, 20L * 10L);
+    }
+
+    public void registerEvents() {
+        playerManager = new PlayerManager(this);
+        PluginManager pm = getServer().getPluginManager();
+        pm.registerEvents(this, this);
+        pm.registerEvents(playerManager, this);
+        pm.registerEvents(new ChatManager(this), this);
+    }
+
+    public String getIcon() {
+        if (icon == null) {
+            if (SERVER_ICONS.contains(serverName.toLowerCase())) {
+                icon = serverName.toLowerCase();
+            } else {
+                icon = "unknown";
+            }
+        }
+        return icon;
     }
 
     public String getServerName() {

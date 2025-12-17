@@ -16,7 +16,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
@@ -27,7 +26,6 @@ import com.wolfco.common.Utilities;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.PlayerData;
 import com.wolfco.main.handlers.TeamHandler;
-import com.wolfco.main.utility.FontUtil;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 
@@ -110,17 +108,6 @@ public class PlayerManager implements Listener {
     }
 
     @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event) {
-        Player player = event.getPlayer();
-
-        if (core.getAfkPlayers().contains(player)) {
-            core.getAfkPlayers().remove(player);
-            core.getChatManager().sendGlobalBroadcast(player,
-                    "§8[§aNetwork§8]§a " + FontUtil.getPlayerTag(player) + " §eis no longer AFK.");
-        }
-    }
-
-    @EventHandler
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         Player player = event.getPlayer();
         TeleportCause cause = event.getCause();
@@ -130,12 +117,7 @@ public class PlayerManager implements Listener {
 
         if (!IGNORED_CAUSES.contains(cause)) {
             if (playerData != null) {
-                playerData.lastPosition[0] = from.getX();
-                playerData.lastPosition[1] = from.getY();
-                playerData.lastPosition[2] = from.getZ();
-                playerData.lastPosition[3] = from.getYaw();
-                playerData.lastPosition[4] = from.getPitch();
-                playerData.lastWorld = from.getWorld().getUID();
+                playerData.lastPosition = from;
             }
         } else if (cause == TeleportCause.ENDER_PEARL) {
             Location to = event.getTo();

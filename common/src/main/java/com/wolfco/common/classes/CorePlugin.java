@@ -94,7 +94,7 @@ public abstract class CorePlugin extends JavaPlugin {
             message = message.replaceAll("%" + i + "%", input.get(i));
         }
 
-        return message;
+        return message.replace("♆", messages.getString("core.prefix","♆"));
     }
 
     private YamlDocument getMessageData() {

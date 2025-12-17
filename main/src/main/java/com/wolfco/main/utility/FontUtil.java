@@ -13,14 +13,11 @@ import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.model.user.User;
 
 public class FontUtil {
-
-    static public String createNameTag(String name, String textColor) {
+    static public String createNameTag(String text) {
         StringBuilder sb = new StringBuilder();
-        String colorStart = "<#" + textColor + ">";
-        String colorEnd = "</#" + textColor + ">";
-        char[] chars = name.toCharArray();
+        char[] chars = text.toCharArray();
 
-        sb.append("<glyph:").append(((Core) Core.get()).getServerName().toLowerCase()).append(":c>");
+        sb.append("<glyph:").append(((Core) Core.get()).getIcon()).append(":c>");
 
         for (int i = 0; i < chars.length; i++) {
             String letter = String.valueOf(chars[i]).toLowerCase();
@@ -32,21 +29,15 @@ public class FontUtil {
         return sb.toString();
     }
 
-    static public String parseNameTag(String message) { // <nametag:000000>name
-        Core core = (Core) Core.get();
+    static public String parseNameTag(String message) { // <nametag>name</nametag>
 
-        Pattern regex = Pattern.compile("<nametag:[0-9A-Fa-f]{6}>.*?</nametag>");
+        Pattern regex = Pattern.compile("<nametag>.*?</nametag>");
         Matcher matcher = regex.matcher(message);
 
         while (matcher.find()) {
             String tag = matcher.group();
-            core.log(tag);
-            String color = tag.substring(9, 15);
-            core.log(color);
-            String name = tag.substring(16, tag.length() - 10);
-            core.log(name);
-            message = message.replace(tag, createNameTag(name, color));
-            core.log(message);
+            String name = tag.substring(9, tag.length() - 10);
+            message = message.replace(tag, createNameTag(name));
         }
 
         return message;
