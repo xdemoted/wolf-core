@@ -20,6 +20,8 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPubSub;
 
 public class RedisManager {
+    private static RedisManager instance = null;
+
     public String serverName;
     Core core = (Core) Core.get();
     JedisPool jedisPool;
@@ -102,6 +104,10 @@ public class RedisManager {
         }
     }
 
+    public void sendMessageAsync(String channel, BaseMessage message) {
+        executorService.execute(() -> sendMessage(channel, message));
+    }
+
     public void sendChatMessageAsync(ChatMessage chatMessage) {
         executorService.execute(() -> sendMessage("ChatMessage", chatMessage));
     }
@@ -116,12 +122,26 @@ public class RedisManager {
     }
 
     public void sendSystemMessageAsync(String message) {
-        executorService.execute(() -> sendSystemMessage(message));
+        executorService.execute(() -> {
+            BaseMessage systemMessage = new BaseMessage(serverName, message);
+            sendMessage("System", systemMessage);
+        });
     }
 
-    public void sendSystemMessage(String message) {
-        BaseMessage systemMessage = new BaseMessage(serverName, message);
-        sendMessage("System", systemMessage);
+    public void sendJoin(Player player) {
+        BaseMessage joinMessage = new BaseMessage(serverName, player.getUniqueId().toString());
+        sendMessage("PlayerJoin", joinMessage);
+    }
+
+    public void sendQuit(Player player) {
+        BaseMessage quitMessage = new BaseMessage(serverName, player.getUniqueId().toString());
+        sendMessage("PlayerQuit", quitMessage);
+    }
+
+    public void sendSwitchServer(Player player, String targetServer) {
+        BaseMessage switchMessage = new BaseMessage(serverName,
+                player.getUniqueId().toString() + ";" + targetServer);
+        sendMessage("PlayerSwitch", switchMessage);
     }
 
     private void openChannels() {
@@ -164,7 +184,7 @@ public class RedisManager {
                         }
                         core.log("Received message on channel " + channel + " from server " + redisMessage.serverName);
                     };
-                }, "System", "ChatMessage");
+                }, "System", "ChatMessage", "PlayerJoin", "PlayerQuit");
             }
         });
     };
@@ -177,5 +197,19 @@ public class RedisManager {
         } catch (Exception ignored) {
         }
         jedisPool.close();
+    }
+
+    public static RedisManager getInstance() {
+        if (instance == null) {
+            instance = getInstance(((Core) Core.get()).getServerName());
+        }
+
+        return instance;
+    }
+
+    public static RedisManager getInstance(String serverName) {
+        instance = new RedisManager(serverName);
+
+        return instance;
     }
 }

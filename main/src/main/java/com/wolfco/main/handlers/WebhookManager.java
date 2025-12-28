@@ -22,7 +22,7 @@ public class WebhookManager {
     public WebhookManager(Core core) {
         this.core = core;
     }
-
+    
     public String filterMessage(String message) {
         return message.replaceAll("@", "`@`").replaceAll("#", "`#`");
     }

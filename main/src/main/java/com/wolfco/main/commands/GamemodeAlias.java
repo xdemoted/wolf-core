@@ -12,12 +12,15 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import com.wolfco.common.classes.Command;
-import com.wolfco.common.classes.CoreCommandExecutor;
-import com.wolfco.common.classes.argumenthandlers.MultiPlayerArg;
+import com.wolfco.common.classes.CoreCommand;
+import com.wolfco.common.commands.arguments.MultiPlayerArg;
 import com.wolfco.main.Core;
 
-public class GamemodeAlias implements CoreCommandExecutor {
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
+@Singleton
+public class GamemodeAlias implements CoreCommand {
     final HashMap<String, GameMode> gamemodes = new HashMap<>();
 
     public GamemodeAlias() {
@@ -29,27 +32,20 @@ public class GamemodeAlias implements CoreCommandExecutor {
 
     @Override
     public Command getCommand() {
-        Command command = new Command("gms");
+        Command command = new Command().setName("gms");
         command.setNode("wolfcore.gamemode");
         command.addArguments(new MultiPlayerArg(false).includeSender(false));
 
         return command;
     }
 
-    @Override
-    public Core fetchCore() {
-        return core;
-    }
-
+    @Inject
     Core core;
-
-    public GamemodeAlias(@Nonnull Core core) {
-        this.core = core;
-    }
 
     @SuppressWarnings("unchecked")
     @Override
-    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
+    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args,
+            Object[] argumentValues) {
         Collection<Player> target = (Collection<Player>) argumentValues[0];
 
         GameMode gamemode = switch (alias) {
@@ -71,7 +67,8 @@ public class GamemodeAlias implements CoreCommandExecutor {
             }
 
             if (target.size() > 1) {
-                core.sendPreset(sender, "gamemode.multisuccess", List.of(String.valueOf(target.size()), gamemode.toString()));
+                core.sendPreset(sender, "gamemode.multisuccess",
+                        List.of(String.valueOf(target.size()), gamemode.toString()));
                 return true;
             }
 

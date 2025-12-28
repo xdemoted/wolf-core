@@ -3,36 +3,30 @@ package com.wolfco.main.commands;
 import org.bukkit.command.CommandSender;
 
 import com.wolfco.common.classes.Command;
-import com.wolfco.common.classes.CoreCommandExecutor;
-import com.wolfco.common.classes.argumenthandlers.StringArg;
+import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
+import com.wolfco.common.commands.arguments.StringArg;
 import com.wolfco.main.Core;
 import com.wolfco.main.handlers.PermissionHandler;
 
 import net.luckperms.api.model.user.User;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
-public class Max implements CoreCommandExecutor {
-
+@Singleton
+public class Max implements CoreCommand {
     @Override
     public Command getCommand() {
-        Command command = new Command("max");
+        Command command = new Command().setName("max");
         command.setAccessType(AccessType.PLAYER);
         command.addArguments(new StringArg(true,true,false).setName("PERMISSION"));
 
         return command;
     }
 
-    @Override
-    public Core fetchCore() {
-        return core;
-    }
-
+    @Inject
     Core core;
-
-    public Max(Core core) {
-        this.core = core;
-    }
-
+    
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
         User user = core.getLuckPerms().getUserManager().getUser(sender.getName());

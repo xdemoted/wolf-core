@@ -9,17 +9,20 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.wolfco.common.classes.Command;
-import com.wolfco.common.classes.CoreCommandExecutor;
-import com.wolfco.common.classes.argumenthandlers.MultiPlayerArg;
+import com.wolfco.common.classes.CoreCommand;
+import com.wolfco.common.commands.arguments.MultiPlayerArg;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.customargs.WarpArgument;
 import com.wolfco.main.utility.FontUtil;
 
-public class Warp implements CoreCommandExecutor {
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
+@Singleton
+public class Warp implements CoreCommand {
     @Override
     public Command getCommand() {
-        Command command = new Command("warp");
+        Command command = new Command().setName("warp");
         
         command.addArguments(
             new WarpArgument(true),
@@ -29,17 +32,9 @@ public class Warp implements CoreCommandExecutor {
         return command;
     }
 
-    @Override
-    public Core fetchCore() {
-        return core;
-    }
-
+    @Inject
     Core core;
-
-    public Warp(Core core) {
-        this.core = core;
-    }
-
+    
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
         com.wolfco.main.classes.Warp warp = (com.wolfco.main.classes.Warp) argumentValues[0];

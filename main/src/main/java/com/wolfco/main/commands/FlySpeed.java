@@ -4,17 +4,20 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.wolfco.common.classes.Command;
-import com.wolfco.common.classes.CoreCommandExecutor;
-import com.wolfco.common.classes.argumenthandlers.NumberArg;
-import com.wolfco.common.classes.argumenthandlers.PlayerArg;
+import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
+import com.wolfco.common.commands.arguments.NumberArg;
+import com.wolfco.common.commands.arguments.PlayerArg;
 import com.wolfco.main.Core;
 
-public class FlySpeed implements CoreCommandExecutor {
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
+@Singleton
+public class FlySpeed implements CoreCommand {
     @Override
     public Command getCommand() {
-        Command command = new Command("flyspeed");
+        Command command = new Command().setName("flyspeed");
         command.setAccessType(AccessType.PLAYER);
         command.addArguments(
                 new NumberArg(true, 1).setConstraints(0, 10).setName("SPEED"),
@@ -23,17 +26,9 @@ public class FlySpeed implements CoreCommandExecutor {
         return command;
     }
 
-    @Override
-    public Core fetchCore() {
-        return core;
-    }
-
+    @Inject
     Core core;
-
-    public FlySpeed(Core core) {
-        this.core = core;
-    }
-
+    
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args,
             Object[] argumentValues) {

@@ -6,18 +6,22 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.wolfco.common.classes.Command;
-import com.wolfco.common.classes.CoreCommandExecutor;
-import com.wolfco.common.classes.argumenthandlers.BooleanArg;
-import com.wolfco.common.classes.argumenthandlers.PlayerArg;
+import com.wolfco.common.classes.CoreCommand;
+import com.wolfco.common.classes.arguments.PlayerArg;
 import com.wolfco.common.classes.types.AccessType;
+import com.wolfco.common.commands.arguments.BooleanArg;
+import com.wolfco.common.commands.arguments.PlayerArg;
 import com.wolfco.main.Core;
 import com.wolfco.main.utility.FontUtil;
 
-public class Fly implements CoreCommandExecutor {
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
+@Singleton
+public class Fly implements CoreCommand {
     @Override
     public Command getCommand() {
-        Command command = new Command("fly");
+        Command command = new Command().setName("fly");
         command.setAccessType(AccessType.PLAYER);
         command.addArguments(
                 new PlayerArg(false).includeSender(false),
@@ -26,16 +30,8 @@ public class Fly implements CoreCommandExecutor {
         return command;
     }
 
-    @Override
-    public Core fetchCore() {
-        return core;
-    }
-
+    @Inject
     Core core;
-
-    public Fly(Core core) {
-        this.core = core;
-    }
 
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args,
@@ -48,7 +44,7 @@ public class Fly implements CoreCommandExecutor {
             core.sendPreset(sender, "generic.nopermission");
             return false;
         }
-        
+
         boolean toggle;
 
         if (argumentValues[1] == null) {
@@ -61,7 +57,8 @@ public class Fly implements CoreCommandExecutor {
         target.setFlying(toggle);
 
         if (sender != target) {
-            core.sendPreset(sender, "fly.othersuccess", List.of(toggle ? "enabled" : "disabled", FontUtil.getPlayerTag(target)));
+            core.sendPreset(sender, "fly.othersuccess",
+                    List.of(toggle ? "enabled" : "disabled", FontUtil.getPlayerTag(target)));
             core.sendPreset(target, "fly.success", List.of(toggle ? "enabled" : "disabled"));
         } else {
             core.sendPreset(sender, "fly.success", List.of(toggle ? "enabled" : "disabled"));

@@ -8,35 +8,29 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.wolfco.common.classes.Command;
-import com.wolfco.common.classes.CoreCommandExecutor;
-import com.wolfco.common.classes.argumenthandlers.StringArg;
+import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
+import com.wolfco.common.commands.arguments.StringArg;
 import com.wolfco.main.Core;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
-public class SetWarp implements CoreCommandExecutor {
-
+@Singleton
+public class SetWarp implements CoreCommand {
     @Override
     public Command getCommand() {
-        Command command = new Command("setwarp");
+        Command command = new Command().setName("setwarp");
         command.setAccessType(AccessType.PLAYER);
         command.addArguments(new StringArg(true, true, false).setName("WARP"));
 
         return command;
     }
 
-    @Override
-    public Core fetchCore() {
-        return core;
-    }
-
+    @Inject
     Core core;
-
-    public SetWarp(Core core) {
-        this.core = core;
-    }
-
+    
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
         YamlDocument warps = core.getWarps();

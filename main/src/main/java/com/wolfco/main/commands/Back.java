@@ -5,31 +5,28 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.wolfco.common.classes.Command;
-import com.wolfco.common.classes.CoreCommandExecutor;
+import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.PlayerData;
 
-public class Back implements CoreCommandExecutor {
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
+
+@Singleton
+public class Back implements CoreCommand {
 
     @Override
     public Command getCommand() {
-        Command command = new Command("back");
+        Command command = new Command().setName("back");
         command.setAccessType(AccessType.PLAYER);
 
         return command;
     }
 
-    @Override
-    public Core fetchCore() {
-        return core;
-    }
 
+    @Inject
     Core core;
-
-    public Back(Core core) {
-        this.core = core;
-    }
 
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {

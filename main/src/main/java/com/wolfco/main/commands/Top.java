@@ -6,31 +6,26 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.HumanEntity;
 
 import com.wolfco.common.classes.Command;
-import com.wolfco.common.classes.CoreCommandExecutor;
+import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.main.Core;
 
-public class Top implements CoreCommandExecutor {
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
+@Singleton
+public class Top implements CoreCommand {
     @Override
     public Command getCommand() {
-        Command command = new Command("top");
+        Command command = new Command().setName("top");
         command.setAccessType(AccessType.PLAYER);
 
         return command;
     }
 
-    @Override
-    public Core fetchCore() {
-        return core;
-    }
-
+    @Inject
     Core core;
-
-    public Top(Core core) {
-        this.core = core;
-    }
-
+    
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
         HumanEntity player = (HumanEntity) sender;

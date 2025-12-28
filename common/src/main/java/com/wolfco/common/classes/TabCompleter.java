@@ -6,14 +6,15 @@ import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
-import com.wolfco.common.classes.argumenthandlers.SubCommandArg;
+import com.wolfco.common.commands.arguments.SubCommandArg;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
+
+@Singleton
 public class TabCompleter {
-    private final CorePlugin core;
-
-    public TabCompleter(CorePlugin core) {
-        this.core = core;
-    }
+    @Inject
+    private CorePlugin core;
 
     public List<String> runTabComplete(Command command, CommandSender sender, org.bukkit.command.Command bukkitCommand,
             String alias, String[] args) {

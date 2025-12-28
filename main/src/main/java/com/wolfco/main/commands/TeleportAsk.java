@@ -6,38 +6,33 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.wolfco.common.classes.Command;
-import com.wolfco.common.classes.CoreCommandExecutor;
-import com.wolfco.common.classes.argumenthandlers.PlayerArg;
+import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
+import com.wolfco.common.commands.arguments.PlayerArg;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.PlayerData;
 import com.wolfco.main.classes.Request;
 import com.wolfco.main.utility.FontUtil;
 
-public class TeleportAsk implements CoreCommandExecutor {
-    static final String TPA = "tpa";
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
+
+@Singleton
+public class TeleportAsk implements CoreCommand {    static final String TPA = "tpa";
     static final String TPAHERE = TPA + "here";
 
     @Override
     public Command getCommand() {
-        Command command = new Command("teleportask");
+        Command command = new Command().setName("teleportask");
         command.setAccessType(AccessType.PLAYER);
         command.addArguments(new PlayerArg(true).includeSender(false));
 
         return command;
     }
 
-    @Override
-    public Core fetchCore() {
-        return core;
-    }
-
+    @Inject
     Core core;
-
-    public TeleportAsk(Core core) {
-        this.core = core;
-    }
-
+    
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args,
             Object[] argumentValues) {

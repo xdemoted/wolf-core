@@ -6,16 +6,19 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.wolfco.common.classes.Command;
-import com.wolfco.common.classes.CoreCommandExecutor;
-import com.wolfco.common.classes.argumenthandlers.PlayerArg;
+import com.wolfco.common.classes.CoreCommand;
+import com.wolfco.common.commands.arguments.PlayerArg;
 import com.wolfco.main.Core;
 import com.wolfco.main.utility.FontUtil;
 
-public class Teleport implements CoreCommandExecutor {
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
+@Singleton
+public class Teleport implements CoreCommand {
     @Override
     public Command getCommand() {
-        Command command = new Command("teleport");
+        Command command = new Command().setName("teleport");
         command.addArguments(
                 new PlayerArg(true).includeSender(false).setName("PLAYER1"),
                 new PlayerArg(false).includeSender(false).setName("PLAYER2")
@@ -24,17 +27,9 @@ public class Teleport implements CoreCommandExecutor {
         return command;
     }
 
-    @Override
-    public Core fetchCore() {
-        return core;
-    }
-
+    @Inject
     Core core;
-
-    public Teleport(Core core) {
-        this.core = core;
-    }
-
+    
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String label, String[] args,
             Object[] argumentValues) {

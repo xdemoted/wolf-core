@@ -5,13 +5,17 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.wolfco.common.Utilities;
+import com.wolfco.main.Core;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
+import net.kyori.adventure.text.Component;
+import net.luckperms.api.model.user.User;
 
 public class PlayerData {
     public class timestamp {
@@ -191,5 +195,21 @@ public class PlayerData {
         data.set("lastTeleport.world", logoutPosition.getWorld().getUID().toString());
 
         return data;
+    }
+
+    public Component getDisplayName() {
+        User user = ((Core) Core.get()).getLuckPerms().getUserManager().getUser(host.getUniqueId());
+        return  Utilities.getDisplayName(user);
+    }
+
+    public CompletableFuture<Component> getOfflineDisplayName() {
+        CompletableFuture<User> user = ((Core) Core.get()).getLuckPerms().getUserManager().loadUser(host.getUniqueId());
+        CompletableFuture<Component> displayNameFuture = new CompletableFuture<>();
+
+        user.thenAcceptAsync(u -> {
+            displayNameFuture.complete(Utilities.getDisplayName(u));
+        });
+
+        return displayNameFuture;
     }
 }

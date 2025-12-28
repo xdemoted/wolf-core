@@ -1,4 +1,4 @@
-package com.wolfco.common.classes.argumenthandlers;
+package com.wolfco.common.commands.arguments;
 
 import java.util.ArrayList;
 import java.util.Collection;

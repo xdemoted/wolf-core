@@ -7,33 +7,28 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.wolfco.common.classes.Command;
-import com.wolfco.common.classes.CoreCommandExecutor;
+import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.PlayerData;
 import com.wolfco.main.classes.customargs.OfflinePlayerArg;
 
-public class OfflineTeleport implements CoreCommandExecutor {
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
+@Singleton
+public class OfflineTeleport implements CoreCommand {
     @Override
     public Command getCommand() {
-        Command command = new Command("offlineteleport");
+        Command command = new Command().setName("offlineteleport");
         command.addArguments(
                 new OfflinePlayerArg(true).includeSender(false).setName("PLAYER"));
 
         return command;
     }
 
-    @Override
-    public Core fetchCore() {
-        return core;
-    }
-
+    @Inject
     Core core;
-
-    public OfflineTeleport(Core core) {
-        this.core = core;
-    }
-
+    
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String label, String[] args,
             Object[] argumentValues) {

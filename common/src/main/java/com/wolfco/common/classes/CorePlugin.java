@@ -6,46 +6,58 @@ import java.nio.file.Path;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.wolfco.common.CommandLoader;
+import com.wolfco.common.commands.CommandLoader;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 import dev.dejvokep.boostedyaml.dvs.versioning.BasicVersioning;
 import dev.dejvokep.boostedyaml.settings.updater.UpdaterSettings;
+import io.avaje.inject.BeanScope;
+import io.avaje.inject.InjectModule;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
+@InjectModule(provides = JavaPlugin.class)
 public abstract class CorePlugin extends JavaPlugin {
+    private final static List<String> SERVER_ICONS = List.of(
+            "creative", "survival");
+    private BeanScope scope;
 
+    public String serverName;
+    String icon = null;
     BukkitAudiences adventure;
     YamlDocument config;
     YamlDocument messages;
-    CommandLoader commandLoader;
 
     protected CorePlugin() {
         messages = getMessageData();
-        commandLoader = new CommandLoader(this);
-    }
-
-    public CommandLoader getCommandLoader() {
-        return commandLoader;
     }
 
     @Override
     public void onEnable() {
-        // commandLoader.registerAll(getCommands());
+        scope = BeanScope.builder()
+                .bean(this.getName(), Plugin.class, this)
+                .bean(this.getName(), JavaPlugin.class, this)
+                .bean(JavaPlugin.class, this)
+            .build();
+
+        CommandLoader commandExecutor = scope.get(CommandLoader.class);
+        commandExecutor.registerAll();
+    }
+
+    public BeanScope getScope() {
+        return scope;
     }
 
     public BukkitAudiences getAdventure() {
         if (this.adventure == null) {
             this.adventure = BukkitAudiences.create(this);
         }
-        
+
         return this.adventure;
     }
-
-    public abstract List<CoreCommandExecutor> getCommands();
 
     public YamlDocument setMainConfig(YamlDocument config) {
         this.config = config;
@@ -94,7 +106,7 @@ public abstract class CorePlugin extends JavaPlugin {
             message = message.replaceAll("%" + i + "%", input.get(i));
         }
 
-        return message.replace("♆", messages.getString("core.prefix","♆"));
+        return message.replace("♆", messages.getString("core.prefix", "♆"));
     }
 
     private YamlDocument getMessageData() {
@@ -108,6 +120,17 @@ public abstract class CorePlugin extends JavaPlugin {
             }
         }
         return messages;
+    }
+
+    public String getIcon() {
+        if (icon == null) {
+            if (SERVER_ICONS.contains(serverName.toLowerCase())) {
+                icon = serverName.toLowerCase();
+            } else {
+                icon = "unknown";
+            }
+        }
+        return icon;
     }
 
     public void sendMessage(CommandSender sender, String message) {

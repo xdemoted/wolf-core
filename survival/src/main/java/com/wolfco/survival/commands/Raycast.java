@@ -5,18 +5,23 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 
 import com.wolfco.common.classes.Command;
-import com.wolfco.common.classes.CoreCommandExecutor;
-import com.wolfco.common.classes.argumenthandlers.NumberArg;
+import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
+import com.wolfco.common.commands.arguments.NumberArg;
 import com.wolfco.survival.Core;
 import com.wolfco.survival.explosions.BasicExplosion;
 import com.wolfco.survival.geometryUtils.shapeGeneration.ExplosionSphere;
 
-public class Raycast implements CoreCommandExecutor {
+import jakarta.inject.Singleton;
 
+@Singleton
+import jakarta.inject.Singleton;
+
+@Singleton
+public class Raycast implements CoreCommand {
     @Override
     public Command getCommand() {
-        Command command = new Command("raycast");
+        Command command = new Command().setName("raycast");
         command.setAccessType(AccessType.PLAYER);
         command.addArguments(
                 new NumberArg(true, 0).setName("power"),
@@ -25,17 +30,8 @@ public class Raycast implements CoreCommandExecutor {
         return command;
     }
 
-    @Override
-    public Core fetchCore() {
-        return core;
-    }
 
-    Core core;
-
-    public Raycast(Core core) {
-        this.core = core;
-    }
-
+    
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args,
             Object[] argumentValues) {

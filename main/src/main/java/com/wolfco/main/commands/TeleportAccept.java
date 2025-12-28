@@ -5,19 +5,22 @@ import java.util.List;
 import org.bukkit.entity.Player;
 
 import com.wolfco.common.classes.Command;
-import com.wolfco.common.classes.CoreCommandExecutor;
-import com.wolfco.common.classes.argumenthandlers.PlayerArg;
+import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
+import com.wolfco.common.commands.arguments.PlayerArg;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.PlayerData;
 import com.wolfco.main.classes.Request;
 import com.wolfco.main.utility.FontUtil;
 
-public class TeleportAccept implements CoreCommandExecutor {
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
+@Singleton
+public class TeleportAccept implements CoreCommand {
     @Override
     public Command getCommand() {
-        Command command = new Command("teleportaccept");
+        Command command = new Command().setName("teleportaccept");
         command.addArguments(
             new PlayerArg(false).includeSender(true).setName("PLAYER")
         );
@@ -25,16 +28,8 @@ public class TeleportAccept implements CoreCommandExecutor {
         return command;
     }
 
-    @Override
-    public Core fetchCore() {
-        return core;
-    }
-
+    @Inject
     Core core;
-
-    public TeleportAccept(com.wolfco.main.Core core) {
-        this.core = core;
-    }
 
     @Override
     public boolean execute(org.bukkit.command.CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {

@@ -7,32 +7,27 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.wolfco.common.classes.Command;
-import com.wolfco.common.classes.CoreCommandExecutor;
-import com.wolfco.common.classes.argumenthandlers.MultiPlayerArg;
-import com.wolfco.common.classes.argumenthandlers.WorldArg;
+import com.wolfco.common.classes.CoreCommand;
+import com.wolfco.common.commands.arguments.MultiPlayerArg;
+import com.wolfco.common.commands.arguments.WorldArg;
 import com.wolfco.main.Core;
 
-public class WorldCMD implements CoreCommandExecutor {
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
+@Singleton
+public class WorldCMD implements CoreCommand {
     @Override
     public Command getCommand() {
-        Command command = new Command("world");
+        Command command = new Command().setName("world");
         command.addArguments(new WorldArg(true), new MultiPlayerArg(false));
 
         return command;
     }
 
-    @Override
-    public Core fetchCore() {
-        return core;
-    }
-
+    @Inject
     Core core;
-
-    public WorldCMD(Core core) {
-        this.core = core;
-    }
-
+    
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias,
             String[] args, Object[] argumentValues) {

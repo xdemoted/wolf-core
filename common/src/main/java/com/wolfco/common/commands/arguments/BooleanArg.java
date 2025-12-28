@@ -1,4 +1,4 @@
-package com.wolfco.common.classes.argumenthandlers;
+package com.wolfco.common.commands.arguments;
 
 import java.util.List;
 
@@ -8,15 +8,13 @@ import org.bukkit.command.CommandSender;
 import com.wolfco.common.classes.ArgumentInterface;
 import com.wolfco.common.classes.CorePlugin;
 
-public class StaticArg implements ArgumentInterface {
+public class BooleanArg implements ArgumentInterface {
+
     final boolean required;
-    String name = "STATIC";
-    List<String> options;
+    String name = "BOOLEAN";
 
-
-    public StaticArg(boolean required, String... options) {
+    public BooleanArg(boolean required) {
         this.required = required;
-        this.options = List.of(options);
     }
 
     @Override
@@ -34,19 +32,21 @@ public class StaticArg implements ArgumentInterface {
         this.name = name;
         return this;
     }
-    
+
     @Override
     public List<String> getOptions(CorePlugin core, CommandSender sender, Command bukkitCommand, String[] args) {
-        return options;
+        return List.of("true", "false");
     }
 
     @Override
-    public String getValue(CorePlugin core, CommandSender sender, Command bukkitCommand, String searchValue) {
-        if (options.contains(searchValue)) {
-            return searchValue;
+    public Boolean getValue(CorePlugin core, CommandSender sender, Command bukkitCommand, String searchValue) {
+        if (searchValue.equalsIgnoreCase("true")) {
+            return true;
+        } else if (searchValue.equalsIgnoreCase("false")) {
+            return false;
+        } else {
+            throw error("Argument %s requires a valid boolean. Possible values are: [true, false]", name);
         }
-
-        throw error("Invalid value provided for %s possible values are: [%s]", name, String.join(", ", this.options));
     }
-    
+
 }

@@ -6,34 +6,31 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.wolfco.common.classes.Command;
-import com.wolfco.common.classes.CoreCommandExecutor;
+import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.Home;
 import com.wolfco.main.classes.PlayerData;
 import com.wolfco.main.classes.customargs.HomeArgument;
 
-public class DelHome implements CoreCommandExecutor {
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
+
+@Singleton
+public class DelHome implements CoreCommand {
 
     @Override
     public Command getCommand() {
-        Command command = new Command("delhome");
+        Command command = new Command().setName("delhome");
         command.setAccessType(AccessType.PLAYER);
         command.addArguments(new HomeArgument(true));
 
         return command;
     }
 
-    @Override
-    public Core fetchCore() {
-        return core;
-    }
 
+    @Inject
     Core core;
-
-    public DelHome(Core core) {
-        this.core = core;
-    }
 
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {

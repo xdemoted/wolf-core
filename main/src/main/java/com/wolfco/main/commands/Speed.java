@@ -6,19 +6,21 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.wolfco.common.classes.Command;
-import com.wolfco.common.classes.CoreCommandExecutor;
-import com.wolfco.common.classes.argumenthandlers.NumberArg;
-import com.wolfco.common.classes.argumenthandlers.PlayerArg;
-import com.wolfco.common.classes.argumenthandlers.StaticArg;
+import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
+import com.wolfco.common.commands.arguments.NumberArg;
+import com.wolfco.common.commands.arguments.PlayerArg;
+import com.wolfco.common.commands.arguments.StaticArg;
 import com.wolfco.main.Core;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
-public class Speed implements CoreCommandExecutor {
-
+@Singleton
+public class Speed implements CoreCommand {
     @Override
     public Command getCommand() {
-        Command command = new Command("speed");
+        Command command = new Command().setName("speed");
         command.setNode("wolfcore.speed");
         command.setAccessType(AccessType.PLAYER);
         command.addArguments(
@@ -30,17 +32,9 @@ public class Speed implements CoreCommandExecutor {
         return command;
     }
 
-    @Override
-    public Core fetchCore() {
-        return core;
-    }
-
+    @Inject
     Core core;
-
-    public Speed(Core core) {
-        this.core = core;
-    }
-
+    
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
         String mode = (String) argumentValues[0];

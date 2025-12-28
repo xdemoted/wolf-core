@@ -9,17 +9,20 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import com.wolfco.common.classes.Command;
-import com.wolfco.common.classes.CoreCommandExecutor;
-import com.wolfco.common.classes.argumenthandlers.GameModeArg;
-import com.wolfco.common.classes.argumenthandlers.MultiPlayerArg;
+import com.wolfco.common.classes.CoreCommand;
+import com.wolfco.common.commands.arguments.GameModeArg;
+import com.wolfco.common.commands.arguments.MultiPlayerArg;
 import com.wolfco.main.Core;
 import com.wolfco.main.utility.FontUtil;
 
-public class Gamemode implements CoreCommandExecutor {
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
+@Singleton
+public class Gamemode implements CoreCommand {
     @Override
     public Command getCommand() {
-        Command command = new Command("gamemode");
+        Command command = new Command().setName("gamemode");
         command.addArguments(
                 new GameModeArg(true),
                 new MultiPlayerArg(false).includeSender(false)
@@ -28,17 +31,9 @@ public class Gamemode implements CoreCommandExecutor {
         return command;
     }
 
-    @Override
-    public Core fetchCore() {
-        return core;
-    }
-
+    @Inject
     Core core;
-
-    public Gamemode(Core core) {
-        this.core = core;
-    }
-
+    
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String label, String[] args, Object[] argumentValues) {
         GameMode mode = (GameMode) argumentValues[0];

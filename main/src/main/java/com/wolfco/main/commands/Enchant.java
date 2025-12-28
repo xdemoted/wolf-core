@@ -5,17 +5,19 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 
 import com.wolfco.common.classes.Command;
-import com.wolfco.common.classes.CoreCommandExecutor;
-import com.wolfco.common.classes.argumenthandlers.EnchantArg;
-import com.wolfco.common.classes.argumenthandlers.NumberArg;
+import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
+import com.wolfco.common.commands.arguments.EnchantArg;
+import com.wolfco.common.commands.arguments.NumberArg;
 import com.wolfco.main.Core;
 
-public class Enchant implements CoreCommandExecutor {
+import jakarta.inject.Singleton;
 
+@Singleton
+public class Enchant implements CoreCommand {
     @Override
     public Command getCommand() {
-        Command command = new Command("enchant");
+        Command command = new Command().setName("enchant");
         command.setAccessType(AccessType.PLAYER);
         command.addArguments(
                 new EnchantArg(true).setName("ENCHANTMENT"),
@@ -24,18 +26,7 @@ public class Enchant implements CoreCommandExecutor {
 
         return command;
     }
-
-    @Override
-    public Core fetchCore() {
-        return core;
-    }
-
-    Core core;
-
-    public Enchant(Core core) {
-        this.core = core;
-    }
-
+    
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args,
             Object[] argumentValues) {

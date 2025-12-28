@@ -6,10 +6,16 @@ import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
-import com.wolfco.common.classes.argumenthandlers.SubCommandArg;
 import com.wolfco.common.classes.types.AccessType;
+import com.wolfco.common.commands.arguments.SubCommandArg;
 
+import io.avaje.inject.Component;
+import jakarta.inject.Inject;
+
+@Component
 public class Command { // TODO Add help command support; add descriptions to commands
+    @Inject
+    CorePlugin core;
 
     String name;
     String node = null;
@@ -17,9 +23,13 @@ public class Command { // TODO Add help command support; add descriptions to com
     AccessType accessType = AccessType.ALL;
     List<ArgumentInterface> options = new ArrayList<>();
 
-    public Command(String name) throws IllegalArgumentException {
+    public Command() throws IllegalArgumentException {
+    }
+
+    public Command setName(String name) {
         this.name = name;
         node = "wolfcore." + name;
+        return this;
     }
 
     public String getName() {
@@ -37,6 +47,10 @@ public class Command { // TODO Add help command support; add descriptions to com
     public Command setNode(String node) {
         this.node = node;
         return this;
+    }
+
+    public String getNode() {
+        return node;
     }
 
     public Command setAccessType(AccessType accessType) {
@@ -71,9 +85,13 @@ public class Command { // TODO Add help command support; add descriptions to com
         return options.get(i);
     }
 
-    public Object getValue(int i, CorePlugin plugin, CommandSender sender, org.bukkit.command.Command bukkitCommand,
+    public List<ArgumentInterface> getArguments() {
+        return options;
+    }
+
+    public Object getValue(int i, CommandSender sender, org.bukkit.command.Command bukkitCommand,
             String[] args) throws IllegalArgumentException {
-        Object value = options.get(i).getValue(plugin, sender, bukkitCommand, args[i]);
+        Object value = options.get(i).getValue(core, sender, bukkitCommand, args[i]);
 
         if (value == null) {
             throw new IllegalArgumentException("Invalid argument");
@@ -100,7 +118,8 @@ public class Command { // TODO Add help command support; add descriptions to com
             Object value = options.get(i).getValue(plugin, sender, bukkitCommand, args[i]);
 
             if (value == null) {
-                throw new IllegalArgumentException("Argument " + options.get(i).getName() + " returned null without error!");
+                throw new IllegalArgumentException(
+                        "Argument " + options.get(i).getName() + " returned null without error!");
             }
 
             values[i] = value;

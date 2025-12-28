@@ -11,7 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 
-import com.wolfco.common.classes.CoreCommandExecutor;
+import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.CorePlugin;
 import com.wolfco.survival.commands.Raycast;
 import com.wolfco.survival.commands.Resistance;
@@ -38,8 +38,6 @@ public class Core extends CorePlugin {
 
         clearTempEntities();
 
-        getCommandLoader().registerAll(getCommands());
-
         mapBlockResistances();
     }
 
@@ -47,14 +45,6 @@ public class Core extends CorePlugin {
     @Override
     public void onDisable() {
         getLogger().log(Level.INFO, "{0}.onDisable()", this.getClass().getName());
-    }
-
-    @Override
-    public List<CoreCommandExecutor> getCommands() {
-        List<CoreCommandExecutor> list = new ArrayList<>();
-        list.add(new Raycast(this));
-        list.add(new Resistance(this));
-        return list;
     }
 
     public void clearTempEntities() {

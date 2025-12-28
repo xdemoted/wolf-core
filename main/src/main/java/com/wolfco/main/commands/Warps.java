@@ -1,30 +1,24 @@
 package com.wolfco.main.commands;
 
 import com.wolfco.common.classes.Command;
-import com.wolfco.common.classes.CoreCommandExecutor;
+import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.main.Core;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
-public class Warps implements CoreCommandExecutor {
-
+@Singleton
+public class Warps implements CoreCommand {
     @Override
     public Command getCommand() {
-        Command command = new Command("warps");
+        Command command = new Command().setName("warps");
 
         return command;
     }
 
-    @Override
-    public Core fetchCore() {
-        return core;
-    }
-
+    @Inject
     Core core;
-
-    public Warps(Core core) {
-        this.core = core;
-    }
-
+    
     @Override
     public boolean execute(org.bukkit.command.CommandSender sender, org.bukkit.command.Command command, String alias,
             String[] args, Object[] argumentValues) {

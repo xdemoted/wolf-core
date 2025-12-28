@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -18,7 +20,10 @@ import com.wolfco.common.classes.CorePlugin;
 import dev.dejvokep.boostedyaml.YamlDocument;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.luckperms.api.cacheddata.CachedDataManager;
+import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.cacheddata.CachedPermissionData;
+import net.luckperms.api.model.user.User;
 
 public class Utilities {
 
@@ -143,7 +148,7 @@ public class Utilities {
         } catch (IllegalArgumentException e) {
             return null;
         }
-        
+
         double x = document.getDouble(path + ".x", 0d);
         double y = document.getDouble(path + ".y", 0d);
         double z = document.getDouble(path + ".z", 0d);
@@ -160,5 +165,51 @@ public class Utilities {
         Location location = new Location(org.bukkit.Bukkit.getWorld(worldUUID), x, y, z, yaw, pitch);
 
         return location;
+    }
+
+    static public String createNameTag(String text) {
+        StringBuilder sb = new StringBuilder();
+        char[] chars = text.toCharArray();
+
+        sb.append("<glyph:").append((CorePlugin.get()).getIcon()).append(":c>");
+
+        for (int i = 0; i < chars.length; i++) {
+            String letter = String.valueOf(chars[i]).toLowerCase();
+            sb.append("<shift:-2><glyph:").append(letter).append(":c>");
+        }
+
+        sb.append("<shift:-2><glyph:end:c>");
+
+        return sb.toString();
+    }
+
+    static public String parseNameTag(String text) { // <nametag>name</nametag>
+        Pattern regex = Pattern.compile("<nametag>.*?</nametag>");
+        Matcher matcher = regex.matcher(text);
+
+        while (matcher.find()) {
+            String tag = matcher.group();
+            String name = tag.substring(9, tag.length() - 10);
+            text = text.replace(tag, createNameTag(name));
+        }
+
+        return text;
+    }
+
+    static public Component getDisplayName(User user) {
+        CachedDataManager cacheData = user.getCachedData();
+        CachedMetaData lpmetaData = cacheData.getMetaData();
+        String prefix = Utilities.nullCheck(lpmetaData.getPrefix());
+        String suffix = Utilities.nullCheck(lpmetaData.getSuffix());
+
+        if (prefix.contains(";")) {
+            prefix = prefix.split(";")[0];
+        }
+
+        String nameTag = prefix + user.getUsername() + suffix;
+
+        nameTag = parseNameTag(nameTag);
+
+        return MiniMessage.miniMessage().deserialize(nameTag);
     }
 }

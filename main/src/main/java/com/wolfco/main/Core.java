@@ -9,7 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
-import com.wolfco.common.classes.CoreCommandExecutor;
+import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.CorePlugin;
 import com.wolfco.main.commands.Back;
 import com.wolfco.main.commands.DelHome;
@@ -53,16 +53,12 @@ import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 
 public class Core extends CorePlugin implements Listener {
-    private final static List<String> SERVER_ICONS = List.of(
-            "creative", "survival");
-
     LuckPerms lp;
     YamlDocument warps;
     PlayerManager playerManager;
+    PluginManager pluginManager;
     RedisManager redisManager;
     MongoDatabase db;
-    String serverName;
-    String icon = null;
 
     List<Player> afkPlayers = new ArrayList<>();
 
@@ -80,12 +76,10 @@ public class Core extends CorePlugin implements Listener {
         serverName = getMainConfig().getString("server-name", "unknown");
         warps = getConfigDocument("warps.yml");
 
-        getCommandLoader().registerAll(getCommands());
-
-        registerEvents();
+        this.pluginManager = Bukkit.getPluginManager();
 
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "core:main");
-        this.redisManager = new RedisManager(serverName);
+        this.redisManager = RedisManager.getInstance(serverName);
 
         this.getLogger().info("[Wolf-Core] Plugin horny");
 
@@ -113,23 +107,8 @@ public class Core extends CorePlugin implements Listener {
         }, 20L * 10L);
     }
 
-    public void registerEvents() {
-        playerManager = new PlayerManager(this);
-        PluginManager pm = getServer().getPluginManager();
-        pm.registerEvents(this, this);
-        pm.registerEvents(playerManager, this);
-        pm.registerEvents(new ChatManager(this), this);
-    }
-
-    public String getIcon() {
-        if (icon == null) {
-            if (SERVER_ICONS.contains(serverName.toLowerCase())) {
-                icon = serverName.toLowerCase();
-            } else {
-                icon = "unknown";
-            }
-        }
-        return icon;
+    public PluginManager getPluginManager() {
+        return pluginManager;
     }
 
     public String getServerName() {
@@ -174,42 +153,6 @@ public class Core extends CorePlugin implements Listener {
         WebhookManager webhook = new WebhookManager(this);
 
         webhook.sendLog("# " + serverName + " has shutdown.");
-    }
-
-    @Override
-    public List<CoreCommandExecutor> getCommands() {
-        List<CoreCommandExecutor> list = new ArrayList<>();
-        list.add(new DelHome(this));
-        list.add(new DelWarp(this));
-        list.add(new Gamemode(this));
-        list.add(new GamemodeAlias(this));
-        list.add(new Home(this));
-        list.add(new Max(this));
-        list.add(new SetHome(this));
-        list.add(new SetWarp(this));
-        list.add(new Teleport(this));
-        list.add(new TeleportAccept(this));
-        list.add(new TeleportAll(this));
-        list.add(new TeleportAsk(this));
-        list.add(new TeleportDeny(this));
-        list.add(new TeleportHere(this));
-        list.add(new Test(this));
-        list.add(new Warp(this));
-        list.add(new WarpInfo(this));
-        list.add(new Warps(this));
-        list.add(new Top(this));
-        list.add(new FlySpeed(this));
-        list.add(new WalkSpeed(this));
-        list.add(new Speed(this));
-        list.add(new Fly(this));
-        list.add(new WorldCMD(this));
-        list.add(new Reach(this));
-        list.add(new Back(this));
-        list.add(new Enchant(this));
-        list.add(new OfflineTeleport(this));
-        list.add(new InventorySee(this));
-        list.add(new MiniMessage(this));
-        return list;
     }
 
     public List<Player> getAfkPlayers() {

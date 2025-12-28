@@ -1,19 +1,20 @@
-package com.wolfco.common.classes.argumenthandlers;
+package com.wolfco.common.commands.arguments;
 
 import java.util.List;
 
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import com.wolfco.common.classes.ArgumentInterface;
 import com.wolfco.common.classes.CorePlugin;
 
-public class BooleanArg implements ArgumentInterface {
+public class WorldArg implements ArgumentInterface {
 
     final boolean required;
     String name = "BOOLEAN";
 
-    public BooleanArg(boolean required) {
+    public WorldArg(boolean required) {
         this.required = required;
     }
 
@@ -35,18 +36,19 @@ public class BooleanArg implements ArgumentInterface {
 
     @Override
     public List<String> getOptions(CorePlugin core, CommandSender sender, Command bukkitCommand, String[] args) {
-        return List.of("true", "false");
+        return core.getServer().getWorlds().stream().map(w -> w.getName()).toList();
     }
 
     @Override
-    public Boolean getValue(CorePlugin core, CommandSender sender, Command bukkitCommand, String searchValue) {
-        if (searchValue.equalsIgnoreCase("true")) {
-            return true;
-        } else if (searchValue.equalsIgnoreCase("false")) {
-            return false;
-        } else {
-            throw error("Argument %s requires a valid boolean. Possible values are: [true, false]", name);
+    public World getValue(CorePlugin core, CommandSender sender, Command bukkitCommand, String searchValue) {
+        World world = core.getServer().getWorld(searchValue);
+
+        if (world instanceof World) {
+            return core.getServer().getWorld(searchValue);
         }
+        
+        throw error("Argument %s requires a valid world. Possible values are: [%s]", name,
+                String.join(", ", core.getServer().getWorlds().stream().map(w -> w.getName()).toList()));
     }
 
 }

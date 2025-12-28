@@ -1,32 +1,36 @@
-package com.wolfco.common.classes;
+package com.wolfco.common.commands;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.wolfco.common.classes.ArgumentInterface;
+import com.wolfco.common.classes.Command;
+import com.wolfco.common.classes.CorePlugin;
+import com.wolfco.common.classes.TabCompleter;
 import com.wolfco.common.classes.types.AccessType;
 
-public interface CoreCommandExecutor extends CommandExecutor, org.bukkit.command.TabCompleter {
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
-    Command getCommand();
+@Singleton
+public class CommandService {
+    @Inject
+    static CorePlugin core;
 
-    abstract CorePlugin fetchCore();
-
-    default String getUsage() {
-        return getUsage(getCommand().name);
+    public String getUsage(Command command) {
+        return getUsage(command, command.getName());
     }
 
-    default String getUsage(String alias) {
-        Command command = getCommand();
+    public static String getUsage(Command command, String alias) {
         List<String> result = new ArrayList<>();
         result.add("<#aa00><b>Usage:</b> <#ff5555>/" + alias + " ");
 
-        command.options.forEach(option -> {
+        command.getArguments().forEach(option -> {
             if (option.isRequired()) {
                 result.set(0, result.get(0) + "<" + option.getName() + "> ");
             } else {
@@ -36,10 +40,9 @@ public interface CoreCommandExecutor extends CommandExecutor, org.bukkit.command
         return result.get(0);
     }
 
-    default Integer getRequiredArgs() {
-        Command command = getCommand();
+    public static Integer getRequiredArgs(Command command) {
         final int[] result = { 0 };
-        command.options.forEach(option -> {
+        command.getArguments().forEach(option -> {
             if (option.isRequired()) {
                 result[0]++;
             }
@@ -47,18 +50,17 @@ public interface CoreCommandExecutor extends CommandExecutor, org.bukkit.command
         return result[0];
     }
 
-    default String checkArgs(String[] args, String alias) {
-        Command command = getCommand();
-        Integer requiredArgs = getRequiredArgs();
+    public static String checkArgs(Command command, String[] args, String alias) {
+        Integer requiredArgs = getRequiredArgs(command);
         if (args.length < requiredArgs) {
-            return getUsage(alias);
-        } else if (args.length > command.options.size()) {
+            return getUsage(command, alias);
+        } else if (args.length > command.getArguments().size()) {
             return "<#aa0000><b>Error:</b> <#ff5555>Too many args";
         }
         return null;
     }
 
-    default String[] parseQuotation(String[] args) {
+    public static String[] parseQuotation(String[] args) {
         String joinedArgs = String.join(" ", args);
         List<String> parsedArgs = new ArrayList<>();
         Matcher matcher = Pattern.compile("\"([^\"]*)\"|(\\S+)").matcher(joinedArgs);
@@ -73,55 +75,39 @@ public interface CoreCommandExecutor extends CommandExecutor, org.bukkit.command
         return parsedArgs.toArray(String[]::new);
     }
 
-    @Override
-    default boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label,
+    public static CommandValues preExecuteCommand(Command command, CommandSender sender, org.bukkit.command.Command bukkitCommand, String label,
             String[] args) {
-        String result = checkArgs(args, label);
-        AccessType accessType = getCommand().getAccessType();
-        CorePlugin core = fetchCore();
+        String result = checkArgs(command, args, label);
+        AccessType accessType = command.getAccessType();
 
-        if (sender instanceof Player player && !player.hasPermission(getCommand().node)) { // Permission Check
+        if (sender instanceof Player player && !player.hasPermission(command.getNode())) { // Permission Check
             core.sendPreset(sender, "generic.nopermission");
-            return false;
+            return null;
         }
 
         if (accessType == AccessType.PLAYER && !(sender instanceof Player)) { // Access Check
             core.sendPreset(sender, "generic.noconsole");
-            return false;
+            return null;
         } else if (accessType == AccessType.CONSOLE && sender instanceof Player) {
             core.sendPreset(sender, "generic.noplayer");
-            return false;
+            return null;
         }
 
         if (result != null) { // Argument Check
             core.sendMessage(sender, result);
-            return false;
+            return null;
         }
 
         Object[] argumentValues;
 
         try {
-            argumentValues = getCommand().getValues(fetchCore(), sender, command, args);
+            argumentValues = command.getValues(core, sender, bukkitCommand, args);
         } catch (IllegalArgumentException e) {
             core.log(e.toString());
             core.sendPreset(sender, "error.base", List.of(e.getMessage()));
-            return false;
+            return null;
         }
 
-        return execute(sender, command, label, args, argumentValues);
-    }
-
-    abstract boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias,
-            String[] args, Object[] argumentValues);
-
-    @Override
-    default List<String> onTabComplete(CommandSender sender, org.bukkit.command.Command bukkitCommand, String alias,
-            String[] args) {
-        TabCompleter tabComplete = new TabCompleter(fetchCore());
-        return tabComplete.runTabComplete(getCommand(), sender, bukkitCommand, alias, args);
-    }
-
-    default ArgumentInterface getArgument(int i) {
-        return getCommand().getArgument(i);
+        return new CommandValues(sender, bukkitCommand, label, args, argumentValues);
     }
 }

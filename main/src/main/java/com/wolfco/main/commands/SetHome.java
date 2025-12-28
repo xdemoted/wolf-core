@@ -6,43 +6,37 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.wolfco.common.classes.Command;
-import com.wolfco.common.classes.CoreCommandExecutor;
-import com.wolfco.common.classes.argumenthandlers.StringArg;
+import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
+import com.wolfco.common.commands.arguments.StringArg;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.Home;
 import com.wolfco.main.classes.PlayerData;
 import com.wolfco.main.handlers.PermissionHandler;
 
 import net.luckperms.api.model.user.User;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
-public class SetHome implements CoreCommandExecutor {
-    static final String NODE = "wolfcore.sethome";
+@Singleton
+public class SetHome implements CoreCommand {    static final String NODE = "wolfcore.sethome";
 
     @Override
     public Command getCommand() {
-        Command command = new Command("sethome");
+        Command command = new Command().setName("sethome");
         command.setAccessType(AccessType.PLAYER);
         command.addArguments(new StringArg(false, true, false).setName("HOME"));
 
         return command;
     }
 
+    @Inject
     Core core;
-
-    public SetHome(Core core) {
-        this.core = core;
-    }
-
-    @Override
-    public Core fetchCore() {
-        return core;
-    }
 
     @Override
     public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
         String home = (String) argumentValues[0];
-        User user = fetchCore().getLuckPerms().getUserManager().getUser(sender.getName());
+        User user = core.getLuckPerms().getUserManager().getUser(sender.getName());
 
         if (home == null) {
             home = "home";

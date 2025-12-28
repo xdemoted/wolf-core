@@ -60,11 +60,13 @@ public class PlayerManager implements Listener {
         event.setJoinMessage(null);
 
         onJoin(event.getPlayer());
+
         teamHandler.updatePrefix(event.getPlayer());
     }
 
     private void onJoin(Player player) {
         YamlDocument data = null;
+
         try {
             data = core.getConfigDocument(player.getUniqueId().toString(),
                     core.getDataFolder().toPath().resolve("userdata"));
@@ -77,7 +79,9 @@ public class PlayerManager implements Listener {
             player.kickPlayer("§4§lError: §cPlayer data not found, please contact an administrator.");
             return;
         }
+
         data.set("timestamp.login", System.currentTimeMillis());
+
         players.put(player.getUniqueId(), new PlayerData(player, data));
     }
 
