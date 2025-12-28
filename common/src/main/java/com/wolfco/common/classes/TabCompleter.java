@@ -14,7 +14,7 @@ import jakarta.inject.Singleton;
 @Singleton
 public class TabCompleter {
     @Inject
-    private CorePlugin core;
+    public CorePlugin core;
 
     public List<String> runTabComplete(Command command, CommandSender sender, org.bukkit.command.Command bukkitCommand,
             String alias, String[] args) {

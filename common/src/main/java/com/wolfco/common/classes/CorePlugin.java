@@ -19,7 +19,7 @@ import io.avaje.inject.InjectModule;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
-@InjectModule(provides = JavaPlugin.class)
+@InjectModule(provides = { CorePlugin.class, JavaPlugin.class, Plugin.class })
 public abstract class CorePlugin extends JavaPlugin {
     private final static List<String> SERVER_ICONS = List.of(
             "creative", "survival");
@@ -38,14 +38,23 @@ public abstract class CorePlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         scope = BeanScope.builder()
-                .bean(this.getName(), Plugin.class, this)
-                .bean(this.getName(), JavaPlugin.class, this)
-                .bean(JavaPlugin.class, this)
-            .build();
+            .bean(this.getName(), Plugin.class, this)
+            .bean(this.getName(), JavaPlugin.class, this)
+            .bean(JavaPlugin.class, this)
+            .bean(Plugin.class, this)
+            .bean(CorePlugin.class, this)
+            // Register concrete plugin class (e.g., com.wolfco.main.Core) so @Inject Core works
+            .bean((Class<CorePlugin>) getClass(), this)
+                .classLoader(getClass().getClassLoader())
+                .build();
 
-        CommandLoader commandExecutor = scope.get(CommandLoader.class);
-        commandExecutor.registerAll();
+        CommandLoader commandLoader = scope.get(CommandLoader.class);
+        commandLoader.registerAll();
+
+        onStart();
     }
+
+    public abstract void onStart();
 
     public BeanScope getScope() {
         return scope;

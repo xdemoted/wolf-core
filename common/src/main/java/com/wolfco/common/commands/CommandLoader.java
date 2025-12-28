@@ -1,7 +1,5 @@
 package com.wolfco.common.commands;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -17,13 +15,10 @@ import jakarta.inject.Singleton;
 @Singleton
 public class CommandLoader {
     @Inject
-    private CorePlugin core;
+    public CorePlugin core;
 
-    private final List<CoreCommand> commands;
-
-    public CommandLoader() {
-        this.commands = core.getScope().list(CoreCommand.class);
-    }
+    @Inject
+    List<CoreCommand> commands;
 
     public void register(CoreCommand executor) {
         Command command = executor.getCommand();

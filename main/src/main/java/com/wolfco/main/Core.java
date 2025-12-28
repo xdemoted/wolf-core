@@ -9,38 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
-import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.CorePlugin;
-import com.wolfco.main.commands.Back;
-import com.wolfco.main.commands.DelHome;
-import com.wolfco.main.commands.DelWarp;
-import com.wolfco.main.commands.Enchant;
-import com.wolfco.main.commands.Fly;
-import com.wolfco.main.commands.FlySpeed;
-import com.wolfco.main.commands.Gamemode;
-import com.wolfco.main.commands.GamemodeAlias;
-import com.wolfco.main.commands.Home;
-import com.wolfco.main.commands.InventorySee;
-import com.wolfco.main.commands.Max;
-import com.wolfco.main.commands.MiniMessage;
-import com.wolfco.main.commands.OfflineTeleport;
-import com.wolfco.main.commands.Reach;
-import com.wolfco.main.commands.SetHome;
-import com.wolfco.main.commands.SetWarp;
-import com.wolfco.main.commands.Speed;
-import com.wolfco.main.commands.Teleport;
-import com.wolfco.main.commands.TeleportAccept;
-import com.wolfco.main.commands.TeleportAll;
-import com.wolfco.main.commands.TeleportAsk;
-import com.wolfco.main.commands.TeleportDeny;
-import com.wolfco.main.commands.TeleportHere;
-import com.wolfco.main.commands.Test;
-import com.wolfco.main.commands.Top;
-import com.wolfco.main.commands.WalkSpeed;
-import com.wolfco.main.commands.Warp;
-import com.wolfco.main.commands.WarpInfo;
-import com.wolfco.main.commands.Warps;
-import com.wolfco.main.commands.WorldCMD;
 import com.wolfco.main.events.ChatManager;
 import com.wolfco.main.events.PlayerManager;
 import com.wolfco.main.events.RedisManager;
@@ -48,10 +17,12 @@ import com.wolfco.main.handlers.MongoDatabase;
 import com.wolfco.main.handlers.WebhookManager;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
+import jakarta.inject.Singleton;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 
+@Singleton
 public class Core extends CorePlugin implements Listener {
     LuckPerms lp;
     YamlDocument warps;
@@ -63,7 +34,7 @@ public class Core extends CorePlugin implements Listener {
     List<Player> afkPlayers = new ArrayList<>();
 
     @Override
-    public void onEnable() {
+    public void onStart() {
         try {
             lp = LuckPermsProvider.get();
         } catch (Exception e) {
