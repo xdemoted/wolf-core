@@ -22,6 +22,7 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import com.wolfco.common.listeners.CoreListener;
 import com.wolfco.common.Utilities;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.PlayerData;
@@ -29,7 +30,7 @@ import com.wolfco.main.handlers.TeamHandler;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 
-public class PlayerManager implements Listener {
+public class PlayerManager implements CoreListener {
     static final List<TeleportCause> IGNORED_CAUSES = List.of(
             TeleportCause.ENDER_PEARL,
             TeleportCause.CHORUS_FRUIT,

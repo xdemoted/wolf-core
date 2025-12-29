@@ -4,15 +4,17 @@ import java.util.concurrent.CompletableFuture;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import com.wolfco.common.listeners.CoreListener;
 import com.wolfco.common.Utilities;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.redis.AsyncGlobalMessageEvent;
 import com.wolfco.main.classes.redis.ChatMessage;
 import com.wolfco.main.utility.FontUtil;
 
+import io.papermc.paper.event.player.AsyncChatEvent;
+import jakarta.ejb.Singleton;
+import jakarta.inject.Inject;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
@@ -21,11 +23,13 @@ import net.luckperms.api.cacheddata.CachedDataManager;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.model.user.User;
 
-public class ChatManager implements Listener {
+@Singleton
+public class ChatManager implements CoreListener {
 
     Core core;
     MiniMessage chatSerializer;
 
+    @Inject
     public ChatManager(Core core) {
         this.core = core;
         chatSerializer = MiniMessage.builder()
@@ -37,9 +41,9 @@ public class ChatManager implements Listener {
     }
 
     @EventHandler
-    public void onChat(AsyncPlayerChatEvent event) {
+    public void onChat(AsyncChatEvent event) {
         // Variables
-        String message = event.getMessage();
+        String message = event.message().toString();
         Player player = event.getPlayer();
 
         ChatMessage chatMessage = new ChatMessage(core.getServerName(), player, message);

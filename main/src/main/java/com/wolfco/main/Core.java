@@ -5,9 +5,7 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.server.ServiceRegisterEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -42,6 +40,16 @@ public class Core extends CorePlugin implements Listener {
 
         getAdventure();
 
+        RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager()
+                .getRegistration(LuckPerms.class);
+
+        if (provider != null) {
+            lp = provider.getProvider();
+        } else {
+            getLogger().severe("LuckPerms not found! Disabling plugin.");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
+
         setMainConfig(getConfigDocument("config.yml"));
         serverName = getMainConfig().getString("server-name", "unknown");
         warps = getConfigDocument("warps.yml");
@@ -74,24 +82,6 @@ public class Core extends CorePlugin implements Listener {
             out += "\n## [ End Log ]";
 
             webhook.sendLog(out);
-
-            try {
-                Class.forName("net.luckperms.api.LuckPerms");
-            } catch (ClassNotFoundException e) {
-                getLogger().severe("LuckPerms API not found! Disabling plugin.");
-                Bukkit.getPluginManager().disablePlugin(this);
-                return;
-            }
-
-            RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager()
-                    .getRegistration(LuckPerms.class);
-
-            if (provider != null) {
-                lp = provider.getProvider();
-            } else {
-                getLogger().severe("LuckPerms not found! Disabling plugin.");
-                Bukkit.getPluginManager().disablePlugin(this);
-            }
         }, 20L * 10L);
     }
 
@@ -159,23 +149,5 @@ public class Core extends CorePlugin implements Listener {
 
     public static Core get() {
         return instance;
-    }
-
-    @EventHandler
-    public void onServiceRegister(ServiceRegisterEvent event) {
-        if (!event.getProvider().getService().getName().equals("net.luckperms.api.LuckPerms")) {
-            return;
-        }
-
-        try {
-            Class.forName("net.luckperms.api.LuckPerms");
-        } catch (ClassNotFoundException e) {
-            getLogger().severe("LuckPerms API not found! Disabling plugin.");
-            return;
-        }
-
-        if (event.getProvider().getService().equals(LuckPerms.class)) {
-            lp = (LuckPerms) event.getProvider().getProvider();
-        }
     }
 }
