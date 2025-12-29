@@ -1,4 +1,4 @@
-package com.wolfco.main.commands;
+package com.wolfco.main.commands.teleport;
 
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -10,6 +10,7 @@ import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.main.Core;
 
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
@@ -27,7 +28,8 @@ public class Top implements CoreCommand {
     Core core;
     
     @Override
-    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
+    public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
+        CommandSender sender = commandStack.getSender();
         HumanEntity player = (HumanEntity) sender;
         Location location = player.getLocation();
         World world = player.getWorld();

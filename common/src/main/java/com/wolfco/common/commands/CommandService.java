@@ -8,12 +8,11 @@ import java.util.regex.Pattern;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.wolfco.common.classes.ArgumentInterface;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CorePlugin;
-import com.wolfco.common.classes.TabCompleter;
 import com.wolfco.common.classes.types.AccessType;
 
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
@@ -22,13 +21,9 @@ public class CommandService {
     @Inject
     static CorePlugin core;
 
-    public String getUsage(Command command) {
-        return getUsage(command, command.getName());
-    }
-
-    public static String getUsage(Command command, String alias) {
+    public static String getUsage(Command command) {
         List<String> result = new ArrayList<>();
-        result.add("<#aa00><b>Usage:</b> <#ff5555>/" + alias + " ");
+        result.add("<#aa00><b>Usage:</b> <#ff5555>/" + command.getName() + " ");
 
         command.getArguments().forEach(option -> {
             if (option.isRequired()) {
@@ -50,10 +45,10 @@ public class CommandService {
         return result[0];
     }
 
-    public static String checkArgs(Command command, String[] args, String alias) {
+    public static String checkArgs(Command command, String[] args) {
         Integer requiredArgs = getRequiredArgs(command);
         if (args.length < requiredArgs) {
-            return getUsage(command, alias);
+            return getUsage(command);
         } else if (args.length > command.getArguments().size()) {
             return "<#aa0000><b>Error:</b> <#ff5555>Too many args";
         }
@@ -75,10 +70,10 @@ public class CommandService {
         return parsedArgs.toArray(String[]::new);
     }
 
-    public static CommandValues preExecuteCommand(Command command, CommandSender sender, org.bukkit.command.Command bukkitCommand, String label,
-            String[] args) {
-        String result = checkArgs(command, args, label);
+    public static CommandValues preExecuteCommand(Command command, CommandSourceStack commandStack, String[] args) {
+        String result = checkArgs(command, args);
         AccessType accessType = command.getAccessType();
+        CommandSender sender = commandStack.getSender();
 
         if (sender instanceof Player player && !player.hasPermission(command.getNode())) { // Permission Check
             core.sendPreset(sender, "generic.nopermission");
@@ -101,13 +96,13 @@ public class CommandService {
         Object[] argumentValues;
 
         try {
-            argumentValues = command.getValues(core, sender, bukkitCommand, args);
+            argumentValues = command.getValues(commandStack, args);
         } catch (IllegalArgumentException e) {
             core.log(e.toString());
             core.sendPreset(sender, "error.base", List.of(e.getMessage()));
             return null;
         }
 
-        return new CommandValues(sender, bukkitCommand, label, args, argumentValues);
+        return new CommandValues(commandStack, args, argumentValues);
     }
 }

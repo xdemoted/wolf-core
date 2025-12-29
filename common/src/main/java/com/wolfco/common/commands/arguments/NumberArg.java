@@ -3,11 +3,9 @@ package com.wolfco.common.commands.arguments;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-
 import com.wolfco.common.classes.ArgumentInterface;
-import com.wolfco.common.classes.CorePlugin;
+
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 
 public class NumberArg implements ArgumentInterface {
 
@@ -70,7 +68,7 @@ public class NumberArg implements ArgumentInterface {
     }
 
     @Override
-    public List<String> getOptions(CorePlugin core, CommandSender sender, Command bukkitCommand, String[] args) {
+    public List<String> getOptions(CommandSourceStack commandStack, String[] args) {
         List<String> options = new ArrayList<>();
         String formatCode = "%." + accuracy + "f";
 
@@ -91,7 +89,7 @@ public class NumberArg implements ArgumentInterface {
     }
 
     @Override
-    public Double getValue(CorePlugin core, CommandSender sender, Command bukkitCommand, String searchValue) {
+    public Double getValue(CommandSourceStack commandStack, String searchValue) {
         double value;
 
         String formatCode = "%." + accuracy + "f";

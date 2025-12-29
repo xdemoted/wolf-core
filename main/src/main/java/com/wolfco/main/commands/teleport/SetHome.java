@@ -1,4 +1,4 @@
-package com.wolfco.main.commands;
+package com.wolfco.main.commands.teleport;
 
 import java.util.List;
 
@@ -15,6 +15,7 @@ import com.wolfco.main.classes.PlayerData;
 import com.wolfco.main.handlers.PermissionHandler;
 
 import net.luckperms.api.model.user.User;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
@@ -34,7 +35,8 @@ public class SetHome implements CoreCommand {    static final String NODE = "wol
     Core core;
 
     @Override
-    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
+    public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
+        CommandSender sender = commandStack.getSender();
         String home = (String) argumentValues[0];
         User user = core.getLuckPerms().getUserManager().getUser(sender.getName());
 

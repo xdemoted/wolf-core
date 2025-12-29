@@ -1,4 +1,4 @@
-package com.wolfco.main.commands;
+package com.wolfco.main.commands.teleport.request;
 
 import java.util.Arrays;
 
@@ -14,11 +14,13 @@ import com.wolfco.main.classes.PlayerData;
 import com.wolfco.main.classes.Request;
 import com.wolfco.main.utility.FontUtil;
 
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
 @Singleton
-public class TeleportAsk implements CoreCommand {    static final String TPA = "tpa";
+public class TeleportAsk implements CoreCommand {
+    static final String TPA = "tpa";
     static final String TPAHERE = TPA + "here";
 
     @Override
@@ -26,17 +28,22 @@ public class TeleportAsk implements CoreCommand {    static final String TPA = "
         Command command = new Command().setName("teleportask");
         command.setAccessType(AccessType.PLAYER);
         command.addArguments(new PlayerArg(true).includeSender(false));
-
+        command.addAliases("tpa");
         return command;
     }
 
     @Inject
     Core core;
-    
+
     @Override
-    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args,
+    public boolean onCommand(CommandSourceStack commandStack, String[] args,
             Object[] argumentValues) {
-        Player player = (Player) sender;
+        return onCommandAlias(commandStack, TPA, args, argumentValues);
+    }
+
+    public boolean onCommandAlias(CommandSourceStack commandStack, String alias, String[] args,
+            Object[] argumentValues) {
+        Player sender = (Player) commandStack.getSender();
         Player receiver = (Player) argumentValues[0];
         PlayerData receiverData = core.getPlayerManager().getPlayerData(receiver);
 
@@ -59,13 +66,13 @@ public class TeleportAsk implements CoreCommand {    static final String TPA = "
         switch (alias) {
             case "tpahere", "teleportaskhere" -> {
                 requestType = TPAHERE;
-                message = core.getPreset("teleportask.receivedhere", Arrays.asList(FontUtil.getPlayerTag(player)));
-                core.sendPreset(sender, "teleportask.receivedhere", Arrays.asList(FontUtil.getPlayerTag(player)));
+                message = core.getPreset("teleportask.receivedhere", Arrays.asList(FontUtil.getPlayerTag(sender)));
+                core.sendPreset(sender, "teleportask.receivedhere", Arrays.asList(FontUtil.getPlayerTag(sender)));
             }
             case "tpa", "teleportask" -> {
                 requestType = TPA;
-                message = core.getPreset("teleportask.received", Arrays.asList(FontUtil.getPlayerTag(player)));
-                core.sendPreset(sender, "teleportask.received", Arrays.asList(FontUtil.getPlayerTag(player)));
+                message = core.getPreset("teleportask.received", Arrays.asList(FontUtil.getPlayerTag(sender)));
+                core.sendPreset(sender, "teleportask.received", Arrays.asList(FontUtil.getPlayerTag(sender)));
             }
             default -> {
             }

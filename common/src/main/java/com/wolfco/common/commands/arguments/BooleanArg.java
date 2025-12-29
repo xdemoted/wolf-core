@@ -8,6 +8,8 @@ import org.bukkit.command.CommandSender;
 import com.wolfco.common.classes.ArgumentInterface;
 import com.wolfco.common.classes.CorePlugin;
 
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+
 public class BooleanArg implements ArgumentInterface {
 
     final boolean required;
@@ -34,12 +36,12 @@ public class BooleanArg implements ArgumentInterface {
     }
 
     @Override
-    public List<String> getOptions(CorePlugin core, CommandSender sender, Command bukkitCommand, String[] args) {
+    public List<String> getOptions(CommandSourceStack commandStack, String[] args) {
         return List.of("true", "false");
     }
 
     @Override
-    public Boolean getValue(CorePlugin core, CommandSender sender, Command bukkitCommand, String searchValue) {
+    public Boolean getValue(CommandSourceStack commandStack, String searchValue) {
         if (searchValue.equalsIgnoreCase("true")) {
             return true;
         } else if (searchValue.equalsIgnoreCase("false")) {

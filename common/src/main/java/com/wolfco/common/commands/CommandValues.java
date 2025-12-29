@@ -1,21 +1,15 @@
 package com.wolfco.common.commands;
 
-import org.bukkit.command.CommandSender;
-
-import org.bukkit.command.Command;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 
 public class CommandValues {
-    public CommandSender sender;
-    public Command commmand;
-    public String label;
+    public CommandSourceStack commandStack;
     public String[] args;
     public Object[] argumentValues;
 
-    public CommandValues(CommandSender sender, Command command, String label, String[] args,
+    public CommandValues(CommandSourceStack commandStack, String[] args,
             Object[] argumentValues) {
-        this.sender = sender;
-        this.commmand = command;
-        this.label = label;
+        this.commandStack = commandStack;
         this.args = args;
         this.argumentValues = argumentValues;
     }

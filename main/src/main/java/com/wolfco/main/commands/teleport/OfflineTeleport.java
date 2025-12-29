@@ -1,4 +1,4 @@
-package com.wolfco.main.commands;
+package com.wolfco.main.commands.teleport;
 
 import java.util.List;
 
@@ -12,6 +12,7 @@ import com.wolfco.main.Core;
 import com.wolfco.main.classes.PlayerData;
 import com.wolfco.main.classes.customargs.OfflinePlayerArg;
 
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
@@ -30,8 +31,9 @@ public class OfflineTeleport implements CoreCommand {
     Core core;
     
     @Override
-    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String label, String[] args,
-            Object[] argumentValues) {
+    public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
+        CommandSender sender = commandStack.getSender();
+
         PlayerData player = (PlayerData) argumentValues[0];
         Location logoutLocation = player.getLogoutLocation();
 

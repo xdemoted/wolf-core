@@ -3,11 +3,10 @@ package com.wolfco.common.commands.arguments;
 import java.util.List;
 
 import org.bukkit.GameMode;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 
 import com.wolfco.common.classes.ArgumentInterface;
-import com.wolfco.common.classes.CorePlugin;
+
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 
 public class GameModeArg implements ArgumentInterface {
 
@@ -36,12 +35,12 @@ public class GameModeArg implements ArgumentInterface {
     }
 
     @Override
-    public List<String> getOptions(CorePlugin core, CommandSender sender, Command bukkitCommand, String[] args) {
+    public List<String> getOptions(CommandSourceStack commandStack, String[] args) {
         return modes;
     }
 
     @Override
-    public GameMode getValue(CorePlugin core, CommandSender sender, Command bukkitCommand, String searchValue) {
+    public GameMode getValue(CommandSourceStack commandStack, String searchValue) {
         try {
             return GameMode.valueOf(searchValue.toUpperCase());
         } catch (IllegalArgumentException e) {

@@ -12,6 +12,7 @@ import com.wolfco.common.commands.arguments.PlayerArg;
 import com.wolfco.main.Core;
 import com.wolfco.main.utility.FontUtil;
 
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
@@ -30,7 +31,8 @@ public class InventorySee implements CoreCommand {
     Core core;
     
     @Override
-    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
+    public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
+        CommandSender sender = commandStack.getSender();
         Player target = (Player) argumentValues[0];
 
         PlayerInventory targetInventory = target.getInventory();

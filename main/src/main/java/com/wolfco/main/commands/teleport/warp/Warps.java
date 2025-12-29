@@ -1,9 +1,12 @@
-package com.wolfco.main.commands;
+package com.wolfco.main.commands.teleport.warp;
+
+import org.bukkit.command.CommandSender;
 
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.main.Core;
 
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
@@ -20,8 +23,9 @@ public class Warps implements CoreCommand {
     Core core;
     
     @Override
-    public boolean execute(org.bukkit.command.CommandSender sender, org.bukkit.command.Command command, String alias,
+    public boolean onCommand( CommandSourceStack commandStack,
             String[] args, Object[] argumentValues) {
+        CommandSender sender = commandStack.getSender();
         core.sendMessage(sender, "<#ffaa00>Warps:");
         for (String key : core.getWarps().getRoutesAsStrings(false)) {
             core.sendMessage(sender,

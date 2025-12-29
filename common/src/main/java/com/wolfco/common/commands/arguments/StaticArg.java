@@ -2,11 +2,9 @@ package com.wolfco.common.commands.arguments;
 
 import java.util.List;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-
 import com.wolfco.common.classes.ArgumentInterface;
-import com.wolfco.common.classes.CorePlugin;
+
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 
 public class StaticArg implements ArgumentInterface {
     final boolean required;
@@ -36,12 +34,12 @@ public class StaticArg implements ArgumentInterface {
     }
     
     @Override
-    public List<String> getOptions(CorePlugin core, CommandSender sender, Command bukkitCommand, String[] args) {
+    public List<String> getOptions(CommandSourceStack commandStack, String[] args) {
         return options;
     }
 
     @Override
-    public String getValue(CorePlugin core, CommandSender sender, Command bukkitCommand, String searchValue) {
+    public String getValue(CommandSourceStack commandStack, String searchValue) {
         if (options.contains(searchValue)) {
             return searchValue;
         }

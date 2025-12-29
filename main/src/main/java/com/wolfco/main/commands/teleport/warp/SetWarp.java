@@ -1,4 +1,4 @@
-package com.wolfco.main.commands;
+package com.wolfco.main.commands.teleport.warp;
 
 import java.io.IOException;
 import java.util.List;
@@ -14,6 +14,7 @@ import com.wolfco.common.commands.arguments.StringArg;
 import com.wolfco.main.Core;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
@@ -32,7 +33,8 @@ public class SetWarp implements CoreCommand {
     Core core;
     
     @Override
-    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
+    public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
+        CommandSender sender = commandStack.getSender();
         YamlDocument warps = core.getWarps();
         String warpName = args[0];
         Player player = (Player) sender;

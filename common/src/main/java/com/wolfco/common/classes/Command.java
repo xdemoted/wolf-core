@@ -10,6 +10,7 @@ import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.common.commands.arguments.SubCommandArg;
 
 import io.avaje.inject.Component;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
 
 @Component
@@ -19,6 +20,7 @@ public class Command { // TODO Add help command support; add descriptions to com
 
     String name;
     String node = null;
+    List<String> aliases = new ArrayList<>();
 
     AccessType accessType = AccessType.ALL;
     List<ArgumentInterface> options = new ArrayList<>();
@@ -51,6 +53,15 @@ public class Command { // TODO Add help command support; add descriptions to com
 
     public String getNode() {
         return node;
+    }
+
+    public Command addAliases(String... aliases) {
+        this.aliases.addAll(Arrays.asList(aliases));
+        return this;
+    }
+
+    public List<String> getAliases() {
+        return aliases;
     }
 
     public Command setAccessType(AccessType accessType) {
@@ -89,9 +100,9 @@ public class Command { // TODO Add help command support; add descriptions to com
         return options;
     }
 
-    public Object getValue(int i, CommandSender sender, org.bukkit.command.Command bukkitCommand,
+    public Object getValue(int i, CommandSourceStack commandStack,
             String[] args) throws IllegalArgumentException {
-        Object value = options.get(i).getValue(core, sender, bukkitCommand, args[i]);
+        Object value = options.get(i).getValue(commandStack, args[i]);
 
         if (value == null) {
             throw new IllegalArgumentException("Invalid argument");
@@ -100,8 +111,7 @@ public class Command { // TODO Add help command support; add descriptions to com
         return value;
     }
 
-    public Object[] getValues(CorePlugin plugin, CommandSender sender, org.bukkit.command.Command bukkitCommand,
-            String[] args) throws IllegalArgumentException {
+    public Object[] getValues(CommandSourceStack commandStack, String[] args) throws IllegalArgumentException {
         Object[] values = new Object[options.size()];
 
         for (int i = 0; i < options.size(); i++) {
@@ -115,7 +125,7 @@ public class Command { // TODO Add help command support; add descriptions to com
                 }
             }
 
-            Object value = options.get(i).getValue(plugin, sender, bukkitCommand, args[i]);
+            Object value = options.get(i).getValue(commandStack, args[i]);
 
             if (value == null) {
                 throw new IllegalArgumentException(

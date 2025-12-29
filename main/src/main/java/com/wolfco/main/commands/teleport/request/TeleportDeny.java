@@ -1,4 +1,4 @@
-package com.wolfco.main.commands;
+package com.wolfco.main.commands.teleport.request;
 
 import java.util.List;
 
@@ -13,6 +13,7 @@ import com.wolfco.main.Core;
 import com.wolfco.main.classes.PlayerData;
 import com.wolfco.main.classes.Request;
 
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
@@ -23,6 +24,7 @@ public class TeleportDeny implements CoreCommand {
         Command command = new Command().setName("teleportdeny");
         command.setAccessType(AccessType.PLAYER);
         command.addArguments(new PlayerArg(false).includeSender(false));
+        command.addAliases("tpdeny");
         return command;
     }
 
@@ -30,7 +32,8 @@ public class TeleportDeny implements CoreCommand {
     Core core;
     
     @Override
-    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
+    public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
+        CommandSender sender = commandStack.getSender();
         Player target = (Player) argumentValues[0];
         PlayerData playerData = core.getPlayerManager().getPlayerData((Player) sender);
 

@@ -3,13 +3,13 @@ package com.wolfco.main.classes.customargs;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import com.wolfco.common.classes.ArgumentInterface;
-import com.wolfco.common.classes.CorePlugin;
 import com.wolfco.main.Core;
 import com.wolfco.main.events.PlayerManager;
+
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 
 public class OfflinePlayerArg implements ArgumentInterface {
     final boolean required;
@@ -43,10 +43,11 @@ public class OfflinePlayerArg implements ArgumentInterface {
     }
 
     @Override
-    public List<String> getOptions(CorePlugin core, CommandSender sender, Command bukkitCommand, String[] args) {
+    public List<String> getOptions(CommandSourceStack commandStack, String[] args) {
         List<String> players = PlayerManager.getAllPlayerDataDocuments().stream()
                 .map(p -> p.name)
                 .collect(Collectors.toList());
+        CommandSender sender = commandStack.getSender();
 
         if (!self) {
             players.remove(sender.getName());
@@ -56,7 +57,7 @@ public class OfflinePlayerArg implements ArgumentInterface {
     }
 
     @Override
-    public Object getValue(CorePlugin core, CommandSender sender, Command bukkitCommand, String searchValue) {
+    public Object getValue(CommandSourceStack commandStack, String searchValue) {
         List<PlayerManager.reducedPlayerInfo> allPlayers = PlayerManager.getAllPlayerDataDocuments();
 
         for (PlayerManager.reducedPlayerInfo p : allPlayers) {

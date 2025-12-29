@@ -3,11 +3,10 @@ package com.wolfco.common.commands.arguments;
 import java.util.HashMap;
 import java.util.List;
 
-import org.bukkit.command.CommandSender;
-
 import com.wolfco.common.classes.ArgumentInterface;
 import com.wolfco.common.classes.Command;
-import com.wolfco.common.classes.CorePlugin;
+
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 
 public class SubCommandArg implements ArgumentInterface {
     private final HashMap<String, Command> subcommands = new HashMap<>();
@@ -40,7 +39,7 @@ public class SubCommandArg implements ArgumentInterface {
         subcommands.put(command.getName(), command);
         return this;
     }
-    
+
     public Command get(String name) {
         for (Command command : subcommands.values()) {
             if (command.getName().equalsIgnoreCase(name)) {
@@ -51,14 +50,12 @@ public class SubCommandArg implements ArgumentInterface {
     }
 
     @Override
-    public List<String> getOptions(CorePlugin core, CommandSender sender,
-            org.bukkit.command.Command bukkitCommand, String[] args) {
+    public List<String> getOptions(CommandSourceStack commandStack, String[] args) {
         return subcommands.keySet().stream().toList();
     }
 
     @Override
-    public Object getValue(CorePlugin core, CommandSender sender, org.bukkit.command.Command bukkitCommand,
-            String searchValue) {
+    public Object getValue(CommandSourceStack commandStack, String searchValue) {
         return get(searchValue);
     }
 }

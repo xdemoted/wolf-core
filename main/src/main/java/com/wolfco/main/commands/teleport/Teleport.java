@@ -1,4 +1,4 @@
-package com.wolfco.main.commands;
+package com.wolfco.main.commands.teleport;
 
 import java.util.List;
 
@@ -11,6 +11,7 @@ import com.wolfco.common.commands.arguments.PlayerArg;
 import com.wolfco.main.Core;
 import com.wolfco.main.utility.FontUtil;
 
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
@@ -23,7 +24,7 @@ public class Teleport implements CoreCommand {
                 new PlayerArg(true).includeSender(false).setName("PLAYER1"),
                 new PlayerArg(false).includeSender(false).setName("PLAYER2")
                 );
-
+        command.addAliases("tp");
         return command;
     }
 
@@ -31,8 +32,10 @@ public class Teleport implements CoreCommand {
     Core core;
     
     @Override
-    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String label, String[] args,
+    public boolean onCommand(CommandSourceStack commandStack, String[] args,
             Object[] argumentValues) {
+        CommandSender sender = commandStack.getSender();
+
         Player player1 = (Player) argumentValues[0];
         Player player2 = (Player) argumentValues[1];
         

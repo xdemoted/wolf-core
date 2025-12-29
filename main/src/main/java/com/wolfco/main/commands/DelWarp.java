@@ -10,6 +10,7 @@ import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.customargs.WarpArgument;
 
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
@@ -27,8 +28,8 @@ public class DelWarp implements CoreCommand {
     Core core;
 
     @Override
-    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args,
-            Object[] argumentValues) {
+    public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
+        CommandSender sender = commandStack.getSender();
         boolean result = core.getWarps().remove(args[0]);
         if (result) {
             core.sendPreset(sender, "warp.deleted", List.of(args[0]));

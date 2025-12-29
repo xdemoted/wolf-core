@@ -12,6 +12,7 @@ import com.wolfco.common.commands.arguments.MultiPlayerArg;
 import com.wolfco.common.commands.arguments.WorldArg;
 import com.wolfco.main.Core;
 
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
@@ -29,8 +30,9 @@ public class WorldCMD implements CoreCommand {
     Core core;
     
     @Override
-    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias,
+    public boolean onCommand(CommandSourceStack commandStack,
             String[] args, Object[] argumentValues) {
+        CommandSender sender = commandStack.getSender();
         World world = (World) argumentValues[0];
 
         @SuppressWarnings("unchecked")

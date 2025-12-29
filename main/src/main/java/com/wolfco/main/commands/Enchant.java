@@ -11,6 +11,7 @@ import com.wolfco.common.commands.arguments.EnchantArg;
 import com.wolfco.common.commands.arguments.NumberArg;
 import com.wolfco.main.Core;
 
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Singleton;
 
 @Singleton
@@ -28,10 +29,9 @@ public class Enchant implements CoreCommand {
     }
     
     @Override
-    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args,
-            Object[] argumentValues) {
+    public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
         Enchantment enchantment = (Enchantment) argumentValues[0];
-        Player player = (Player) sender;
+        Player player = (Player) commandStack.getSender();
 
         player.getInventory().getItemInMainHand().addUnsafeEnchantment(enchantment, (int) Math.round((Double) argumentValues[1]));
         return true;

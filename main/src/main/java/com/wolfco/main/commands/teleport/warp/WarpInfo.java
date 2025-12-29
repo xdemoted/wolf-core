@@ -1,8 +1,9 @@
-package com.wolfco.main.commands;
+package com.wolfco.main.commands.teleport.warp;
 
 import java.util.List;
 
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
@@ -10,6 +11,7 @@ import com.wolfco.main.Core;
 import com.wolfco.main.classes.Warp;
 import com.wolfco.main.classes.customargs.WarpArgument;
 
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
@@ -26,7 +28,8 @@ public class WarpInfo implements CoreCommand {
     Core core;
     
     @Override
-    public boolean execute(org.bukkit.command.CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
+    public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
+        CommandSender sender = commandStack.getSender();
         Warp warp = (Warp) argumentValues[0];
 
         World world = core.getServer().getWorld(warp.world);

@@ -13,6 +13,7 @@ import com.wolfco.common.commands.arguments.PlayerArg;
 import com.wolfco.common.commands.arguments.StaticArg;
 import com.wolfco.main.Core;
 
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
@@ -36,7 +37,8 @@ public class Speed implements CoreCommand {
     Core core;
     
     @Override
-    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
+    public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
+        CommandSender sender = commandStack.getSender();
         String mode = (String) argumentValues[0];
         Double speed = (Double) argumentValues[1];
         Player target = (Player) argumentValues[2];

@@ -1,7 +1,8 @@
-package com.wolfco.main.commands;
+package com.wolfco.main.commands.teleport.request;
 
 import java.util.List;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.wolfco.common.classes.Command;
@@ -13,6 +14,7 @@ import com.wolfco.main.classes.PlayerData;
 import com.wolfco.main.classes.Request;
 import com.wolfco.main.utility.FontUtil;
 
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
@@ -25,6 +27,7 @@ public class TeleportAccept implements CoreCommand {
             new PlayerArg(false).includeSender(true).setName("PLAYER")
         );
         command.setAccessType(AccessType.PLAYER);
+        command.addAliases("tpaccept");
         return command;
     }
 
@@ -32,7 +35,8 @@ public class TeleportAccept implements CoreCommand {
     Core core;
 
     @Override
-    public boolean execute(org.bukkit.command.CommandSender sender, org.bukkit.command.Command command, String alias, String[] args, Object[] argumentValues) {
+    public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
+        CommandSender sender = commandStack.getSender();
         Player requestSender = (Player) argumentValues[0];
         Player receiver = (Player) sender;
         PlayerData receiverData = core.getPlayerManager().getPlayerData(receiver);

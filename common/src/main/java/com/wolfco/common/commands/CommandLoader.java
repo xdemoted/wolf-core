@@ -1,14 +1,14 @@
 package com.wolfco.common.commands;
 
 import java.util.List;
-import java.util.logging.Level;
 
-import org.bukkit.command.PluginCommand;
+import org.bukkit.plugin.Plugin;
 
-import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.CorePlugin;
 
+import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
@@ -20,20 +20,11 @@ public class CommandLoader {
     @Inject
     List<CoreCommand> commands;
 
-    public void register(CoreCommand executor) {
-        Command command = executor.getCommand();
-        String name = command.getName();
-
-        PluginCommand pluginCommand = core.getCommand(name);
-
-        if (pluginCommand != null) {
-            pluginCommand.setExecutor(executor);
-            pluginCommand.setTabCompleter(executor);
-        } else
-            core.getLogger().log(Level.WARNING, "Command {0} cannot be found in the plugin yml.", name);
-    }
-
     public void registerAll() {
-        commands.forEach(this::register);
+        core.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commandsRegistrar -> {
+            for (CoreCommand command : commands) {
+                commandsRegistrar.registrar().register(command.getCommand().getName(), command);
+            }
+        });
     }
 }

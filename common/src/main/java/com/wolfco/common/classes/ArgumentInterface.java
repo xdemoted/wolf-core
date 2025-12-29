@@ -2,7 +2,7 @@ package com.wolfco.common.classes;
 
 import java.util.List;
 
-import org.bukkit.command.CommandSender;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 
 public interface ArgumentInterface {
     default IllegalArgumentException error(String message, Object... args) {
@@ -18,8 +18,8 @@ public interface ArgumentInterface {
 
     abstract ArgumentInterface setName(String name);
 
-    abstract List<String> getOptions(CorePlugin core, CommandSender sender, org.bukkit.command.Command bukkitCommand, String[] args);
+    abstract List<String> getOptions(CommandSourceStack commandStack, String[] args);
 
-    abstract Object getValue(CorePlugin core, CommandSender sender, org.bukkit.command.Command bukkitCommand, String searchValue) throws IllegalArgumentException;
+    abstract Object getValue(CommandSourceStack commandStack, String searchValue) throws IllegalArgumentException;
 
 }

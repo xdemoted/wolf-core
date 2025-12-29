@@ -137,4 +137,8 @@ public class Core extends CorePlugin implements Listener {
     public void removeAfkPlayer(Player player) {
         afkPlayers.remove(player);
     }
+
+    public static Core get() {
+        return Core.get();
+    }
 }

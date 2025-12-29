@@ -2,11 +2,9 @@ package com.wolfco.common.commands.arguments;
 
 import java.util.List;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-
 import com.wolfco.common.classes.ArgumentInterface;
-import com.wolfco.common.classes.CorePlugin;
+
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 
 public class StringArg implements ArgumentInterface {
     final boolean required;
@@ -47,12 +45,12 @@ public class StringArg implements ArgumentInterface {
     }
 
     @Override
-    public List<String> getOptions(CorePlugin core, CommandSender sender, Command bukkitCommand, String[] args) {
+    public List<String> getOptions(CommandSourceStack commandStack, String[] args) {
         return List.of("\" \"");
     }
 
     @Override
-    public String getValue(CorePlugin core, CommandSender sender, Command bukkitCommand, String searchValue)
+    public String getValue(CommandSourceStack commandStack, String searchValue)
             throws IllegalArgumentException {
         if (alphanum && !searchValue.matches("^[a-zA-Z0-9]*$")) {
             throw error("Invalid value provided for %s, must be alphanumeric", name);

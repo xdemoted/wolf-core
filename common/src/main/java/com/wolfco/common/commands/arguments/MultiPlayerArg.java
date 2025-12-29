@@ -5,12 +5,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.wolfco.common.classes.ArgumentInterface;
 import com.wolfco.common.classes.CorePlugin;
+
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 
 public class MultiPlayerArg implements ArgumentInterface {
 
@@ -44,7 +45,9 @@ public class MultiPlayerArg implements ArgumentInterface {
     }
 
     @Override
-    public List<String> getOptions(CorePlugin core, CommandSender sender, Command bukkitCommand, String[] args) {
+    public List<String> getOptions(CommandSourceStack commandStack, String[] args) {
+        CorePlugin core = CorePlugin.get();
+        CommandSender sender = commandStack.getSender();
         List<String> players = core.getServer().getOnlinePlayers().stream().map(p -> p.getName()).collect(Collectors.toList());
         
         players.add("*");
@@ -57,8 +60,10 @@ public class MultiPlayerArg implements ArgumentInterface {
     }
 
     @Override
-    public Collection<? extends Player> getValue(CorePlugin core, CommandSender sender, Command bukkitCommand, String searchValue) {
+    public Collection<? extends Player> getValue(CommandSourceStack commandStack, String searchValue) {
         List<Player> players;
+        CorePlugin core = CorePlugin.get();
+        CommandSender sender = commandStack.getSender();
 
         if (searchValue.equals("*")) {
             players = new ArrayList<>(core.getServer().getOnlinePlayers());

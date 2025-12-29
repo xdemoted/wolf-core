@@ -3,14 +3,12 @@ package com.wolfco.main.classes.customargs;
 import java.util.List;
 import java.util.UUID;
 
-import org.bukkit.command.CommandSender;
-
 import com.wolfco.common.classes.ArgumentInterface;
-import com.wolfco.common.classes.CorePlugin;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.Warp;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
  
 public class WarpArgument implements ArgumentInterface {
     private boolean required = true;
@@ -37,17 +35,16 @@ public class WarpArgument implements ArgumentInterface {
     }
 
     @Override
-    public List<String> getOptions(CorePlugin core, CommandSender sender,
-            org.bukkit.command.Command bukkitCommand, String[] args) {
-        Core plugin = (Core) core;
+    public List<String> getOptions(CommandSourceStack commandStack, String[] args) {
+        Core plugin = Core.get();
 
         return plugin.getWarps().getRoutesAsStrings(false).stream().toList();
     }
 
     @Override
-    public Warp getValue(CorePlugin core, CommandSender sender, org.bukkit.command.Command bukkitCommand,
+    public Warp getValue(CommandSourceStack commandStack,
             String searchValue) {
-        Core plugin = (Core) core;
+        Core plugin = Core.get();
         YamlDocument warps = plugin.getWarps();
         
         if (!warps.contains(searchValue)) return null;

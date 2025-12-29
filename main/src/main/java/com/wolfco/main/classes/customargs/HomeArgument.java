@@ -6,9 +6,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.wolfco.common.classes.ArgumentInterface;
-import com.wolfco.common.classes.CorePlugin;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.PlayerData;
+
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 
 public class HomeArgument implements ArgumentInterface {
     private boolean required = true;
@@ -35,9 +36,9 @@ public class HomeArgument implements ArgumentInterface {
     }
 
     @Override
-    public List<String> getOptions(CorePlugin core, CommandSender sender,
-            org.bukkit.command.Command bukkitCommand, String[] args) {
-        Core plugin = (Core) core;
+    public List<String> getOptions(CommandSourceStack commandStack, String[] args) {
+        Core plugin = Core.get();
+        CommandSender sender = commandStack.getSender();
 
         if (!(sender instanceof Player))
             List.of();
@@ -48,9 +49,10 @@ public class HomeArgument implements ArgumentInterface {
     }
 
     @Override
-    public Object getValue(CorePlugin core, CommandSender sender, org.bukkit.command.Command bukkitCommand,
+    public Object getValue(CommandSourceStack commandStack,
             String searchValue) {
-        Core plugin = (Core) core;
+        Core plugin = Core.get();
+        CommandSender sender = commandStack.getSender();
 
         if (!(sender instanceof Player))
             return null;

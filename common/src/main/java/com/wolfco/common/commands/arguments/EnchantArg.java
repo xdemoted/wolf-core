@@ -5,12 +5,11 @@ import java.util.stream.Collectors;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 
 import com.wolfco.common.classes.ArgumentInterface;
-import com.wolfco.common.classes.CorePlugin;
+
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 
 public class EnchantArg implements ArgumentInterface {
 
@@ -38,27 +37,24 @@ public class EnchantArg implements ArgumentInterface {
     }
 
     @Override
-    public List<String> getOptions(CorePlugin core, CommandSender sender, Command bukkitCommand, String[] args) {
+    public List<String> getOptions(CommandSourceStack commandStack, String[] args) {
         List<String> enchantNames = new java.util.ArrayList<>();
         for (Enchantment enchantment : Registry.ENCHANTMENT) {
-            NamespacedKey key = enchantment.getKeyOrNull();
-            if (key != null) {
-                enchantNames.add(key.getKey());
-            }
+            NamespacedKey key = enchantment.getKey();
+            enchantNames.add(key.getKey());
         }
         return enchantNames;
     }
 
     @Override
-    public Enchantment getValue(CorePlugin core, CommandSender sender, Command bukkitCommand, String searchValue) {
+    public Enchantment getValue(CommandSourceStack commandStack, String searchValue) {
         NamespacedKey key = NamespacedKey.fromString(searchValue);
 
         if (key == null) {
             throw error("Argument %s requires a valid enchant. Possible values are: [%s]", name,
                     Registry.ENCHANTMENT.stream()
                             .map(e -> {
-                                NamespacedKey k = e.getKeyOrNull();
-                                return k != null ? k.getKey() : "";
+                                return e.getKey().getKey();
                             })
                             .collect(Collectors.joining(", ")));
         }
@@ -72,8 +68,7 @@ public class EnchantArg implements ArgumentInterface {
         throw error("Argument %s requires a valid enchant. Possible values are: [%s]", name,
                 Registry.ENCHANTMENT.stream()
                         .map(e -> {
-                            NamespacedKey k = e.getKeyOrNull();
-                            return k != null ? k.getKey() : "";
+                            return e.getKey().getKey();
                         })
                         .collect(Collectors.joining(", ")));
     }

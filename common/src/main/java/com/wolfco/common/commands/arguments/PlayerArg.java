@@ -3,11 +3,12 @@ package com.wolfco.common.commands.arguments;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import com.wolfco.common.classes.ArgumentInterface;
 import com.wolfco.common.classes.CorePlugin;
+
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 
 public class PlayerArg implements ArgumentInterface {
     final boolean required;
@@ -41,7 +42,9 @@ public class PlayerArg implements ArgumentInterface {
     }
 
     @Override
-    public List<String> getOptions(CorePlugin core, CommandSender sender, Command bukkitCommand, String[] args) {
+    public List<String> getOptions(CommandSourceStack commandStack, String[] args) {
+        CorePlugin core = CorePlugin.get();
+        CommandSender sender = commandStack.getSender();
         List<String> players = core.getServer().getOnlinePlayers().stream().map(p -> p.getName()).collect(Collectors.toList());
 
         if (!self) {
@@ -52,7 +55,9 @@ public class PlayerArg implements ArgumentInterface {
     }
 
     @Override
-    public Object getValue(CorePlugin core, CommandSender sender, Command bukkitCommand, String searchValue) {
+    public Object getValue(CommandSourceStack commandStack, String searchValue) {
+        CorePlugin core = CorePlugin.get();
+
         if ("*".equals(searchValue)) {
             throw error("Argument %s requires a valid online player.",name);
         }

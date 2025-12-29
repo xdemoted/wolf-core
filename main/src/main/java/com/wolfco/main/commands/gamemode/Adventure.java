@@ -1,4 +1,4 @@
-package com.wolfco.main.commands;
+package com.wolfco.main.commands.gamemode;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -16,23 +16,17 @@ import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.commands.arguments.MultiPlayerArg;
 import com.wolfco.main.Core;
 
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
 @Singleton
-public class GamemodeAlias implements CoreCommand {
-    final HashMap<String, GameMode> gamemodes = new HashMap<>();
-
-    public GamemodeAlias() {
-        gamemodes.put("gms", GameMode.SURVIVAL);
-        gamemodes.put("gmc", GameMode.CREATIVE);
-        gamemodes.put("gma", GameMode.ADVENTURE);
-        gamemodes.put("gmsp", GameMode.SPECTATOR);
-    }
+public class Adventure implements CoreCommand {
+    final GameMode gamemode = GameMode.ADVENTURE;
 
     @Override
     public Command getCommand() {
-        Command command = new Command().setName("gms");
+        Command command = new Command().setName("gma");
         command.setNode("wolfcore.gamemode");
         command.addArguments(new MultiPlayerArg(false).includeSender(false));
 
@@ -44,22 +38,10 @@ public class GamemodeAlias implements CoreCommand {
 
     @SuppressWarnings("unchecked")
     @Override
-    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args,
+    public boolean onCommand(CommandSourceStack commandStack, String[] args,
             Object[] argumentValues) {
         Collection<Player> target = (Collection<Player>) argumentValues[0];
-
-        GameMode gamemode = switch (alias) {
-            case "gms" -> GameMode.SURVIVAL;
-            case "gmc" -> GameMode.CREATIVE;
-            case "gma" -> GameMode.ADVENTURE;
-            case "gmsp" -> GameMode.SPECTATOR;
-            default -> null;
-        };
-
-        if (gamemode == null) {
-            core.sendPreset(sender, core.getMessage("gamemode.invalid"));
-            return false;
-        }
+        CommandSender sender = commandStack.getSender();
 
         if (target != null) {
             for (Player tempPlayer : target) {
