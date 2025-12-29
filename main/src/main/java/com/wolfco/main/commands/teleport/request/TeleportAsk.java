@@ -2,7 +2,6 @@ package com.wolfco.main.commands.teleport.request;
 
 import java.util.Arrays;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.wolfco.common.classes.Command;

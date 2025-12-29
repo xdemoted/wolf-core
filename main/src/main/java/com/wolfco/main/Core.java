@@ -5,9 +5,12 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.server.ServiceRegisterEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
 
 import com.wolfco.common.classes.CorePlugin;
 import com.wolfco.main.events.ChatManager;
@@ -20,10 +23,10 @@ import dev.dejvokep.boostedyaml.YamlDocument;
 import jakarta.inject.Singleton;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.luckperms.api.LuckPerms;
-import net.luckperms.api.LuckPermsProvider;
 
 @Singleton
 public class Core extends CorePlugin implements Listener {
+    private static Core instance;
     LuckPerms lp;
     YamlDocument warps;
     PlayerManager playerManager;
@@ -35,11 +38,7 @@ public class Core extends CorePlugin implements Listener {
 
     @Override
     public void onStart() {
-        try {
-            lp = LuckPermsProvider.get();
-        } catch (Exception e) {
-            return;
-        }
+        instance = this;
 
         getAdventure();
 
@@ -75,6 +74,24 @@ public class Core extends CorePlugin implements Listener {
             out += "\n## [ End Log ]";
 
             webhook.sendLog(out);
+
+            try {
+                Class.forName("net.luckperms.api.LuckPerms");
+            } catch (ClassNotFoundException e) {
+                getLogger().severe("LuckPerms API not found! Disabling plugin.");
+                Bukkit.getPluginManager().disablePlugin(this);
+                return;
+            }
+
+            RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager()
+                    .getRegistration(LuckPerms.class);
+
+            if (provider != null) {
+                lp = provider.getProvider();
+            } else {
+                getLogger().severe("LuckPerms not found! Disabling plugin.");
+                Bukkit.getPluginManager().disablePlugin(this);
+            }
         }, 20L * 10L);
     }
 
@@ -118,6 +135,8 @@ public class Core extends CorePlugin implements Listener {
             adventure.close();
         }
 
+        instance = null;
+
         Bukkit.getMessenger().unregisterOutgoingPluginChannel(this, "core:main");
         this.getLogger().info("[Wolf-Core] Plugin disabled");
 
@@ -139,6 +158,24 @@ public class Core extends CorePlugin implements Listener {
     }
 
     public static Core get() {
-        return Core.get();
+        return instance;
+    }
+
+    @EventHandler
+    public void onServiceRegister(ServiceRegisterEvent event) {
+        if (!event.getProvider().getService().getName().equals("net.luckperms.api.LuckPerms")) {
+            return;
+        }
+
+        try {
+            Class.forName("net.luckperms.api.LuckPerms");
+        } catch (ClassNotFoundException e) {
+            getLogger().severe("LuckPerms API not found! Disabling plugin.");
+            return;
+        }
+
+        if (event.getProvider().getService().equals(LuckPerms.class)) {
+            lp = (LuckPerms) event.getProvider().getProvider();
+        }
     }
 }
