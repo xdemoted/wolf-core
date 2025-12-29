@@ -8,7 +8,9 @@ import com.wolfco.common.listeners.CoreListener;
 import com.wolfco.main.Core;
 
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
+@Singleton
 public class WhitelistListener implements CoreListener {
     private final Core core;
 

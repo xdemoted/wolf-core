@@ -14,14 +14,20 @@ public class EventLoader {
     @Inject
     public CorePlugin core;
 
-    @Inject
-    public List<CoreListener> listeners;
-
     public void registerAll() {
         PluginManager pm = core.getServer().getPluginManager();
+        List<CoreListener> listeners = core.getScope().list(CoreListener.class);
+
+        core.log("Registering " + listeners.size() + " event listeners");
+
+        if (listeners.isEmpty()) {
+            core.getLogger().warning("No event listeners discovered; check avaje-inject module wiring.");
+            return;
+        }
 
         for (CoreListener listener : listeners) {
             pm.registerEvents(listener, core);
+            core.log("Registered listener: " + listener.getClass().getName());
         }
     }
 }

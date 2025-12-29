@@ -14,7 +14,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -29,7 +28,10 @@ import com.wolfco.main.classes.PlayerData;
 import com.wolfco.main.handlers.TeamHandler;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
+@Singleton
 public class PlayerManager implements CoreListener {
     static final List<TeleportCause> IGNORED_CAUSES = List.of(
             TeleportCause.ENDER_PEARL,
@@ -45,6 +47,7 @@ public class PlayerManager implements CoreListener {
     Core core;
     TeamHandler teamHandler;
 
+    @Inject
     public PlayerManager(Core core) {
         this.core = core;
         teamHandler = new TeamHandler(core);

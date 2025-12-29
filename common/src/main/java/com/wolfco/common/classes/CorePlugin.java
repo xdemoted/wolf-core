@@ -10,6 +10,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.wolfco.common.commands.CommandLoader;
+import com.wolfco.common.listeners.EventLoader;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 import dev.dejvokep.boostedyaml.dvs.versioning.BasicVersioning;
@@ -50,6 +51,9 @@ public abstract class CorePlugin extends JavaPlugin {
 
         CommandLoader commandLoader = scope.get(CommandLoader.class);
         commandLoader.registerAll();
+
+        EventLoader eventLoader = scope.get(EventLoader.class);
+        eventLoader.registerAll();
 
         onStart();
     }
