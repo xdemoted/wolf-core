@@ -13,15 +13,16 @@ import jakarta.inject.Singleton;
 public class EventLoader {
     @Inject
     public CorePlugin core;
+    private List<CoreListener> listeners;
 
     public void registerAll() {
+        this.listeners = core.getScope().list(CoreListener.class);
         PluginManager pm = core.getServer().getPluginManager();
-        List<CoreListener> listeners = core.getScope().list(CoreListener.class);
 
         core.log("Registering " + listeners.size() + " event listeners");
 
         if (listeners.isEmpty()) {
-            core.getLogger().warning("No event listeners discovered; check avaje-inject module wiring.");
+            core.getLogger().warning("No event listeners discovered;");
             return;
         }
 

@@ -7,10 +7,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import com.wolfco.common.classes.CorePlugin;
+import com.wolfco.common.listeners.EventLoader;
 import com.wolfco.main.events.ChatManager;
 import com.wolfco.main.events.PlayerManager;
 import com.wolfco.main.events.RedisManager;
@@ -24,20 +24,14 @@ import net.luckperms.api.LuckPerms;
 
 @Singleton
 public class Core extends CorePlugin implements Listener {
-    private static Core instance;
     LuckPerms lp;
     YamlDocument warps;
-    PlayerManager playerManager;
-    PluginManager pluginManager;
-    RedisManager redisManager;
     MongoDatabase db;
 
     List<Player> afkPlayers = new ArrayList<>();
 
     @Override
     public void onStart() {
-        instance = this;
-
         getAdventure();
 
         RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager()
@@ -50,14 +44,13 @@ public class Core extends CorePlugin implements Listener {
             Bukkit.getPluginManager().disablePlugin(this);
         }
 
-        setMainConfig(getConfigDocument("config.yml"));
+        EventLoader eventLoader = getScope().get(EventLoader.class);
+        eventLoader.registerAll();
+
         serverName = getMainConfig().getString("server-name", "unknown");
         warps = getConfigDocument("warps.yml");
 
-        this.pluginManager = Bukkit.getPluginManager();
-
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "core:main");
-        this.redisManager = RedisManager.getInstance(serverName);
 
         this.getLogger().info("[Wolf-Core] Plugin horny");
 
@@ -83,10 +76,10 @@ public class Core extends CorePlugin implements Listener {
 
             webhook.sendLog(out);
         }, 20L * 10L);
-    }
 
-    public PluginManager getPluginManager() {
-        return pluginManager;
+        getScope().all().forEach(Bean -> {
+            log(Bean.type().getPackageName()+"." + Bean.type().getSimpleName());
+        });
     }
 
     public String getServerName() {
@@ -94,7 +87,7 @@ public class Core extends CorePlugin implements Listener {
     }
 
     public RedisManager getRedisManager() {
-        return redisManager;
+        return getScope().get(RedisManager.class);
     }
 
     public MongoDatabase getDatabaseHandler() {
@@ -110,11 +103,11 @@ public class Core extends CorePlugin implements Listener {
     }
 
     public PlayerManager getPlayerManager() {
-        return playerManager;
+        return getScope().get(PlayerManager.class);
     }
 
     public ChatManager getChatManager() {
-        return new ChatManager(this);
+        return getScope().get(ChatManager.class);
     }
 
     @Override
@@ -124,8 +117,6 @@ public class Core extends CorePlugin implements Listener {
         if (adventure != null) {
             adventure.close();
         }
-
-        instance = null;
 
         Bukkit.getMessenger().unregisterOutgoingPluginChannel(this, "core:main");
         this.getLogger().info("[Wolf-Core] Plugin disabled");
@@ -148,6 +139,6 @@ public class Core extends CorePlugin implements Listener {
     }
 
     public static Core get() {
-        return instance;
+        return (Core) CorePlugin.get();
     }
 }

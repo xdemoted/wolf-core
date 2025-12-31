@@ -13,26 +13,29 @@ import com.wolfco.main.classes.redis.AsyncGlobalMessageEvent;
 import com.wolfco.main.classes.redis.BaseMessage;
 import com.wolfco.main.classes.redis.ChatMessage;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import redis.clients.jedis.DefaultJedisClientConfig;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPubSub;
 
+@Singleton
 public class RedisManager {
-    private static RedisManager instance = null;
-
     public String serverName;
-    Core core = (Core) Core.get();
+    Core core;
     JedisPool jedisPool;
     Jedis publisher;
     String password;
 
     final ExecutorService executorService = Executors.newFixedThreadPool(10);
 
-    public RedisManager(String serverName) {
+    @Inject
+    public RedisManager(Core core) {
         core.log("Redis Initialization!");
-        this.serverName = serverName;
+        this.core = core;
+        this.serverName = core.getServerName();
         HostAndPort hostAndPort = getDetails();
         jedisPool = new JedisPool(hostAndPort, DefaultJedisClientConfig.builder()
                 .password(password)
@@ -197,19 +200,5 @@ public class RedisManager {
         } catch (Exception ignored) {
         }
         jedisPool.close();
-    }
-
-    public static RedisManager getInstance() {
-        if (instance == null) {
-            instance = getInstance(((Core) Core.get()).getServerName());
-        }
-
-        return instance;
-    }
-
-    public static RedisManager getInstance(String serverName) {
-        instance = new RedisManager(serverName);
-
-        return instance;
     }
 }

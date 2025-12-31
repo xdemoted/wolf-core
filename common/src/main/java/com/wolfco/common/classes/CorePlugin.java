@@ -10,7 +10,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.wolfco.common.commands.CommandLoader;
-import com.wolfco.common.listeners.EventLoader;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 import dev.dejvokep.boostedyaml.dvs.versioning.BasicVersioning;
@@ -38,22 +37,22 @@ public abstract class CorePlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        setMainConfig(getConfigDocument("config.yml"));
+
         scope = BeanScope.builder()
-            .bean(this.getName(), Plugin.class, this)
-            .bean(this.getName(), JavaPlugin.class, this)
-            .bean(JavaPlugin.class, this)
-            .bean(Plugin.class, this)
-            .bean(CorePlugin.class, this)
-            // Register concrete plugin class (e.g., com.wolfco.main.Core) so @Inject Core works
-            .bean((Class<CorePlugin>) getClass(), this)
+                .bean(this.getName(), Plugin.class, this)
+                .bean(this.getName(), JavaPlugin.class, this)
+                .bean(JavaPlugin.class, this)
+                .bean(Plugin.class, this)
+                .bean(CorePlugin.class, this)
+                // Register concrete plugin class (e.g., com.wolfco.main.Core) so @Inject Core
+                // works
+                .bean((Class<CorePlugin>) getClass(), this)
                 .classLoader(getClass().getClassLoader())
                 .build();
 
         CommandLoader commandLoader = scope.get(CommandLoader.class);
         commandLoader.registerAll();
-
-        EventLoader eventLoader = scope.get(EventLoader.class);
-        eventLoader.registerAll();
 
         onStart();
     }

@@ -43,9 +43,6 @@ public class TeamHandler {
 
             ScoreboardManager manager = player.getServer().getScoreboardManager();
 
-            if (manager == null)
-                return;
-
             Team existingTeam = manager.getMainScoreboard().getTeam(player.getName());
 
             if (existingTeam != null) {

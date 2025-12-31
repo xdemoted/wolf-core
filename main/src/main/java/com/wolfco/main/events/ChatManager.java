@@ -5,16 +5,16 @@ import java.util.concurrent.CompletableFuture;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 
-import com.wolfco.common.listeners.CoreListener;
 import com.wolfco.common.Utilities;
+import com.wolfco.common.listeners.CoreListener;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.redis.AsyncGlobalMessageEvent;
 import com.wolfco.main.classes.redis.ChatMessage;
 import com.wolfco.main.utility.FontUtil;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
-import jakarta.ejb.Singleton;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
@@ -25,9 +25,8 @@ import net.luckperms.api.model.user.User;
 
 @Singleton
 public class ChatManager implements CoreListener {
-
-    Core core;
-    MiniMessage chatSerializer;
+    private final Core core;
+    private final MiniMessage chatSerializer;
 
     @Inject
     public ChatManager(Core core) {
@@ -49,7 +48,8 @@ public class ChatManager implements CoreListener {
         ChatMessage chatMessage = new ChatMessage(core.getServerName(), player, message);
 
         sendChatMessage(chatMessage);
-
+        core.getRedisManager().sendChatMessageAsync(chatMessage);
+        
         event.setCancelled(true);
     }
 
@@ -59,7 +59,9 @@ public class ChatManager implements CoreListener {
     }
 
     void sendChatMessage(ChatMessage chatMessage) {
-        core.getRedisManager().sendChatMessageAsync(chatMessage);
+        if (core.getServer().getOnlinePlayers().isEmpty()) {
+            return;
+        }
 
         CompletableFuture<User> user = core.getLuckPerms().getUserManager().loadUser(chatMessage.getUUID());
 
@@ -86,7 +88,9 @@ public class ChatManager implements CoreListener {
             nameTag = FontUtil.parseNameTag(nameTag);
 
             Component nameText = MiniMessage.miniMessage().deserialize(nameTag + " <#555555>» ");
-            Component messageText = color ? chatSerializer.deserialize(chatPrefix + chatMessage.getMessage() + chatSuffix) : Component.text(chatMessage.getMessage());
+            Component messageText = color
+                    ? chatSerializer.deserialize(chatPrefix + chatMessage.getMessage() + chatSuffix)
+                    : Component.text(chatMessage.getMessage());
 
             core.getAdventure().players().sendMessage(nameText.append(messageText));
         });

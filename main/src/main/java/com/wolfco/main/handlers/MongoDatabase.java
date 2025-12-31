@@ -1,7 +1,5 @@
 package com.wolfco.main.handlers;
 
-import java.io.IOException;
-
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
@@ -16,6 +14,10 @@ import com.wolfco.main.classes.mongoDB.Appeal;
 import com.wolfco.main.classes.mongoDB.GlobalPlayer;
 import com.wolfco.main.classes.mongoDB.Punishment;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
+
+@Singleton
 public class MongoDatabase {
     final com.mongodb.reactivestreams.client.MongoDatabase database;
 
@@ -25,13 +27,11 @@ public class MongoDatabase {
 
     final Core core;
 
-    public MongoDatabase(Core core) throws IOException {
+    @Inject
+    public MongoDatabase(Core core) {
         this.core = core;
 
         String uri = "mongodb://admin:u%3FpvdhqVaCEx%23%3D'R%3B8k6sDH%7DU%3C%2FcB%2B%5BQTN%40F.nYtG-er_wfm%24*@154.29.72.40:27017/";//core.getMainConfig().getString("mongo", "null");
-
-        if (!uri.startsWith("mongodb://"))
-            throw new IOException();
 
         ConnectionString connectionString = new ConnectionString(uri);
         CodecRegistry pojoCodecRegistry = CodecRegistries.fromProviders(
@@ -52,15 +52,6 @@ public class MongoDatabase {
             appeals = database.getCollection("Appeals", Appeal.class);
 
             System.err.println(punishments.find().first().toString());
-        }
-    }
-
-    public static void main(String[] args) {
-        try {
-            new MongoDatabase(null);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
     }
 }

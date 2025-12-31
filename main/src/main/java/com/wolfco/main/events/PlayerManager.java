@@ -51,11 +51,15 @@ public class PlayerManager implements CoreListener {
     public PlayerManager(Core core) {
         this.core = core;
         teamHandler = new TeamHandler(core);
-        Collection<? extends Player> onlinePlayers = core.getServer().getOnlinePlayers();
-        if (!onlinePlayers.isEmpty()) {
-            for (Player player : onlinePlayers) {
-                onJoin(player);
+        try {
+            Collection<? extends Player> onlinePlayers = core.getServer().getOnlinePlayers();
+            if (!onlinePlayers.isEmpty()) {
+                for (Player player : onlinePlayers) {
+                    onJoin(player);
+                }
             }
+        } catch (Exception e) {
+            core.getLogger().log(Level.WARNING, "[Wolf-Core] Error loading online players during initialization", e);
         }
     }
 

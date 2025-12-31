@@ -8,9 +8,9 @@ public class Punishment {
     private ObjectId id;
     
     @BsonProperty(value="end_time")
-    private String endTime;
+    private long endTime;
     @BsonProperty(value="start_time")
-    private String startTime;
+    private long startTime;
     private ObjectId appeal;
     private String reason;
     private String status;
@@ -19,26 +19,18 @@ public class Punishment {
     private String uuid;
 
     public long getEndTime() {
-        return Long.parseLong(endTime);
+        return endTime;
     }
 
     public void setEndTime(long endTime) {
-        this.endTime = Long.toString(endTime);
-    }
-
-    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
     public long getStartTime() {
-        return Long.parseLong(startTime);
+        return startTime;
     }
 
     public void setStartTime(long startTime) {
-        this.startTime = Long.toString(startTime);
-    }
-
-    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
