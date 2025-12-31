@@ -29,8 +29,10 @@ import com.wolfco.main.handlers.TeamHandler;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 
+@Named("playerManager")
 @Singleton
 public class PlayerManager implements CoreListener {
     static final List<TeleportCause> IGNORED_CAUSES = List.of(

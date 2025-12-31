@@ -14,6 +14,7 @@ import com.wolfco.main.utility.FontUtil;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -23,6 +24,7 @@ import net.luckperms.api.cacheddata.CachedDataManager;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.model.user.User;
 
+@Named("chatManager")
 @Singleton
 public class ChatManager implements CoreListener {
     private final Core core;
