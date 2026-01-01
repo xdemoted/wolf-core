@@ -9,23 +9,18 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
 
 import com.wolfco.common.listeners.CoreListener;
-import com.wolfco.common.Utilities;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.PlayerData;
-import com.wolfco.main.handlers.TeamHandler;
+import com.wolfco.main.handlers.PlayerVisualsHandler;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 import jakarta.inject.Inject;
@@ -35,7 +30,7 @@ import jakarta.inject.Singleton;
 @Named("playerManager")
 @Singleton
 public class PlayerManager implements CoreListener {
-    static final List<TeleportCause> IGNORED_CAUSES = List.of(
+    static final List<TeleportCause> IGNORED_CAUSES = List.of( // Back listener
             TeleportCause.ENDER_PEARL,
             TeleportCause.CHORUS_FRUIT,
             TeleportCause.SPECTATE,
@@ -47,12 +42,10 @@ public class PlayerManager implements CoreListener {
 
     Map<UUID, PlayerData> players = new HashMap<>();
     Core core;
-    TeamHandler teamHandler;
 
     @Inject
     public PlayerManager(Core core) {
         this.core = core;
-        teamHandler = new TeamHandler(core);
         try {
             Collection<? extends Player> onlinePlayers = core.getServer().getOnlinePlayers();
             if (!onlinePlayers.isEmpty()) {
@@ -67,11 +60,9 @@ public class PlayerManager implements CoreListener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        event.setJoinMessage(null);
+        event.joinMessage(null);
 
         onJoin(event.getPlayer());
-
-        teamHandler.updatePrefix(event.getPlayer());
     }
 
     private void onJoin(Player player) {
@@ -97,7 +88,7 @@ public class PlayerManager implements CoreListener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        event.setQuitMessage(null);
+        event.quitMessage(null);
 
         Player player = event.getPlayer();
         PlayerData playerData = players.get(player.getUniqueId());
@@ -121,79 +112,15 @@ public class PlayerManager implements CoreListener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR) // Should always run last
     public void onPlayerTeleport(PlayerTeleportEvent event) {
-        Player player = event.getPlayer();
-        TeleportCause cause = event.getCause();
-        PlayerData playerData = players.get(player.getUniqueId());
+        PlayerData playerData = players.get(event.getPlayer().getUniqueId());
 
-        Location from = event.getFrom();
-
-        if (!IGNORED_CAUSES.contains(cause)) {
+        if (!IGNORED_CAUSES.contains(event.getCause())) {
             if (playerData != null) {
-                playerData.lastPosition = from;
+                playerData.lastPosition = event.getFrom();
             }
-        } else if (cause == TeleportCause.ENDER_PEARL) {
-            Location to = event.getTo();
-
-            if (to == null)
-                return;
-
-            Double blockX = to.getBlockX() + 0.5;
-            Double blockZ = to.getBlockZ() + 0.5;
-
-            if (to.getX() - blockX < 0) {
-                to.setX(Math.max(to.getX(), blockX - 0.2));
-            } else {
-                to.setX(Math.min(to.getX(), blockX + 0.2));
-            }
-
-            if (to.getZ() - blockZ < 0) {
-                to.setZ(Math.max(to.getZ(), blockZ - 0.2));
-            } else {
-                to.setZ(Math.min(to.getZ(), blockZ + 0.2));
-            }
-
-            Block block = from.getBlock();
-            Block upperBlock = block.getRelative(0, 1, 0);
-            if (block.getType().isSolid() && upperBlock.getType().isSolid()) {
-                player.getInventory().addItem(new ItemStack(Material.ENDER_PEARL));
-                Core.get().sendPreset(player, "enderpearl.blocked", List.of("from"));
-                event.setCancelled(true);
-                return;
-            }
-
-            block = to.getBlock();
-            upperBlock = block.getRelative(0, 1, 0);
-
-            if (block.getType().isSolid()) {
-                Vector vector = Utilities.getUnitLocation(from, to).multiply(0.3);
-                int iterations = 0;
-                while ((!isAllowedBlock(to.getBlock())) && iterations < 11) {
-                    to.subtract(vector);
-                    iterations++;
-                }
-                if (iterations >= 11) {
-                    player.getInventory().addItem(new ItemStack(Material.ENDER_PEARL));
-                    Core.get().sendPreset(player, "enderpearl.blocked", List.of("to"));
-                    event.setCancelled(true);
-                    return;
-                }
-            }
-
-            if (upperBlock.getType().isSolid()) {
-                to.setY(Math.min(to.getY(), upperBlock.getY() - 1.1));
-            }
-            event.setTo(to);
         }
-    }
-
-    public static Boolean isAllowedBlock(Block block) {
-        return block.isPassable() && block.getType() != Material.LADDER
-                && block.getType() != Material.VINE
-                && block.getType() != Material.WEEPING_VINES
-                && block.getType() != Material.TWISTING_VINES
-                && block.getType() != Material.CAVE_VINES_PLANT;
     }
 
     public static List<reducedPlayerInfo> getAllPlayerDataDocuments() {

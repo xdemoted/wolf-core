@@ -196,20 +196,31 @@ public class Utilities {
         return text;
     }
 
-    static public Component getDisplayName(User user) {
-        CachedDataManager cacheData = user.getCachedData();
-        CachedMetaData lpmetaData = cacheData.getMetaData();
-        String prefix = Utilities.nullCheck(lpmetaData.getPrefix());
-        String suffix = Utilities.nullCheck(lpmetaData.getSuffix());
+    static public Component formatPrefixString(String prefix) {
+        prefix = Utilities.nullCheck(prefix);
 
         if (prefix.contains(";")) {
             prefix = prefix.split(";")[0];
         }
 
-        String nameTag = prefix + user.getUsername() + suffix;
+        prefix = parseNameTag(prefix);
 
-        nameTag = parseNameTag(nameTag);
+        return MiniMessage.miniMessage().deserialize(prefix);
+    }
 
-        return MiniMessage.miniMessage().deserialize(nameTag);
+    static public Component getPrefix(User user) {
+        CachedDataManager cacheData = user.getCachedData();
+        CachedMetaData lpmetaData = cacheData.getMetaData();
+        return formatPrefixString(lpmetaData.getPrefix());
+    }
+
+    static public Component getDisplayName(User user) {
+        CachedDataManager cacheData = user.getCachedData();
+        CachedMetaData lpmetaData = cacheData.getMetaData();
+        String prefix = Utilities.nullCheck(lpmetaData.getPrefix());
+        String suffix = Utilities.nullCheck(lpmetaData.getSuffix());
+        Component formattedPrefix = formatPrefixString(prefix);
+
+        return formattedPrefix.append(MiniMessage.miniMessage().deserialize(user.getUsername() + suffix));
     }
 }

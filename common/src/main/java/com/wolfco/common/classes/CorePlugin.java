@@ -17,6 +17,7 @@ import dev.dejvokep.boostedyaml.settings.updater.UpdaterSettings;
 import io.avaje.inject.BeanScope;
 import io.avaje.inject.InjectModule;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
 @InjectModule(provides = { CorePlugin.class, JavaPlugin.class, Plugin.class })
@@ -147,6 +148,10 @@ public abstract class CorePlugin extends JavaPlugin {
 
     public void sendMessage(CommandSender sender, String message) {
         getAdventure().sender(sender).sendMessage(MiniMessage.miniMessage().deserialize(message));
+    }
+
+    public void log(Component log) {
+        getComponentLogger().info(log);
     }
 
     public void log(String log) {

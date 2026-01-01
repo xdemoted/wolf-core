@@ -20,6 +20,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.luckperms.api.cacheddata.CachedDataManager;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.model.user.User;
@@ -44,7 +45,7 @@ public class ChatManager implements CoreListener {
     @EventHandler
     public void onChat(AsyncChatEvent event) {
         // Variables
-        String message = event.message().toString();
+        String message = PlainTextComponentSerializer.plainText().serialize(event.message());
         Player player = event.getPlayer();
 
         ChatMessage chatMessage = new ChatMessage(core.getServerName(), player, message);
@@ -89,10 +90,13 @@ public class ChatManager implements CoreListener {
 
             nameTag = FontUtil.parseNameTag(nameTag);
 
+            String message = chatMessage.getMessage();
+            core.log(message);
+
             Component nameText = MiniMessage.miniMessage().deserialize(nameTag + " <#555555>» ");
             Component messageText = color
-                    ? chatSerializer.deserialize(chatPrefix + chatMessage.getMessage() + chatSuffix)
-                    : Component.text(chatMessage.getMessage());
+                    ? chatSerializer.deserialize(chatPrefix + message + chatSuffix)
+                    : Component.text(message);
 
             core.getAdventure().players().sendMessage(nameText.append(messageText));
         });
