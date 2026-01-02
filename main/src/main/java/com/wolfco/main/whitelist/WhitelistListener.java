@@ -1,54 +1,40 @@
 package com.wolfco.main.whitelist;
 
-import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerPortalEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
 
 import com.wolfco.common.listeners.CoreListener;
 import com.wolfco.main.Core;
 
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 
+@Named("whitelistListener")
 @Singleton
 public class WhitelistListener implements CoreListener {
+    private final WhitelistManager whitelistManager;
     private final Core core;
 
     @Inject
-    public WhitelistListener(Core core) {
+    public WhitelistListener(Core core, WhitelistManager manager) {
         this.core = core;
+        this.whitelistManager = manager;
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerJoin(PlayerJoinEvent event) {
-        core.log("whitelist check");
-    }
+        int status = whitelistManager.isWhitelisted(event.getPlayer());
 
-    @EventHandler
-    public void onPortal(PlayerPortalEvent event) {
-        core.log("from: " + event.getFrom().toString() + " to: " + event.getTo().toString());
-        core.log("cause: " + event.getCause().toString());
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onTeleport(PlayerTeleportEvent event) {
-        if (event.getCause() == PlayerTeleportEvent.TeleportCause.UNKNOWN) {
-            if (event.getFrom().getWorld().getEnvironment() == World.Environment.THE_END
-                    && event.getFrom().getBlock().getType() == Material.END_PORTAL) {
-                event.setCancelled(true);
-                event.getPlayer().teleport(event.getTo(),
-                        PlayerTeleportEvent.TeleportCause.END_PORTAL);
-            }
+        if (status == 0) {
+            event.getPlayer().kickPlayer(
+                core.getMessage("whitelist.denied")
+            );
+        } else if (status == 2) {
+            event.getPlayer().sendMessage(
+                core.getMessage("whitelist.bypass")
+            );
         }
-    }
-
-    @EventHandler
-    public void onTeleport2(PlayerTeleportEvent event) {
-        core.log("from: " + event.getFrom().toString() + " to: " + event.getTo().toString());
-        core.log("cause: " + event.getCause().toString());
     }
 }

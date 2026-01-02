@@ -33,6 +33,10 @@ public class TabCompleter {
             }
         }
 
+        for (String arg : args) {
+            core.getLogger().info("Arg: " + arg);
+        }
+
         ArgumentInterface argument = command.getArgument(args.length - 1);
         String lastArg = args[args.length - 1].toLowerCase();
 

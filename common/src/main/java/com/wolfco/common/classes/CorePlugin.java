@@ -16,6 +16,7 @@ import dev.dejvokep.boostedyaml.dvs.versioning.BasicVersioning;
 import dev.dejvokep.boostedyaml.settings.updater.UpdaterSettings;
 import io.avaje.inject.BeanScope;
 import io.avaje.inject.InjectModule;
+import jakarta.annotation.Nullable;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -39,6 +40,7 @@ public abstract class CorePlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         setMainConfig(getConfigDocument("config.yml"));
+        serverName = getMainConfig().getString("server-name", "unknown");
 
         scope = BeanScope.builder()
                 .bean(this.getName(), Plugin.class, this)
@@ -81,10 +83,12 @@ public abstract class CorePlugin extends JavaPlugin {
         return config;
     }
 
+    @Nullable
     public YamlDocument getConfigDocument(String fileName) {
         return getConfigDocument(fileName, getDataFolder().toPath());
     }
 
+    @Nullable
     public YamlDocument getConfigDocument(String fileName, Path parent) {
         Path configFile = parent.resolve(fileName);
         YamlDocument configReturn;

@@ -1,4 +1,4 @@
-version: 11
+version: 12
 
 core:
   prefix: "<glyph:system:c><shift:-1><glyph:w:c><shift:-2><glyph:o:c><shift:-2><glyph:l:c><shift:-2><glyph:f:c><shift:-2><glyph:c:c><shift:-2><glyph:o:c><shift:-2><glyph:end2:c>"
@@ -67,4 +67,8 @@ back:
   noposition: "<#ffaa00>Couldn't find last position."
 enderpearl:
   blocked: "♆ <#ffaa00>Enderpearl blocked. Pearls cannot teleport you %0% the inside of blocks."
+whitelist:
+  denied: "<#ff5555>You are not whitelisted on this server. Ask for a whitelist invite from another player."
+  bypass: "<#55ff55>Bypassing server whitelist."
+
 

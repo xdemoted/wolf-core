@@ -44,10 +44,6 @@ public class Core extends CorePlugin implements Listener {
             Bukkit.getPluginManager().disablePlugin(this);
         }
 
-        EventLoader eventLoader = getScope().get(EventLoader.class);
-        eventLoader.registerAll();
-
-        serverName = getMainConfig().getString("server-name", "unknown");
         warps = getConfigDocument("warps.yml");
 
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "core:main");
@@ -77,9 +73,8 @@ public class Core extends CorePlugin implements Listener {
             webhook.sendLog(out);
         }, 20L * 10L);
 
-        getScope().all().forEach(Bean -> {
-            log(Bean.type().getPackageName()+"." + Bean.type().getSimpleName());
-        });
+        EventLoader eventLoader = getScope().get(EventLoader.class);
+        eventLoader.registerAll();
     }
 
     public String getServerName() {
