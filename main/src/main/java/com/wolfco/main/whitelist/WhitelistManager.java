@@ -61,14 +61,24 @@ public class WhitelistManager {
         return saveWhitelist();
     }
 
-    public boolean addToWhitelist(UUID playerUUID) {
+    public int addToWhitelist(UUID playerUUID) { // 0: ok 1: already whitelisted 2: failed to save
+        if (whitelistedUUIDs.contains(playerUUID)) {
+            return 1;
+        }
+
         whitelistedUUIDs.add(playerUUID);
-        return saveWhitelist();
+
+        return saveWhitelist() ? 0 : 2;
     }
 
-    public boolean removeFromWhitelist(UUID playerUUID) {
+    public int removeFromWhitelist(UUID playerUUID) { // 0: ok 1: not whitelisted 2: failed to save
+        if (!whitelistedUUIDs.contains(playerUUID)) {
+            return 1;
+        }
+
         whitelistedUUIDs.remove(playerUUID);
-        return saveWhitelist();
+
+        return saveWhitelist() ? 0 : 2;
     }
 
     public boolean saveWhitelist() {

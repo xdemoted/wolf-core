@@ -7,14 +7,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import com.destroystokyo.paper.profile.PlayerProfile;
 import com.wolfco.common.classes.CorePlugin;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
@@ -222,5 +225,30 @@ public class Utilities {
         Component formattedPrefix = formatPrefixString(prefix);
 
         return formattedPrefix.append(MiniMessage.miniMessage().deserialize(user.getUsername() + suffix));
+    }
+
+    static public CompletableFuture<UUID> getUUIDFromName(String name) {
+        return CompletableFuture.supplyAsync(() -> {
+            PlayerProfile profile = getMojangProfile(name).join();
+
+            if (profile != null && profile.getId() != null) {
+                return profile.getId();
+            } else {
+                return null;
+            }
+        });
+    }
+
+    static public CompletableFuture<PlayerProfile> getMojangProfile(String name) {
+        return CompletableFuture.supplyAsync(() -> {
+            PlayerProfile profile = Bukkit.createProfile(name);
+
+            try {
+                profile.complete(false);
+                return profile;
+            } catch (Exception e) {
+                return null;
+            }
+        });
     }
 }

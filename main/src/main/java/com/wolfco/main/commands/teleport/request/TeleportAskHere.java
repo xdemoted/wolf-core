@@ -7,7 +7,9 @@ import com.wolfco.common.commands.arguments.PlayerArg;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 
+@Singleton
 public class TeleportAskHere implements CoreCommand {
     @Inject
     TeleportAsk teleportAsk;

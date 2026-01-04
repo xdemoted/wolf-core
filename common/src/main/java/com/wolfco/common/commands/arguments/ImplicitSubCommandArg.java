@@ -1,5 +1,6 @@
 package com.wolfco.common.commands.arguments;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -8,13 +9,13 @@ import com.wolfco.common.classes.Command;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 
-public class SubCommandArg implements ArgumentInterface {
-    private final HashMap<String, Command> subcommands = new HashMap<>();
+public class ImplicitSubCommandArg implements ArgumentInterface {
+    private final HashMap<ArgumentInterface, Command> subcommands = new HashMap<>();
     private final boolean required;
 
     private String name = "SUBCOMMAND";
 
-    public SubCommandArg(boolean required) {
+    public ImplicitSubCommandArg(boolean required) {
         this.required = required;
     }
 
@@ -35,19 +36,8 @@ public class SubCommandArg implements ArgumentInterface {
         return name;
     }
 
-    public HashMap<String, Command> getCommands() {
-        return subcommands;
-    }
-
-    public SubCommandArg addCommands(Command... commands) {
-        for (Command command : commands) {
-            subcommands.put(command.getName(), command);
-        }
-        return this;
-    }
-
-    public SubCommandArg add(Command command) {
-        subcommands.put(command.getName(), command);
+    public ImplicitSubCommandArg add(ArgumentInterface argument, Command command) {
+        subcommands.put(argument, command);
         return this;
     }
 
@@ -62,7 +52,13 @@ public class SubCommandArg implements ArgumentInterface {
 
     @Override
     public List<String> getOptions(CommandSourceStack commandStack, String[] args) {
-        return subcommands.keySet().stream().toList();
+        List<String> options = new ArrayList<>();
+
+        subcommands.keySet().stream().forEach(argument -> {
+            options.addAll(argument.getOptions(commandStack, args));
+        });
+
+        return options;
     }
 
     @Override

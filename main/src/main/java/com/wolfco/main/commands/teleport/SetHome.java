@@ -14,13 +14,21 @@ import com.wolfco.main.classes.Home;
 import com.wolfco.main.classes.PlayerData;
 import com.wolfco.main.handlers.PermissionHandler;
 
-import net.luckperms.api.model.user.User;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import net.luckperms.api.model.user.User;
 
 @Singleton
 public class SetHome implements CoreCommand {    static final String NODE = "wolfcore.sethome";
+    private final Core core;
+    private final PermissionHandler permissionHandler;
+
+    @Inject
+    public SetHome(Core core, PermissionHandler permissionHandler) {
+        this.core = core;
+        this.permissionHandler = permissionHandler;
+    }
 
     @Override
     public Command getCommand() {
@@ -30,9 +38,6 @@ public class SetHome implements CoreCommand {    static final String NODE = "wol
 
         return command;
     }
-
-    @Inject
-    Core core;
 
     @Override
     public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
@@ -47,8 +52,10 @@ public class SetHome implements CoreCommand {    static final String NODE = "wol
         PlayerData playerData = core.getPlayerManager().getPlayerData((Player) sender);
 
         if (playerData != null) {
-            if (playerData.homes.size() >= PermissionHandler.getNumberValue(NODE, user).intValue() && !playerData.homes.containsKey(home)) {
-                core.sendPreset(sender, "home.limit", List.of(PermissionHandler.getNumberValue(NODE, user).toString()));
+            int allowedHomes = permissionHandler.getNumberValue(NODE, user);
+
+            if (playerData.homes.size() >= allowedHomes && !playerData.homes.containsKey(home)) {
+                core.sendPreset(sender, "home.limit", List.of(Integer.toString(allowedHomes)));
                 return true;
             }
 

@@ -9,30 +9,36 @@ import com.wolfco.common.commands.arguments.StringArg;
 import com.wolfco.main.Core;
 import com.wolfco.main.handlers.PermissionHandler;
 
-import net.luckperms.api.model.user.User;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import net.luckperms.api.model.user.User;
 
 @Singleton
 public class Max implements CoreCommand {
+    private final Core core;
+    private final PermissionHandler permissionHandler;
+
+    @Inject
+    public Max(Core core, PermissionHandler permissionHandler) {
+        this.core = core;
+        this.permissionHandler = permissionHandler;
+    }
+
     @Override
     public Command getCommand() {
         Command command = new Command().setName("max");
         command.setAccessType(AccessType.PLAYER);
-        command.addArguments(new StringArg(true,true,false).setName("PERMISSION"));
+        command.addArguments(new StringArg(true,false,false).setName("PERMISSION"));
 
         return command;
     }
 
-    @Inject
-    Core core;
-    
     @Override
     public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
         CommandSender sender = commandStack.getSender();
         User user = core.getLuckPerms().getUserManager().getUser(sender.getName());
-        core.sendMessage(sender, "Max is " + PermissionHandler.getNumberValue(args[0], user));
+        core.sendMessage(sender, "Max is " + permissionHandler.getNumberValue(args[0], user));
         return true;
     }
 

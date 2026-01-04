@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.bukkit.command.CommandSender;
-
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.common.commands.arguments.SubCommandArg;
 

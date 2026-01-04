@@ -2,6 +2,7 @@ package com.wolfco.common.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,6 +12,7 @@ import org.bukkit.entity.Player;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CorePlugin;
 import com.wolfco.common.classes.types.AccessType;
+import com.wolfco.common.commands.arguments.SubCommandArg;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
@@ -35,13 +37,34 @@ public class CommandService {
         return result.get(0);
     }
 
+    public static int getMaxArgs(Command command) {
+        int maxArgs = command.getArguments().size();
+
+        if (command.getArguments().isEmpty()) {
+            return 0;
+        }
+        
+        if (command.getArguments().getLast() instanceof SubCommandArg subCommandArg) {
+            AtomicInteger highest = new AtomicInteger(maxArgs);
+            subCommandArg.getCommands().values().forEach(subcommand -> {
+                int subMaxArgs = getMaxArgs(subcommand);
+                if (subMaxArgs > highest.get()) {
+                    highest.set(subMaxArgs);
+                }
+            });
+            maxArgs += highest.get();
+        }
+
+        return maxArgs;
+    }
+
     public static Integer getRequiredArgs(Command command) {
         final int[] result = { 0 };
-        command.getArguments().forEach(option -> {
-            if (option.isRequired()) {
+        for (int i = 0; i < command.getArguments().size(); i++) {
+            if (command.getArguments().get(i).isRequired()) {
                 result[0]++;
             }
-        });
+        }
         return result[0];
     }
 
@@ -49,7 +72,7 @@ public class CommandService {
         Integer requiredArgs = getRequiredArgs(command);
         if (args.length < requiredArgs) {
             return getUsage(command);
-        } else if (args.length > command.getArguments().size()) {
+        } else if (args.length > getMaxArgs(command)) {
             return "<#aa0000><b>Error:</b> <#ff5555>Too many args";
         }
         return null;
