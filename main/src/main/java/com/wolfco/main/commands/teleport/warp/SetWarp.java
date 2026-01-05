@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.wolfco.common.MessageUtility;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
@@ -30,21 +31,24 @@ public class SetWarp implements CoreCommand {
     }
 
     @Inject
+    MessageUtility messageUtility;
+
+    @Inject
     Core core;
     
     @Override
     public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
         CommandSender sender = commandStack.getSender();
-        YamlDocument warps = core.getWarps();
+        YamlDocument warps = core.getWarps(); // #TODO refactor to warp manager
         String warpName = args[0];
         Player player = (Player) sender;
         Location location = player.getLocation();
 
         if (warps.contains(warpName)) {
-            core.sendPreset(sender, "warp.exists", List.of(warpName));
+            messageUtility.sendPreset(sender, "warp.exists", List.of(warpName));
             return true;
         } else if (location == null) {
-            core.sendPreset(sender, "generic.invaliddata");
+            messageUtility.sendPreset(sender, "generic.invaliddata");
             return true;
         }
         
@@ -56,10 +60,10 @@ public class SetWarp implements CoreCommand {
         try {
             warps.save();
         } catch (IOException e) {
-            core.sendMessage(sender, "<red>Failed to save warps file.");
+            messageUtility.sendMessage(sender, "<red>Failed to save warps file.");
         }
 
-        core.sendPreset(sender, "warp.set", List.of(warpName));
+        messageUtility.sendPreset(sender, "warp.set", List.of(warpName));
         
         return true;
     }

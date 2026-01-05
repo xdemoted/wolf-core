@@ -2,6 +2,7 @@ package com.wolfco.common.classes;
 
 import java.util.List;
 
+import com.wolfco.common.MessageUtility;
 import com.wolfco.common.commands.CommandService;
 import com.wolfco.common.commands.CommandValues;
 
@@ -50,5 +51,9 @@ public interface CoreCommand extends BasicCommand {
 
     default ArgumentInterface getArgument(int i) {
         return getCommand().getArgument(i);
+    }
+
+    default MessageUtility getMessageUtility() {
+        return MessageUtility.getInstance();
     }
 }

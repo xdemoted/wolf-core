@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
-import com.wolfco.main.Core;
 import com.wolfco.main.commands.arguments.HomeArgument;
 import com.wolfco.main.player.profiles.ProfileManager;
 import com.wolfco.main.player.profiles.classes.Home;
@@ -31,9 +30,6 @@ public class DelHome implements CoreCommand {
     }
 
     @Inject
-    Core core;
-
-    @Inject
     ProfileManager profileManager;
 
     @Override
@@ -45,7 +41,7 @@ public class DelHome implements CoreCommand {
 
         if (profile != null) {
             profile.homes.remove(home.name);
-            core.sendPreset(sender, "home.deleted", List.of(home.name));
+            getMessageUtility().sendPreset(sender, "home.deleted", List.of(home.name));
         }
         return true;
     }

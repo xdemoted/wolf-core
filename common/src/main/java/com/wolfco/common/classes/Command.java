@@ -9,13 +9,9 @@ import com.wolfco.common.commands.arguments.SubCommandArg;
 
 import io.avaje.inject.Component;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import jakarta.inject.Inject;
 
 @Component
 public class Command { // TODO Add help command support; add descriptions to commands
-    @Inject
-    CorePlugin core;
-
     String name;
     String node = null;
     List<String> aliases = new ArrayList<>();

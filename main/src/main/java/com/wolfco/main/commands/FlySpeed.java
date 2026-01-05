@@ -7,10 +7,8 @@ import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.common.commands.arguments.NumberArg;
 import com.wolfco.common.commands.arguments.PlayerArg;
-import com.wolfco.main.Core;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
 @Singleton
@@ -25,9 +23,6 @@ public class FlySpeed implements CoreCommand {
 
         return command;
     }
-
-    @Inject
-    Core core;
     
     @Override
     public boolean onCommand(CommandSourceStack commandStack, String[] args,
@@ -39,7 +34,7 @@ public class FlySpeed implements CoreCommand {
         if (!(target instanceof Player)) {
             target = (Player) sender;
         } else if (!sender.hasPermission("wolfcore.speed.others")) {
-            core.sendPreset(sender, "generic.nopermission");
+            getMessageUtility().sendPreset(sender, "generic.nopermission");
             return false;
         }
 

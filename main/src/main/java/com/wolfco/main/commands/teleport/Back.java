@@ -4,10 +4,10 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.wolfco.common.MessageUtility;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
-import com.wolfco.main.Core;
 import com.wolfco.main.player.profiles.ProfileManager;
 import com.wolfco.main.player.profiles.classes.Profile;
 
@@ -27,7 +27,7 @@ public class Back implements CoreCommand {
     }
 
     @Inject
-    Core core;
+    MessageUtility messageUtility;
 
     @Inject
     ProfileManager profileManager;
@@ -41,12 +41,12 @@ public class Back implements CoreCommand {
             Location lastPosition = profile.getLastLocation();
 
             if (lastPosition == null) {
-                core.sendPreset(sender, "back.noposition");
+                messageUtility.sendPreset(sender, "back.noposition");
                 return false;
             }
 
             ((Player) sender).teleport(lastPosition);
-            core.sendPreset(sender, "back.success");
+            messageUtility.sendPreset(sender, "back.success");
         }
         return true;
     }

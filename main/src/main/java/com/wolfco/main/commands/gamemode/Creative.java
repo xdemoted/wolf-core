@@ -8,10 +8,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+import com.wolfco.common.MessageUtility;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.commands.arguments.MultiPlayerArg;
-import com.wolfco.main.Core;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
@@ -31,7 +31,7 @@ public class Creative implements CoreCommand {
     }
 
     @Inject
-    Core core;
+    MessageUtility messageUtility;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -46,20 +46,20 @@ public class Creative implements CoreCommand {
             }
 
             if (target.size() > 1) {
-                core.sendPreset(sender, "gamemode.multisuccess",
+                messageUtility.sendPreset(sender, "gamemode.multisuccess",
                         List.of(String.valueOf(target.size()), gamemode.toString()));
                 return true;
             }
 
-            core.sendPreset(sender, "gamemode.othersuccess", List.of(gamemode.toString()));
+            messageUtility.sendPreset(sender, "gamemode.othersuccess", List.of(gamemode.toString()));
             return true;
         } else {
             if (sender instanceof Player player) {
                 player.setGameMode(gamemode);
-                core.sendPreset(sender, "gamemode.selfsuccess", List.of(gamemode.toString()));
+                messageUtility.sendPreset(sender, "gamemode.selfsuccess", List.of(gamemode.toString()));
                 return false;
             } else if (sender instanceof ConsoleCommandSender) {
-                core.sendPreset(sender, "generic.consoleargs", List.of("1"));
+                messageUtility.sendPreset(sender, "generic.consoleargs", List.of("1"));
                 return false;
             }
         }

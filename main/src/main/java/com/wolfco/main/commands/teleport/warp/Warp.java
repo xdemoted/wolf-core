@@ -8,6 +8,7 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.wolfco.common.MessageUtility;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.commands.arguments.MultiPlayerArg;
@@ -35,6 +36,9 @@ public class Warp implements CoreCommand {
 
     @Inject
     Core core;
+
+    @Inject
+    MessageUtility messageUtility;
     
     @Override
     public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
@@ -46,22 +50,22 @@ public class Warp implements CoreCommand {
         World world = core.getServer().getWorld(warp.world);
 
         if (world == null) {
-            core.sendPreset(sender, "warp.invalidworld", List.of(warp.world.toString(), warp.name));
+            messageUtility.sendPreset(sender, "warp.invalidworld", List.of(warp.world.toString(), warp.name));
 
             return false;
         }
 
         if (sender instanceof Player && args.length == 1) {
             ((Player) sender).teleport(new Location(world, warp.x, warp.y, warp.z));
-            core.sendPreset(sender, "warp.success.self", List.of(warp.name));
+            messageUtility.sendPreset(sender, "warp.success.self", List.of(warp.name));
 
             return true;
         } else if (target != null) {
             if (target.size() > 1) {
-                core.sendPreset(sender, "warp.success.all");
+                messageUtility.sendPreset(sender, "warp.success.all");
                 return false;
             } else {
-                core.sendPreset(sender, "warp.success.other", List.of(FontUtil.getPlayerTag(target.iterator().next()), warp.name));
+                messageUtility.sendPreset(sender, "warp.success.other", List.of(FontUtil.getPlayerTag(target.iterator().next()), warp.name));
             }
 
             for (Player player : target) {

@@ -43,8 +43,6 @@ public class Core extends CorePlugin implements Listener {
 
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "core:main");
 
-        this.getLogger().info("[Wolf-Core] Plugin horny");
-
         Bukkit.getScheduler().runTaskLater(this, () -> {
             WebhookManager webhook = new WebhookManager(this);
 

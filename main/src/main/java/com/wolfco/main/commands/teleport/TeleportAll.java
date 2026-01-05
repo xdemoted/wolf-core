@@ -38,7 +38,7 @@ public class TeleportAll implements CoreCommand {
                 player.teleport((Player) sender)
             );
 
-            core.sendPreset(sender, "teleportall.success", List.of("you"));
+            getMessageUtility().sendPreset(sender, "teleportall.success", List.of("you"));
 
             return true;
         } else if (player1 != null) {
@@ -46,7 +46,7 @@ public class TeleportAll implements CoreCommand {
                 p.teleport(player1)
             );
 
-            core.sendPreset(sender, "teleportall.success", List.of(FontUtil.getPlayerTag(player1)));
+            getMessageUtility().sendPreset(sender, "teleportall.success", List.of(FontUtil.getPlayerTag(player1)));
             
             return true;
         }

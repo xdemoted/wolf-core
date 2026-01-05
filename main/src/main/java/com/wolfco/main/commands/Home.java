@@ -46,26 +46,26 @@ public class Home implements CoreCommand {
             if (profile != null) {
                 home = profile.homes.get("home");
             } else {
-                core.sendPreset(sender, "generic.invaliddata");
+                getMessageUtility().sendPreset(sender, "generic.invaliddata");
                 return true;
             }
         }
 
         if (home == null) {
-            core.sendPreset(sender, "home.notfound", List.of("home"));
+            getMessageUtility().sendPreset(sender, "home.notfound", List.of("home"));
             return true;
         }
 
         World world = core.getServer().getWorld(home.world);
 
         if (world == null) {
-            core.sendPreset(sender, "home.worldinvalid", List.of(home.world.toString(), home.name));
+            getMessageUtility().sendPreset(sender, "home.worldinvalid", List.of(home.world.toString(), home.name));
             return true;
         }
 
         Location location = new Location(world, home.x, home.y, home.z, home.yaw, home.pitch);
         ((Player) sender).teleport(location);
-        core.sendPreset(sender, "home.teleported", List.of(home.name));
+        getMessageUtility().sendPreset(sender, "home.teleported", List.of(home.name));
 
         return true;
     }

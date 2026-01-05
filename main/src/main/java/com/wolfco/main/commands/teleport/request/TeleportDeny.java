@@ -5,11 +5,11 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.wolfco.common.MessageUtility;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.common.commands.arguments.PlayerArg;
-import com.wolfco.main.Core;
 import com.wolfco.main.player.profiles.ProfileManager;
 import com.wolfco.main.player.profiles.classes.Profile;
 import com.wolfco.main.player.profiles.classes.Request;
@@ -30,7 +30,7 @@ public class TeleportDeny implements CoreCommand {
     }
 
     @Inject
-    Core core;
+    MessageUtility messageUtility;
 
     @Inject
     ProfileManager profileManager;
@@ -42,24 +42,24 @@ public class TeleportDeny implements CoreCommand {
         Profile profile = profileManager.getCachedProfile((Player) sender);
 
         if (profile == null) {
-            core.sendPreset(sender, "generic.invaliddata");
+            messageUtility.sendPreset(sender, "generic.invaliddata");
             return false;
         }
 
         if (profile.pendingRequests.isEmpty()) {
-            core.sendPreset(sender, "teleportask.norequest");
+            messageUtility.sendPreset(sender, "teleportask.norequest");
             return false;
         }
 
         Request targetRequest = profile.getRequest(target);
 
         if (targetRequest == null) {
-            core.sendPreset(sender, "teleportask.norequest");
+            messageUtility.sendPreset(sender, "teleportask.norequest");
             return false;
         }
 
-        core.sendPreset(sender, "teleportask.deny", List.of(targetRequest.name));
-        core.sendPreset(sender, "teleportask.deny", List.of(sender.getName()));
+        messageUtility.sendPreset(sender, "teleportask.deny", List.of(targetRequest.name));
+        messageUtility.sendPreset(sender, "teleportask.deny", List.of(sender.getName()));
         profile.denyRequest(target);
 
         return true;

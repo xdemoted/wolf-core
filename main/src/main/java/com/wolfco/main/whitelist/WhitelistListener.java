@@ -4,8 +4,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import com.wolfco.common.MessageUtility;
 import com.wolfco.common.listeners.CoreListener;
-import com.wolfco.main.Core;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -15,12 +15,12 @@ import jakarta.inject.Singleton;
 @Singleton
 public class WhitelistListener implements CoreListener {
     private final WhitelistManager whitelistManager;
-    private final Core core;
+    private final MessageUtility messageUtility;
 
     @Inject
-    public WhitelistListener(Core core, WhitelistManager manager) {
-        this.core = core;
+    public WhitelistListener(WhitelistManager manager, MessageUtility messageUtility) {
         this.whitelistManager = manager;
+        this.messageUtility = messageUtility;
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -29,11 +29,11 @@ public class WhitelistListener implements CoreListener {
 
         if (status == 0) {
             event.getPlayer().kick(
-                core.getComponentMessage("whitelist.denied")
+                messageUtility.getComponentMessage("whitelist.denied")
             );
         } else if (status == 2) {
             event.getPlayer().sendMessage(
-                core.getMessage("whitelist.bypass")
+                messageUtility.getMessage("whitelist.bypass")
             );
         }
     }

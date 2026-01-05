@@ -12,9 +12,10 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import com.wolfco.common.MessageUtility;
 import com.wolfco.common.Utilities;
-import com.wolfco.main.Core;
 
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 
@@ -28,6 +29,9 @@ public class EnderpearlListener {
                 && block.getType() != Material.TWISTING_VINES
                 && block.getType() != Material.CAVE_VINES_PLANT;
     }
+
+    @Inject
+    MessageUtility messageUtility;
 
     @EventHandler
     public void onPlayerTeleport(PlayerTeleportEvent event) {
@@ -59,7 +63,7 @@ public class EnderpearlListener {
             Block upperBlock = block.getRelative(0, 1, 0);
             if (block.getType().isSolid() && upperBlock.getType().isSolid()) {
                 player.getInventory().addItem(new ItemStack(Material.ENDER_PEARL));
-                Core.get().sendPreset(player, "enderpearl.blocked", List.of("from"));
+                messageUtility.sendPreset(player, "enderpearl.blocked", List.of("from"));
                 event.setCancelled(true);
                 return;
             }
@@ -76,7 +80,7 @@ public class EnderpearlListener {
                 }
                 if (iterations >= 11) {
                     player.getInventory().addItem(new ItemStack(Material.ENDER_PEARL));
-                    Core.get().sendPreset(player, "enderpearl.blocked", List.of("to"));
+                    messageUtility.sendPreset(player, "enderpearl.blocked", List.of("to"));
                     event.setCancelled(true);
                     return;
                 }

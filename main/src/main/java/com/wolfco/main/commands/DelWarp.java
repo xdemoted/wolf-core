@@ -32,9 +32,9 @@ public class DelWarp implements CoreCommand {
         CommandSender sender = commandStack.getSender();
         boolean result = core.getWarps().remove(args[0]);
         if (result) {
-            core.sendPreset(sender, "warp.deleted", List.of(args[0]));
+            getMessageUtility().sendPreset(sender, "warp.deleted", List.of(args[0]));
         } else {
-            core.sendPreset(sender, "warp.notfound", List.of(args[0]));
+            getMessageUtility().sendPreset(sender, "warp.notfound", List.of(args[0]));
         }
 
         try {

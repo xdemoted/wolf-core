@@ -8,10 +8,8 @@ import org.bukkit.entity.HumanEntity;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
-import com.wolfco.main.Core;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
 @Singleton
@@ -23,9 +21,6 @@ public class Top implements CoreCommand {
 
         return command;
     }
-
-    @Inject
-    Core core;
     
     @Override
     public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
@@ -36,7 +31,7 @@ public class Top implements CoreCommand {
         Location highestBlock = world.getHighestBlockAt(location).getLocation();
         player.teleport(highestBlock.add(0, 1, 0));
 
-        core.sendMessage(sender,"<#ffaa00>Teleporting...");
+        getMessageUtility().sendMessage(sender,"<#ffaa00>Teleporting...");
         return true;
     }
 

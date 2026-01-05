@@ -6,9 +6,9 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.wolfco.common.MessageUtility;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
-import com.wolfco.main.Core;
 import com.wolfco.main.commands.arguments.OfflinePlayerArg;
 import com.wolfco.main.player.profiles.classes.Profile;
 
@@ -28,7 +28,7 @@ public class OfflineTeleport implements CoreCommand {
     }
 
     @Inject
-    Core core;
+    MessageUtility messageUtility;
     
     @Override
     public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
@@ -38,12 +38,12 @@ public class OfflineTeleport implements CoreCommand {
         Location logoutLocation = player.getLogoutLocation();
 
         if (logoutLocation == null) {
-            core.sendPreset(sender, "teleport.offline.nolocation", List.of(player.username));
+            messageUtility.sendPreset(sender, "teleport.offline.nolocation", List.of(player.username));
             return false;
         }
 
         ((Player) sender).teleport(player.getLogoutLocation());
-        core.sendPreset(sender, "teleport.success", List.of(player.username));
+        messageUtility.sendPreset(sender, "teleport.success", List.of(player.username));
         return true;
     }
 }

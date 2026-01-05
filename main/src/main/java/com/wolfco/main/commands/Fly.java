@@ -9,11 +9,9 @@ import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.common.commands.arguments.BooleanArg;
 import com.wolfco.common.commands.arguments.PlayerArg;
-import com.wolfco.main.Core;
 import com.wolfco.main.utility.FontUtil;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
 @Singleton
@@ -29,9 +27,6 @@ public class Fly implements CoreCommand {
         return command;
     }
 
-    @Inject
-    Core core;
-
     @Override
     public boolean onCommand(CommandSourceStack commandStack, String[] args,
             Object[] argumentValues) {
@@ -41,7 +36,7 @@ public class Fly implements CoreCommand {
         if (!(target instanceof Player)) {
             target = sender;
         } else if (!sender.hasPermission("wolfcore.fly.others")) {
-            core.sendPreset(sender, "generic.nopermission");
+            getMessageUtility().sendPreset(sender, "generic.nopermission");
             return false;
         }
 
@@ -57,11 +52,11 @@ public class Fly implements CoreCommand {
         target.setFlying(toggle);
 
         if (sender != target) {
-            core.sendPreset(sender, "fly.othersuccess",
+            getMessageUtility().sendPreset(sender, "fly.othersuccess",
                     List.of(toggle ? "enabled" : "disabled", FontUtil.getPlayerTag(target)));
-            core.sendPreset(target, "fly.success", List.of(toggle ? "enabled" : "disabled"));
+            getMessageUtility().sendPreset(target, "fly.success", List.of(toggle ? "enabled" : "disabled"));
         } else {
-            core.sendPreset(sender, "fly.success", List.of(toggle ? "enabled" : "disabled"));
+            getMessageUtility().sendPreset(sender, "fly.success", List.of(toggle ? "enabled" : "disabled"));
         }
 
         return true;

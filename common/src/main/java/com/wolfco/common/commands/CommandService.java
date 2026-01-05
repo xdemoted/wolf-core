@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.wolfco.common.MessageUtility;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CorePlugin;
 import com.wolfco.common.classes.types.AccessType;
@@ -22,6 +23,9 @@ import jakarta.inject.Singleton;
 public class CommandService {
     @Inject
     static CorePlugin core;
+
+    @Inject
+    static MessageUtility messageUtility;
 
     public static String getUsage(Command command) {
         List<String> result = new ArrayList<>();
@@ -99,20 +103,20 @@ public class CommandService {
         CommandSender sender = commandStack.getSender();
 
         if (sender instanceof Player player && !player.hasPermission(command.getNode())) { // Permission Check
-            core.sendPreset(sender, "generic.nopermission");
+            messageUtility.sendPreset(sender, "generic.nopermission");
             return null;
         }
 
         if (accessType == AccessType.PLAYER && !(sender instanceof Player)) { // Access Check
-            core.sendPreset(sender, "generic.noconsole");
+            messageUtility.sendPreset(sender, "generic.noconsole");
             return null;
         } else if (accessType == AccessType.CONSOLE && sender instanceof Player) {
-            core.sendPreset(sender, "generic.noplayer");
+            messageUtility.sendPreset(sender, "generic.noplayer");
             return null;
         }
 
         if (result != null) { // Argument Check
-            core.sendMessage(sender, result);
+            messageUtility.sendMessage(sender, result);
             return null;
         }
 
@@ -122,7 +126,7 @@ public class CommandService {
             argumentValues = command.getValues(commandStack, args);
         } catch (IllegalArgumentException e) {
             core.log(e.toString());
-            core.sendPreset(sender, "error.base", List.of(e.getMessage()));
+            messageUtility.sendPreset(sender, "error.base", List.of(e.getMessage()));
             return null;
         }
 

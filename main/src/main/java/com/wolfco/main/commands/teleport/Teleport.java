@@ -8,11 +8,9 @@ import org.bukkit.entity.Player;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.commands.arguments.PlayerArg;
-import com.wolfco.main.Core;
 import com.wolfco.main.utility.FontUtil;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
 @Singleton
@@ -27,9 +25,6 @@ public class Teleport implements CoreCommand {
         command.addAliases("tp");
         return command;
     }
-
-    @Inject
-    Core core;
     
     @Override
     public boolean onCommand(CommandSourceStack commandStack, String[] args,
@@ -47,26 +42,26 @@ public class Teleport implements CoreCommand {
 
         if (player2 == null) {
             if (console) {
-                core.sendPreset(sender, "generic.consoleargs", List.of("2"));
+                getMessageUtility().sendPreset(sender, "generic.consoleargs", List.of("2"));
                 return false;
             }
 
             if (player1.getUniqueId() == ((Player) sender).getUniqueId()) {
-                core.sendPreset(sender, "teleport.self");
+                getMessageUtility().sendPreset(sender, "teleport.self");
                 return false;
             }
 
             ((Player) sender).teleport(player1);
-            core.sendPreset(sender, "teleport.success", List.of(FontUtil.getPlayerTag(player1)));
+            getMessageUtility().sendPreset(sender, "teleport.success", List.of(FontUtil.getPlayerTag(player1)));
         } else {
             if (player1.getUniqueId() == player2.getUniqueId()) {
-                core.sendPreset(sender, "teleport.self");
+                getMessageUtility().sendPreset(sender, "teleport.self");
                 return false;
             } else {
                 player1.teleport(player2);
             }
 
-            core.sendPreset(sender, "teleport.othersuccess", List.of(FontUtil.getPlayerTag(player1), FontUtil.getPlayerTag(player2)));
+            getMessageUtility().sendPreset(sender, "teleport.othersuccess", List.of(FontUtil.getPlayerTag(player1), FontUtil.getPlayerTag(player2)));
             return true;
         }
         return true;

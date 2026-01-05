@@ -9,7 +9,6 @@ import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.common.commands.arguments.OfflinePlayerArg;
 import com.wolfco.common.commands.arguments.SubCommandArg;
-import com.wolfco.main.Core;
 import com.wolfco.main.whitelist.WhitelistManager;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -18,12 +17,10 @@ import jakarta.inject.Singleton;
 
 @Singleton
 public class Whitelist implements CoreCommand {
-    private final Core core;
     private final WhitelistManager whitelistManager;
 
     @Inject
-    public Whitelist(Core core, WhitelistManager whitelistManager) {
-        this.core = core;
+    public Whitelist(WhitelistManager whitelistManager) {
         this.whitelistManager = whitelistManager;
     }
 
@@ -73,9 +70,9 @@ public class Whitelist implements CoreCommand {
             int result = whitelistManager.addToWhitelist(playerUUID);
 
             switch (result) {
-                case 0 -> core.sendPreset(commandStack.getSender(), "whitelist.add.success");
-                case 1 -> core.sendPreset(commandStack.getSender(), "whitelist.add.already");
-                default -> core.sendPreset(commandStack.getSender(), "whitelist.add.failure");
+                case 0 -> getMessageUtility().sendPreset(commandStack.getSender(), "whitelist.add.success");
+                case 1 -> getMessageUtility().sendPreset(commandStack.getSender(), "whitelist.add.already");
+                default -> getMessageUtility().sendPreset(commandStack.getSender(), "whitelist.add.failure");
             }
         });
         return false;
@@ -86,9 +83,9 @@ public class Whitelist implements CoreCommand {
             int result = whitelistManager.removeFromWhitelist(uuid);
 
             switch (result) {
-                case 0 -> core.sendPreset(commandStack.getSender(), "whitelist.remove.success");
-                case 1 -> core.sendPreset(commandStack.getSender(), "whitelist.remove.notwhitelisted");
-                default -> core.sendPreset(commandStack.getSender(), "whitelist.remove.failure");
+                case 0 -> getMessageUtility().sendPreset(commandStack.getSender(), "whitelist.remove.success");
+                case 1 -> getMessageUtility().sendPreset(commandStack.getSender(), "whitelist.remove.notwhitelisted");
+                default -> getMessageUtility().sendPreset(commandStack.getSender(), "whitelist.remove.failure");
             }
         });
         return false;

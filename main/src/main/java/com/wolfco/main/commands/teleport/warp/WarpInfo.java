@@ -5,6 +5,7 @@ import java.util.List;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
+import com.wolfco.common.MessageUtility;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.main.Core;
@@ -25,6 +26,9 @@ public class WarpInfo implements CoreCommand {
     }
 
     @Inject
+    MessageUtility messageUtility;
+
+    @Inject
     Core core;
     
     @Override
@@ -40,7 +44,7 @@ public class WarpInfo implements CoreCommand {
             worldName = world.getName();
         }
         
-        core.sendPreset(sender, "warp.info", List.of(warp.name, worldName, String.valueOf(warp.x), String.valueOf(warp.y), String.valueOf(warp.z)));
+        messageUtility.sendPreset(sender, "warp.info", List.of(warp.name, worldName, String.valueOf(warp.x), String.valueOf(warp.y), String.valueOf(warp.z)));
         return true;
     }
 }

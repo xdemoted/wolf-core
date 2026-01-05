@@ -8,11 +8,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+import com.wolfco.common.MessageUtility;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.commands.arguments.GameModeArg;
 import com.wolfco.common.commands.arguments.MultiPlayerArg;
-import com.wolfco.main.Core;
 import com.wolfco.main.utility.FontUtil;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -34,7 +34,7 @@ public class Gamemode implements CoreCommand {
     }
 
     @Inject
-    Core core;
+    MessageUtility messageUtility;
     
     @Override
     public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
@@ -47,25 +47,25 @@ public class Gamemode implements CoreCommand {
         Boolean console = (sender instanceof ConsoleCommandSender);
 
         if (console && args.length == 1) {
-            core.sendPreset(sender, "generic.consoleargs", List.of("2"));
+            messageUtility.sendPreset(sender, "generic.consoleargs", List.of("2"));
             return false;
         }
 
         if (args.length == 1) {
 
             if (console) {
-                core.sendPreset(sender, "generic.consoleargs", List.of("2"));
+                messageUtility.sendPreset(sender, "generic.consoleargs", List.of("2"));
                 return false;
             }
 
             ((Player) sender).setGameMode(mode);
-            core.sendPreset(sender, "gamemode.selfsuccess", List.of(mode.toString()));
+            messageUtility.sendPreset(sender, "gamemode.selfsuccess", List.of(mode.toString()));
             return true;
         } else if (target instanceof Collection) {
             if (target.size() == 1) {
-                core.sendPreset(sender, "gamemode.othersuccess", List.of(FontUtil.getPlayerTag(target.iterator().next()), mode.toString()));
+                messageUtility.sendPreset(sender, "gamemode.othersuccess", List.of(FontUtil.getPlayerTag(target.iterator().next()), mode.toString()));
             } else {
-                core.sendPreset(sender, "gamemode.multisuccess", List.of(String.valueOf(target.size()), mode.toString()));
+                messageUtility.sendPreset(sender, "gamemode.multisuccess", List.of(String.valueOf(target.size()), mode.toString()));
             }
 
             for (Player p : target) {

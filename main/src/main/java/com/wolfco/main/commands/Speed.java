@@ -11,10 +11,8 @@ import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.common.commands.arguments.NumberArg;
 import com.wolfco.common.commands.arguments.PlayerArg;
 import com.wolfco.common.commands.arguments.StaticArg;
-import com.wolfco.main.Core;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
 @Singleton
@@ -32,9 +30,6 @@ public class Speed implements CoreCommand {
 
         return command;
     }
-
-    @Inject
-    Core core;
     
     @Override
     public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
@@ -46,7 +41,7 @@ public class Speed implements CoreCommand {
         if (!(target instanceof Player)) {
             target = (Player) sender;
         } else if (!sender.hasPermission("wolfcore.speed.other")) {
-            core.sendPreset(sender, "generic.nopermission");
+            getMessageUtility().sendPreset(sender, "generic.nopermission");
             return false;
         }
 
@@ -61,11 +56,11 @@ public class Speed implements CoreCommand {
         switch (mode) {
             case "fly" -> {
                 target.setFlySpeed(speedValue);
-                core.sendPreset(sender, "speed.success", List.of(mode, Double.toString(speed)));
+                getMessageUtility().sendPreset(sender, "speed.success", List.of(mode, Double.toString(speed)));
             }
             case "walk" -> {
                 target.setWalkSpeed(speedValue);
-                core.sendPreset(sender, "speed.success", List.of(mode, Double.toString(speed)));
+                getMessageUtility().sendPreset(sender, "speed.success", List.of(mode, Double.toString(speed)));
             }
             default -> {
                 return false;

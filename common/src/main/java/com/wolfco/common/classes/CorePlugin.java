@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.List;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -19,7 +18,6 @@ import io.avaje.inject.InjectModule;
 import jakarta.annotation.Nullable;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 
 @InjectModule(provides = { CorePlugin.class, JavaPlugin.class, Plugin.class })
 public abstract class CorePlugin extends JavaPlugin {
@@ -48,6 +46,7 @@ public abstract class CorePlugin extends JavaPlugin {
                 .bean(JavaPlugin.class, this)
                 .bean(Plugin.class, this)
                 .bean(CorePlugin.class, this)
+                .bean((Class<CorePlugin>) getClass(), this)
                 .classLoader(getClass().getClassLoader())
                 .build();
 
@@ -101,32 +100,6 @@ public abstract class CorePlugin extends JavaPlugin {
         return configReturn;
     }
 
-    public String getMessage(String key) {
-        return messages.getString(key, key);
-    }
-
-    public Component getComponentMessage(String key) {
-        return MiniMessage.miniMessage().deserialize(getMessage(key));
-    }
-
-    public void sendPreset(CommandSender sender, String key) {
-        sendMessage(sender, messages.getString(key, key));
-    }
-
-    public void sendPreset(CommandSender sender, String key, List<String> input) {
-        sendMessage(sender, getPreset(key, input));
-    }
-
-    public String getPreset(String key, List<String> input) {
-        String message = messages.getString(key, key);
-
-        for (int i = 0; i < input.size(); i++) {
-            message = message.replaceAll("%" + i + "%", input.get(i));
-        }
-
-        return message.replace("♆", messages.getString("core.prefix", "♆"));
-    }
-
     private YamlDocument getMessageData() {
         messages = getConfigDocument("messages.yml");
         if (messages != null) {
@@ -149,10 +122,6 @@ public abstract class CorePlugin extends JavaPlugin {
             }
         }
         return icon;
-    }
-
-    public void sendMessage(CommandSender sender, String message) {
-        getAdventure().sender(sender).sendMessage(MiniMessage.miniMessage().deserialize(message));
     }
 
     public void log(Component log) {

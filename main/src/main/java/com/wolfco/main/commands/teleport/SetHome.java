@@ -59,15 +59,15 @@ public class SetHome implements CoreCommand {
             int allowedHomes = permissionHandler.getNumberValue(NODE, user);
 
             if (profile.homes.size() >= allowedHomes && !profile.homes.containsKey(home)) {
-                core.sendPreset(sender, "home.limit", List.of(Integer.toString(allowedHomes)));
+                getMessageUtility().sendPreset(sender, "home.limit", List.of(Integer.toString(allowedHomes)));
                 return true;
             }
 
             profile.homes.put(home, new Home(home, ((Player) sender).getLocation()));
 
-            core.sendPreset(sender, "home.set", List.of(home));
+            getMessageUtility().sendPreset(sender, "home.set", List.of(home));
         } else {
-            core.sendPreset(sender, "generic.invaliddata");
+            getMessageUtility().sendPreset(sender, "generic.invaliddata");
         }
         return true;
     }

@@ -38,7 +38,7 @@ public class Max implements CoreCommand {
     public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
         CommandSender sender = commandStack.getSender();
         User user = core.getLuckPerms().getUserManager().getUser(sender.getName());
-        core.sendMessage(sender, "Max is " + permissionHandler.getNumberValue(args[0], user));
+        getMessageUtility().sendMessage(sender, "Max is " + permissionHandler.getNumberValue(args[0], user));
         return true;
     }
 

@@ -10,10 +10,8 @@ import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.commands.arguments.MultiPlayerArg;
 import com.wolfco.common.commands.arguments.WorldArg;
-import com.wolfco.main.Core;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
 @Singleton
@@ -25,9 +23,6 @@ public class WorldCMD implements CoreCommand {
 
         return command;
     }
-
-    @Inject
-    Core core;
     
     @Override
     public boolean onCommand(CommandSourceStack commandStack,
@@ -46,7 +41,7 @@ public class WorldCMD implements CoreCommand {
             }
         }
 
-        core.sendMessage(sender, "<#ffaa00>Teleported %s to world %s");
+        getMessageUtility().sendMessage(sender, "<#ffaa00>Teleported %s to world %s");
         return true;
     }
 }
