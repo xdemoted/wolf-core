@@ -1,4 +1,4 @@
-package com.wolfco.main.profiles.classes;
+package com.wolfco.main.player.profiles.classes;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

@@ -1,4 +1,4 @@
-package com.wolfco.main.profiles;
+package com.wolfco.main.player.profiles;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import org.bukkit.entity.Player;
 
 import com.wolfco.main.Core;
-import com.wolfco.main.profiles.classes.Profile;
+import com.wolfco.main.player.profiles.classes.Profile;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 import jakarta.annotation.Nullable;

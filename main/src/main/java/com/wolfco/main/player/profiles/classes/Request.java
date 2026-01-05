@@ -1,4 +1,4 @@
-package com.wolfco.main.profiles.classes;
+package com.wolfco.main.player.profiles.classes;
 
 public class Request {
     public String type;

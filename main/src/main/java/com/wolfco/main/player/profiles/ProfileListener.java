@@ -1,4 +1,4 @@
-package com.wolfco.main.profiles;
+package com.wolfco.main.player.profiles;
 
 import java.io.IOException;
 import java.util.List;
@@ -13,7 +13,7 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 import com.wolfco.common.listeners.CoreListener;
 import com.wolfco.main.Core;
-import com.wolfco.main.profiles.classes.Profile;
+import com.wolfco.main.player.profiles.classes.Profile;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
