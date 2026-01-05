@@ -12,7 +12,7 @@ import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.commands.arguments.MultiPlayerArg;
 import com.wolfco.main.Core;
-import com.wolfco.main.classes.customargs.WarpArgument;
+import com.wolfco.main.commands.arguments.WarpArgument;
 import com.wolfco.main.utility.FontUtil;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -39,7 +39,7 @@ public class Warp implements CoreCommand {
     @Override
     public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
         CommandSender sender = commandStack.getSender();
-        com.wolfco.main.classes.Warp warp = (com.wolfco.main.classes.Warp) argumentValues[0];
+        com.wolfco.main.warps.Warp warp = (com.wolfco.main.warps.Warp) argumentValues[0];
         @SuppressWarnings("unchecked")
         Collection<Player> target = (Collection<Player>) argumentValues[1];
 

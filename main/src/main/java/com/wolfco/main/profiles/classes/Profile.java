@@ -14,8 +14,6 @@ import org.bukkit.entity.Player;
 
 import com.wolfco.common.Utilities;
 import com.wolfco.main.Core;
-import com.wolfco.main.classes.Home;
-import com.wolfco.main.classes.Request;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 import net.kyori.adventure.text.Component;

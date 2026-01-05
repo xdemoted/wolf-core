@@ -1,4 +1,4 @@
-package com.wolfco.main.handlers;
+package com.wolfco.main.mongoDB;
 
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
@@ -10,9 +10,9 @@ import com.mongodb.reactivestreams.client.MongoClient;
 import com.mongodb.reactivestreams.client.MongoClients;
 import com.mongodb.reactivestreams.client.MongoCollection;
 import com.wolfco.main.Core;
-import com.wolfco.main.classes.mongoDB.Appeal;
-import com.wolfco.main.classes.mongoDB.GlobalPlayer;
-import com.wolfco.main.classes.mongoDB.Punishment;
+import com.wolfco.main.mongoDB.classes.Appeal;
+import com.wolfco.main.mongoDB.classes.GlobalPlayer;
+import com.wolfco.main.mongoDB.classes.Punishment;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;

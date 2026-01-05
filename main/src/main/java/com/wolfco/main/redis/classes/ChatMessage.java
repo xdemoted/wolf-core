@@ -1,4 +1,4 @@
-package com.wolfco.main.classes.redis;
+package com.wolfco.main.redis.classes;
 
 import java.util.UUID;
 

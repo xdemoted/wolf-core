@@ -13,7 +13,9 @@ import com.wolfco.main.Core;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.luckperms.api.model.user.User;
 
 @Named("playerActivityMessageListener")
@@ -33,7 +35,11 @@ public class PlayerActivityMessageListener implements CoreListener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true) // Should run last
     public void onPlayerDeath(PlayerDeathEvent event) {
-        String message = event.getDeathMessage();
+        Component deathMessage = event.deathMessage();
+
+        if (deathMessage == null) return;
+
+        String message = PlainTextComponentSerializer.plainText().serialize(deathMessage);
 
         message = message.replaceAll("\\u00A7[0-9A-FK-ORa-fk-or]", ""); // Strip color codes
         

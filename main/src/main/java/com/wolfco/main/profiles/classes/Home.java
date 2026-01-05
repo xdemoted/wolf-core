@@ -1,4 +1,4 @@
-package com.wolfco.main.classes;
+package com.wolfco.main.profiles.classes;
 
 import java.util.UUID;
 

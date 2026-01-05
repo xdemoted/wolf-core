@@ -1,11 +1,11 @@
-package com.wolfco.main.classes.customargs;
+package com.wolfco.main.commands.arguments;
 
 import java.util.List;
 import java.util.UUID;
 
 import com.wolfco.common.classes.ArgumentInterface;
 import com.wolfco.main.Core;
-import com.wolfco.main.classes.Warp;
+import com.wolfco.main.warps.Warp;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 import io.papermc.paper.command.brigadier.CommandSourceStack;

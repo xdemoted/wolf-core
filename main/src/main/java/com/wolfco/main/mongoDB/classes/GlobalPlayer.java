@@ -1,4 +1,4 @@
-package com.wolfco.main.classes.mongoDB;
+package com.wolfco.main.mongoDB.classes;
 
 import java.util.UUID;
 

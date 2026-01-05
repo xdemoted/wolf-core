@@ -7,7 +7,7 @@ import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.common.commands.arguments.StringArg;
 import com.wolfco.main.Core;
-import com.wolfco.main.handlers.PermissionHandler;
+import com.wolfco.main.utility.PermissionHandler;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;

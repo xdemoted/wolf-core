@@ -1,4 +1,4 @@
-package com.wolfco.main.classes.redis;
+package com.wolfco.main.redis.classes;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

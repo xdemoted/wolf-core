@@ -1,4 +1,4 @@
-package com.wolfco.main.handlers;
+package com.wolfco.main.player.listeners;
 
 import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;

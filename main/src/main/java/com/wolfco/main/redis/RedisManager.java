@@ -1,4 +1,4 @@
-package com.wolfco.main.events;
+package com.wolfco.main.redis;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -9,9 +9,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.json.JSONException;
 
 import com.wolfco.main.Core;
-import com.wolfco.main.classes.redis.AsyncGlobalMessageEvent;
-import com.wolfco.main.classes.redis.BaseMessage;
-import com.wolfco.main.classes.redis.ChatMessage;
+import com.wolfco.main.redis.classes.AsyncGlobalMessageEvent;
+import com.wolfco.main.redis.classes.BaseMessage;
+import com.wolfco.main.redis.classes.ChatMessage;
 
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
@@ -23,8 +23,7 @@ import redis.clients.jedis.JedisPubSub;
 
 @Singleton
 public class RedisManager {
-    public String serverName;
-    Core core;
+    private final Core core;
     JedisPool jedisPool;
     Jedis publisher;
     String password;
@@ -35,7 +34,6 @@ public class RedisManager {
     public RedisManager(Core core) {
         core.log("Redis Initialization!");
         this.core = core;
-        this.serverName = core.getServerName();
         HostAndPort hostAndPort = getDetails();
         jedisPool = new JedisPool(hostAndPort, DefaultJedisClientConfig.builder()
                 .password(password)
@@ -52,7 +50,7 @@ public class RedisManager {
         executorService.execute(() -> {
             try {
                 core.log("Redis Publish!");
-                publisher.publish("System", new BaseMessage(serverName, "online").toJson());
+                publisher.publish("System", new BaseMessage(core.getServerName(), "online").toJson());
             } catch (Exception e) {
                 core.log("Failed to publish initial Redis message: " + e.getMessage());
             }
@@ -76,7 +74,7 @@ public class RedisManager {
         executorService.execute(() -> {
             try {
                 core.log("Redis Publish!");
-                publisher.publish("System", new BaseMessage(serverName, "online").toJson());
+                publisher.publish("System", new BaseMessage(core.getServerName(), "online").toJson());
             } catch (Exception e) {
                 core.log("Failed to publish initial Redis message: " + e.getMessage());
             }
@@ -120,29 +118,29 @@ public class RedisManager {
     }
 
     void sendChatMessage(Player player, String message) {
-        ChatMessage chatMessage = new ChatMessage(serverName, player, message);
+        ChatMessage chatMessage = new ChatMessage(core.getServerName(), player, message);
         sendMessage("ChatMessage", chatMessage);
     }
 
     public void sendSystemMessageAsync(String message) {
         executorService.execute(() -> {
-            BaseMessage systemMessage = new BaseMessage(serverName, message);
+            BaseMessage systemMessage = new BaseMessage(core.getServerName(), message);
             sendMessage("System", systemMessage);
         });
     }
 
     public void sendJoin(Player player) {
-        BaseMessage joinMessage = new BaseMessage(serverName, player.getUniqueId().toString());
+        BaseMessage joinMessage = new BaseMessage(core.getServerName(), player.getUniqueId().toString());
         sendMessage("PlayerJoin", joinMessage);
     }
 
     public void sendQuit(Player player) {
-        BaseMessage quitMessage = new BaseMessage(serverName, player.getUniqueId().toString());
+        BaseMessage quitMessage = new BaseMessage(core.getServerName(), player.getUniqueId().toString());
         sendMessage("PlayerQuit", quitMessage);
     }
 
     public void sendSwitchServer(Player player, String targetServer) {
-        BaseMessage switchMessage = new BaseMessage(serverName,
+        BaseMessage switchMessage = new BaseMessage(core.getServerName(),
                 player.getUniqueId().toString() + ";" + targetServer);
         sendMessage("PlayerSwitch", switchMessage);
     }

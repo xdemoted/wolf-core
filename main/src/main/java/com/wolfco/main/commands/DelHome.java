@@ -9,9 +9,9 @@ import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.main.Core;
-import com.wolfco.main.classes.Home;
-import com.wolfco.main.classes.customargs.HomeArgument;
+import com.wolfco.main.commands.arguments.HomeArgument;
 import com.wolfco.main.profiles.ProfileManager;
+import com.wolfco.main.profiles.classes.Home;
 import com.wolfco.main.profiles.classes.Profile;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;

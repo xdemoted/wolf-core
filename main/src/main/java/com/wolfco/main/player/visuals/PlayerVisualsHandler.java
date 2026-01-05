@@ -1,4 +1,4 @@
-package com.wolfco.main.handlers;
+package com.wolfco.main.player.visuals;
 
 import java.util.Set;
 import java.util.SortedMap;

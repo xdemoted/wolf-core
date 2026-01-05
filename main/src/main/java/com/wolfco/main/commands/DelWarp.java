@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.main.Core;
-import com.wolfco.main.classes.customargs.WarpArgument;
+import com.wolfco.main.commands.arguments.WarpArgument;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;

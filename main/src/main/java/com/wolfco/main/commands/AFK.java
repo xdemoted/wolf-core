@@ -3,7 +3,7 @@ package com.wolfco.main.commands;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
-import com.wolfco.main.classes.customargs.HomeArgument;
+import com.wolfco.main.commands.arguments.HomeArgument;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Singleton;

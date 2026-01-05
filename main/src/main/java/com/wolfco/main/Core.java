@@ -11,10 +11,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 import com.wolfco.common.classes.CorePlugin;
 import com.wolfco.common.listeners.EventLoader;
-import com.wolfco.main.events.ChatManager;
-import com.wolfco.main.events.RedisManager;
-import com.wolfco.main.handlers.MongoDatabase;
-import com.wolfco.main.handlers.WebhookManager;
+import com.wolfco.main.utility.WebhookManager;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 import jakarta.inject.Singleton;
@@ -25,7 +22,6 @@ import net.luckperms.api.LuckPerms;
 public class Core extends CorePlugin implements Listener {
     LuckPerms lp;
     YamlDocument warps;
-    MongoDatabase db;
 
     List<Player> afkPlayers = new ArrayList<>();
 
@@ -80,24 +76,12 @@ public class Core extends CorePlugin implements Listener {
         return serverName;
     }
 
-    public RedisManager getRedisManager() {
-        return getScope().get(RedisManager.class);
-    }
-
-    public MongoDatabase getDatabaseHandler() {
-        return db;
-    }
-
     public LuckPerms getLuckPerms() {
         return lp;
     }
 
     public YamlDocument getWarps() {
         return warps;
-    }
-
-    public ChatManager getChatManager() {
-        return getScope().get(ChatManager.class);
     }
 
     @Override

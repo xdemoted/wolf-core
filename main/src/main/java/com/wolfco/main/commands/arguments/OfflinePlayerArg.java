@@ -1,4 +1,4 @@
-package com.wolfco.main.classes.customargs;
+package com.wolfco.main.commands.arguments;
 
 import java.util.List;
 import java.util.stream.Collectors;

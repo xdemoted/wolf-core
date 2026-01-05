@@ -1,4 +1,4 @@
-package com.wolfco.main.classes.mongoDB;
+package com.wolfco.main.mongoDB.classes;
 
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;

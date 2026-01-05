@@ -10,10 +10,10 @@ import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.common.commands.arguments.StringArg;
 import com.wolfco.main.Core;
-import com.wolfco.main.classes.Home;
-import com.wolfco.main.handlers.PermissionHandler;
 import com.wolfco.main.profiles.ProfileManager;
+import com.wolfco.main.profiles.classes.Home;
 import com.wolfco.main.profiles.classes.Profile;
+import com.wolfco.main.utility.PermissionHandler;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
@@ -21,7 +21,8 @@ import jakarta.inject.Singleton;
 import net.luckperms.api.model.user.User;
 
 @Singleton
-public class SetHome implements CoreCommand {    static final String NODE = "wolfcore.sethome";
+public class SetHome implements CoreCommand {
+    static final String NODE = "wolfcore.sethome";
     private final Core core;
     private final PermissionHandler permissionHandler;
     private final ProfileManager profileManager;
@@ -63,7 +64,7 @@ public class SetHome implements CoreCommand {    static final String NODE = "wol
             }
 
             profile.homes.put(home, new Home(home, ((Player) sender).getLocation()));
-            
+
             core.sendPreset(sender, "home.set", List.of(home));
         } else {
             core.sendPreset(sender, "generic.invaliddata");

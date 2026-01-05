@@ -1,15 +1,17 @@
-package com.wolfco.main.events;
+package com.wolfco.main.chat;
 
 import java.util.concurrent.CompletableFuture;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 
 import com.wolfco.common.Utilities;
 import com.wolfco.common.listeners.CoreListener;
 import com.wolfco.main.Core;
-import com.wolfco.main.classes.redis.AsyncGlobalMessageEvent;
-import com.wolfco.main.classes.redis.ChatMessage;
+import com.wolfco.main.redis.RedisManager;
+import com.wolfco.main.redis.classes.AsyncGlobalMessageEvent;
+import com.wolfco.main.redis.classes.ChatMessage;
 import com.wolfco.main.utility.FontUtil;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
@@ -29,11 +31,13 @@ import net.luckperms.api.model.user.User;
 @Singleton
 public class ChatManager implements CoreListener {
     private final Core core;
+    private final RedisManager redisManager;
     private final MiniMessage chatSerializer;
 
     @Inject
-    public ChatManager(Core core) {
+    public ChatManager(Core core, RedisManager redisManager) {
         this.core = core;
+        this.redisManager = redisManager;
         chatSerializer = MiniMessage.builder()
                 .tags(TagResolver.builder()
                         .resolver(StandardTags.color())
@@ -42,30 +46,25 @@ public class ChatManager implements CoreListener {
                 .build();
     }
 
-    @EventHandler
-    public void onChat(AsyncChatEvent event) {
-        // Variables
-        String message = PlainTextComponentSerializer.plainText().serialize(event.message());
-        Player player = event.getPlayer();
+    public void handleChat(Player player, Component message) {
+        String strMessage = PlainTextComponentSerializer.plainText().serialize(message);
 
-        ChatMessage chatMessage = new ChatMessage(core.getServerName(), player, message);
+        ChatMessage chatMessage = new ChatMessage(core.getServerName(), player, strMessage);
 
         sendChatMessage(chatMessage);
-        core.getRedisManager().sendChatMessageAsync(chatMessage);
-        
-        event.setCancelled(true);
+        redisManager.sendChatMessageAsync(chatMessage);
     }
 
     @EventHandler
     public void onGlobalChatMessage(AsyncGlobalMessageEvent event) {
-        sendChatMessage(event.getChatMessage());
-    }
-
-    void sendChatMessage(ChatMessage chatMessage) {
         if (core.getServer().getOnlinePlayers().isEmpty()) {
             return;
         }
 
+        sendChatMessage(event.getChatMessage());
+    }
+
+    private void sendChatMessage(ChatMessage chatMessage) {
         CompletableFuture<User> user = core.getLuckPerms().getUserManager().loadUser(chatMessage.getUUID());
 
         user.thenAcceptAsync(u -> {
