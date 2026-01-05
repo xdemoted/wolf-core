@@ -17,20 +17,18 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 
 @Singleton
 public class MessageUtility {
-    private final CorePlugin plugin;
     YamlDocument messages;
 
     @Inject
-    public MessageUtility(CorePlugin plugin) {
-        this.plugin = plugin;
+    public MessageUtility() {
 
-        messages = plugin.getConfigDocument("messages.yml");
+        messages = CorePlugin.get().getConfigDocument("messages.yml");
         if (messages != null) {
             messages.setSettings(UpdaterSettings.builder().setVersioning(new BasicVersioning("version")).build());
             try {
                 messages.update();
             } catch (IOException e) {
-                plugin.getLogger().warning("Failed to update messages.yml");
+                CorePlugin.get().getLogger().warning("Failed to update messages.yml");
             }
         }
     }
@@ -40,7 +38,7 @@ public class MessageUtility {
     }
 
     public void sendMessage(CommandSender sender, String message) {
-        plugin.getAdventure().sender(sender).sendMessage(MiniMessage.miniMessage().deserialize(message));
+        CorePlugin.get().getAdventure().sender(sender).sendMessage(MiniMessage.miniMessage().deserialize(message));
     }
 
     public String getMessage(String key) {

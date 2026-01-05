@@ -1,6 +1,5 @@
 package com.wolfco.main.commands.teleport.warp;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.bukkit.Location;
@@ -12,9 +11,9 @@ import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.common.commands.arguments.StringArg;
-import com.wolfco.main.Core;
+import com.wolfco.main.warps.Warp;
+import com.wolfco.main.warps.WarpManager;
 
-import dev.dejvokep.boostedyaml.YamlDocument;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
@@ -34,37 +33,28 @@ public class SetWarp implements CoreCommand {
     MessageUtility messageUtility;
 
     @Inject
-    Core core;
-    
+    WarpManager warpManager;
+
     @Override
     public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
         CommandSender sender = commandStack.getSender();
-        YamlDocument warps = core.getWarps(); // #TODO refactor to warp manager
         String warpName = args[0];
         Player player = (Player) sender;
         Location location = player.getLocation();
 
-        if (warps.contains(warpName)) {
-            messageUtility.sendPreset(sender, "warp.exists", List.of(warpName));
-            return true;
-        } else if (location == null) {
+        if (location == null) {
             messageUtility.sendPreset(sender, "generic.invaliddata");
             return true;
         }
-        
-        warps.set(warpName + ".x", location.getX());
-        warps.set(warpName + ".y", location.getY());
-        warps.set(warpName + ".z", location.getZ());
-        warps.set(warpName + ".world", player.getWorld().getUID().toString());
 
-        try {
-            warps.save();
-        } catch (IOException e) {
-            messageUtility.sendMessage(sender, "<red>Failed to save warps file.");
-        }
+        boolean result = warpManager.setWarp(
+                Warp.fromLocation(location, warpName));
+
+        if (!result)
+            messageUtility.sendPreset(sender, "warp.setfail", List.of(warpName));
 
         messageUtility.sendPreset(sender, "warp.set", List.of(warpName));
-        
+
         return true;
     }
 

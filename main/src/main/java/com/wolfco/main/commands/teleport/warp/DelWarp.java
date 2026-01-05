@@ -1,14 +1,14 @@
-package com.wolfco.main.commands;
+package com.wolfco.main.commands.teleport.warp;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
-import com.wolfco.main.Core;
 import com.wolfco.main.commands.arguments.WarpArgument;
+import com.wolfco.main.warps.Warp;
+import com.wolfco.main.warps.WarpManager;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
@@ -25,22 +25,18 @@ public class DelWarp implements CoreCommand {
     }
 
     @Inject
-    Core core;
+    WarpManager warpManager;
 
     @Override
     public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
         CommandSender sender = commandStack.getSender();
-        boolean result = core.getWarps().remove(args[0]);
+        Warp warp = (Warp) argumentValues[0];
+        boolean result = warpManager.removeWarp(warp.name);
+        
         if (result) {
             getMessageUtility().sendPreset(sender, "warp.deleted", List.of(args[0]));
         } else {
             getMessageUtility().sendPreset(sender, "warp.notfound", List.of(args[0]));
-        }
-
-        try {
-            core.getWarps().save();
-        } catch (IOException e) {
-            sender.sendMessage("An error occurred while saving warps");
         }
 
         return result;

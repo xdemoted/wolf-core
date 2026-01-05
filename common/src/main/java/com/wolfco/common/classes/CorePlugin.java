@@ -11,8 +11,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.wolfco.common.commands.CommandLoader;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
-import dev.dejvokep.boostedyaml.dvs.versioning.BasicVersioning;
-import dev.dejvokep.boostedyaml.settings.updater.UpdaterSettings;
 import io.avaje.inject.BeanScope;
 import io.avaje.inject.InjectModule;
 import jakarta.annotation.Nullable;
@@ -29,11 +27,6 @@ public abstract class CorePlugin extends JavaPlugin {
     String icon = null;
     BukkitAudiences adventure;
     YamlDocument config;
-    YamlDocument messages;
-
-    protected CorePlugin() {
-        messages = getMessageData();
-    }
 
     @Override
     public void onEnable() {
@@ -98,19 +91,6 @@ public abstract class CorePlugin extends JavaPlugin {
             }
         }
         return configReturn;
-    }
-
-    private YamlDocument getMessageData() {
-        messages = getConfigDocument("messages.yml");
-        if (messages != null) {
-            messages.setSettings(UpdaterSettings.builder().setVersioning(new BasicVersioning("version")).build());
-            try {
-                messages.update();
-            } catch (IOException e) {
-                getLogger().warning("Failed to update messages.yml");
-            }
-        }
-        return messages;
     }
 
     public String getIcon() {

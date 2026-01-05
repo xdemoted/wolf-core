@@ -13,7 +13,6 @@ import com.wolfco.common.classes.CorePlugin;
 import com.wolfco.common.listeners.EventLoader;
 import com.wolfco.main.utility.WebhookManager;
 
-import dev.dejvokep.boostedyaml.YamlDocument;
 import jakarta.inject.Singleton;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.luckperms.api.LuckPerms;
@@ -21,7 +20,6 @@ import net.luckperms.api.LuckPerms;
 @Singleton
 public class Core extends CorePlugin implements Listener {
     LuckPerms lp;
-    YamlDocument warps;
 
     List<Player> afkPlayers = new ArrayList<>();
 
@@ -38,8 +36,6 @@ public class Core extends CorePlugin implements Listener {
             getLogger().severe("LuckPerms not found! Disabling plugin.");
             Bukkit.getPluginManager().disablePlugin(this);
         }
-
-        warps = getConfigDocument("warps.yml");
 
         Bukkit.getMessenger().registerOutgoingPluginChannel(this, "core:main");
 
@@ -76,10 +72,6 @@ public class Core extends CorePlugin implements Listener {
 
     public LuckPerms getLuckPerms() {
         return lp;
-    }
-
-    public YamlDocument getWarps() {
-        return warps;
     }
 
     @Override

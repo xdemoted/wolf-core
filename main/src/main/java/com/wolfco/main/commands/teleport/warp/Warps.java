@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
 import com.wolfco.common.MessageUtility;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
-import com.wolfco.main.Core;
+import com.wolfco.main.warps.WarpManager;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
@@ -21,7 +21,7 @@ public class Warps implements CoreCommand {
     }
 
     @Inject
-    Core core;
+    WarpManager warpManager;
 
     @Inject
     MessageUtility messageUtility;
@@ -31,7 +31,7 @@ public class Warps implements CoreCommand {
             String[] args, Object[] argumentValues) {
         CommandSender sender = commandStack.getSender();
         messageUtility.sendMessage(sender, "<#ffaa00>Warps:");
-        for (String key : core.getWarps().getRoutesAsStrings(false)) {
+        for (String key : warpManager.getWarps()) {
             messageUtility.sendMessage(sender,
                     "<#ffaa00> - <#ffff00><click:run_command:/warp " + key + ">" + key + "</click>");
         }
