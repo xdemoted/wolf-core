@@ -6,7 +6,6 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 import com.wolfco.common.classes.CorePlugin;
 import com.wolfco.common.listeners.EventLoader;
-import com.wolfco.main.utility.WebhookManager;
 
 import jakarta.inject.Singleton;
 import net.luckperms.api.LuckPerms;
