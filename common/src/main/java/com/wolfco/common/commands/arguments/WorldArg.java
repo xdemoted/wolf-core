@@ -43,15 +43,27 @@ public class WorldArg implements ArgumentInterface {
     @Override
     public World getValue(CommandSourceStack commandStack, String searchValue) {
         CorePlugin core = CorePlugin.get();
-        
+
         World world = core.getServer().getWorld(searchValue);
 
         if (world instanceof World) {
             return core.getServer().getWorld(searchValue);
         }
-        
+
         throw error("Argument %s requires a valid world. Possible values are: [%s]", name,
                 String.join(", ", core.getServer().getWorlds().stream().map(w -> w.getName()).toList()));
     }
 
+    private String node = null;
+
+    @Override
+    public ArgumentInterface setNode(String node) {
+        this.node = node;
+        return this;
+    }
+
+    @Override
+    public String getNode() {
+        return this.node;
+    }
 }

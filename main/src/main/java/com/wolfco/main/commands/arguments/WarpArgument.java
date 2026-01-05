@@ -8,17 +8,17 @@ import com.wolfco.main.warps.Warp;
 import com.wolfco.main.warps.WarpManager;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
- 
+
 public class WarpArgument implements ArgumentInterface {
     private final WarpManager warpManager = Core.get().getScope().get(WarpManager.class);
 
     private boolean required = true;
     private String name = "WARP";
 
-    public WarpArgument(boolean required) { 
+    public WarpArgument(boolean required) {
         this.required = required;
     }
-    
+
     @Override
     public Boolean isRequired() {
         return required;
@@ -44,5 +44,18 @@ public class WarpArgument implements ArgumentInterface {
     public Warp getValue(CommandSourceStack commandStack,
             String searchValue) {
         return warpManager.getWarp(searchValue);
+    }
+
+    private String node = null;
+
+    @Override
+    public ArgumentInterface setNode(String node) {
+        this.node = node;
+        return this;
+    }
+
+    @Override
+    public String getNode() {
+        return this.node;
     }
 }

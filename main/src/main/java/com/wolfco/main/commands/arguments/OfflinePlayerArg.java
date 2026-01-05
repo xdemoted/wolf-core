@@ -17,7 +17,6 @@ public class OfflinePlayerArg implements ArgumentInterface {
     boolean self = false;
     String name = "PLAYER";
 
-
     public OfflinePlayerArg(boolean required) {
         this.required = required;
     }
@@ -67,7 +66,19 @@ public class OfflinePlayerArg implements ArgumentInterface {
             }
         }
 
-        throw error("Argument %s requires a valid offline player.",name);
+        throw error("Argument %s requires a valid offline player.", name);
     }
-    
+
+    private String node = null;
+
+    @Override
+    public ArgumentInterface setNode(String node) {
+        this.node = node;
+        return this;
+    }
+
+    @Override
+    public String getNode() {
+        return this.node;
+    }
 }

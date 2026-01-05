@@ -119,6 +119,14 @@ public class Command { // TODO Add help command support; add descriptions to com
                 }
             }
 
+            if (!options.get(i).isRequired() && options.get(i).getNode() != null) {
+                String permNode = options.get(i).getNode();
+                if (!commandStack.getSender().hasPermission(permNode)) {
+                    throw new IllegalArgumentException(
+                            "You do not have permission to use the argument " + options.get(i).getName());
+                }
+            }
+
             Object value = options.get(i).getValue(commandStack, args[i]);
 
             if (value == null) {

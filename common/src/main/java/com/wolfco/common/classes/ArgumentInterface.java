@@ -21,4 +21,8 @@ public interface ArgumentInterface {
     abstract List<String> getOptions(CommandSourceStack commandStack, String[] args);
 
     abstract Object getValue(CommandSourceStack commandStack, String searchValue) throws IllegalArgumentException;
+
+    abstract ArgumentInterface setNode(String node);
+
+    abstract String getNode();
 }

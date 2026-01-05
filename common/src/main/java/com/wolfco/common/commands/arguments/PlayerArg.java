@@ -15,7 +15,6 @@ public class PlayerArg implements ArgumentInterface {
     boolean self = false;
     String name = "PLAYER";
 
-
     public PlayerArg(boolean required) {
         this.required = required;
     }
@@ -45,7 +44,8 @@ public class PlayerArg implements ArgumentInterface {
     public List<String> getOptions(CommandSourceStack commandStack, String[] args) {
         CorePlugin core = CorePlugin.get();
         CommandSender sender = commandStack.getSender();
-        List<String> players = core.getServer().getOnlinePlayers().stream().map(p -> p.getName()).collect(Collectors.toList());
+        List<String> players = core.getServer().getOnlinePlayers().stream().map(p -> p.getName())
+                .collect(Collectors.toList());
 
         if (!self) {
             players.remove(sender.getName());
@@ -59,13 +59,25 @@ public class PlayerArg implements ArgumentInterface {
         CorePlugin core = CorePlugin.get();
 
         if ("*".equals(searchValue)) {
-            throw error("Argument %s requires a valid online player.",name);
+            throw error("Argument %s requires a valid online player.", name);
         }
         if (core.getServer().getPlayer(searchValue) != null) {
             return core.getServer().getPlayer(searchValue);
         }
 
-        throw error("Argument %s requires a valid online player.",name);
+        throw error("Argument %s requires a valid online player.", name);
     }
-    
+
+    private String node = null;
+
+    @Override
+    public ArgumentInterface setNode(String node) {
+        this.node = node;
+        return this;
+    }
+
+    @Override
+    public String getNode() {
+        return this.node;
+    }
 }

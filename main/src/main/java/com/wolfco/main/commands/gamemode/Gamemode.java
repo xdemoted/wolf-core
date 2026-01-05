@@ -26,7 +26,7 @@ public class Gamemode implements CoreCommand {
         Command command = new Command().setName("gamemode");
         command.addArguments(
                 new GameModeArg(true),
-                new MultiPlayerArg(false).includeSender(false)
+                new MultiPlayerArg(false).includeSender(false).setNode("gamemode.other")
         );
         command.addAliases("gm");
 

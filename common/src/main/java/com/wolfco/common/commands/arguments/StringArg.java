@@ -61,4 +61,16 @@ public class StringArg implements ArgumentInterface {
         return searchValue;
     }
 
+    private String node = null;
+
+    @Override
+    public ArgumentInterface setNode(String node) {
+        this.node = node;
+        return this;
+    }
+
+    @Override
+    public String getNode() {
+        return this.node;
+    }
 }

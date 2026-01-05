@@ -67,4 +67,16 @@ public class EnchantArg implements ArgumentInterface {
                         .collect(Collectors.joining(", ")));
     }
 
+    private String node = null;
+
+    @Override
+    public ArgumentInterface setNode(String node) {
+        this.node = node;
+        return this;
+    }
+
+    @Override
+    public String getNode() {
+        return this.node;
+    }
 }

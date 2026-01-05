@@ -11,7 +11,6 @@ public class StaticArg implements ArgumentInterface {
     String name = "STATIC";
     List<String> options;
 
-
     public StaticArg(boolean required, String... options) {
         this.required = required;
         this.options = List.of(options);
@@ -32,7 +31,7 @@ public class StaticArg implements ArgumentInterface {
         this.name = name;
         return this;
     }
-    
+
     @Override
     public List<String> getOptions(CommandSourceStack commandStack, String[] args) {
         return options;
@@ -46,5 +45,17 @@ public class StaticArg implements ArgumentInterface {
 
         throw error("Invalid value provided for %s possible values are: [%s]", name, String.join(", ", this.options));
     }
-    
+
+    private String node = null;
+
+    @Override
+    public ArgumentInterface setNode(String node) {
+        this.node = node;
+        return this;
+    }
+
+    @Override
+    public String getNode() {
+        return this.node;
+    }
 }

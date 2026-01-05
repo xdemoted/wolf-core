@@ -48,8 +48,9 @@ public class MultiPlayerArg implements ArgumentInterface {
     public List<String> getOptions(CommandSourceStack commandStack, String[] args) {
         CorePlugin core = CorePlugin.get();
         CommandSender sender = commandStack.getSender();
-        List<String> players = core.getServer().getOnlinePlayers().stream().map(p -> p.getName()).collect(Collectors.toList());
-        
+        List<String> players = core.getServer().getOnlinePlayers().stream().map(p -> p.getName())
+                .collect(Collectors.toList());
+
         players.add("*");
 
         if (!self) {
@@ -85,4 +86,16 @@ public class MultiPlayerArg implements ArgumentInterface {
         return players;
     }
 
+    private String node = null;
+
+    @Override
+    public ArgumentInterface setNode(String node) {
+        this.node = node;
+        return this;
+    }
+
+    @Override
+    public String getNode() {
+        return this.node;
+    }
 }
