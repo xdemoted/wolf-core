@@ -9,6 +9,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 import org.bukkit.entity.Player;
+
 import com.wolfco.main.Core;
 import com.wolfco.main.profiles.classes.Profile;
 

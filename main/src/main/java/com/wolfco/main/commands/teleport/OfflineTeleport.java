@@ -10,7 +10,7 @@ import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.main.Core;
 import com.wolfco.main.commands.arguments.OfflinePlayerArg;
-import com.wolfco.main.profiles.classes.Profile;
+import com.wolfco.main.player.profiles.classes.Profile;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;

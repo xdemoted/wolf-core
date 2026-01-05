@@ -12,8 +12,8 @@ import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.main.Core;
 import com.wolfco.main.commands.arguments.HomeArgument;
-import com.wolfco.main.profiles.ProfileManager;
-import com.wolfco.main.profiles.classes.Profile;
+import com.wolfco.main.player.profiles.ProfileManager;
+import com.wolfco.main.player.profiles.classes.Profile;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
@@ -39,7 +39,7 @@ public class Home implements CoreCommand {
     @Override
     public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
         CommandSender sender = commandStack.getSender();
-        com.wolfco.main.profiles.classes.Home home = (com.wolfco.main.profiles.classes.Home) argumentValues[0];
+        com.wolfco.main.player.profiles.classes.Home home = (com.wolfco.main.player.profiles.classes.Home) argumentValues[0];
 
         if (home == null) {
             Profile profile = profileManager.getCachedProfile((Player) sender);

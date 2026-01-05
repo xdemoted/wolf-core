@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 
 import com.wolfco.common.classes.ArgumentInterface;
 import com.wolfco.main.Core;
-import com.wolfco.main.profiles.ProfileManager;
+import com.wolfco.main.player.profiles.ProfileManager;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 
