@@ -1,6 +1,5 @@
 package com.wolfco.main.commands;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.wolfco.common.classes.Command;

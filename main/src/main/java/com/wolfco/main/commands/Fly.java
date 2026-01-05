@@ -2,7 +2,6 @@ package com.wolfco.main.commands;
 
 import java.util.List;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.wolfco.common.classes.Command;

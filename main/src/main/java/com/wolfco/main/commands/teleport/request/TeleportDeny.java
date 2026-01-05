@@ -10,8 +10,9 @@ import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.common.commands.arguments.PlayerArg;
 import com.wolfco.main.Core;
-import com.wolfco.main.classes.PlayerData;
 import com.wolfco.main.classes.Request;
+import com.wolfco.main.profiles.ProfileManager;
+import com.wolfco.main.profiles.classes.Profile;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
@@ -30,33 +31,36 @@ public class TeleportDeny implements CoreCommand {
 
     @Inject
     Core core;
-    
+
+    @Inject
+    ProfileManager profileManager;
+
     @Override
     public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
         CommandSender sender = commandStack.getSender();
         Player target = (Player) argumentValues[0];
-        PlayerData playerData = core.getPlayerManager().getPlayerData((Player) sender);
+        Profile profile = profileManager.getCachedProfile((Player) sender);
 
-        if (playerData == null) {
+        if (profile == null) {
             core.sendPreset(sender, "generic.invaliddata");
             return false;
         }
 
-        if (playerData.pendingRequests.isEmpty()) {
+        if (profile.pendingRequests.isEmpty()) {
             core.sendPreset(sender, "teleportask.norequest");
             return false;
         }
 
-        Request targetRequest = playerData.getRequest(target);
+        Request targetRequest = profile.getRequest(target);
 
         if (targetRequest == null) {
             core.sendPreset(sender, "teleportask.norequest");
             return false;
         }
-        
+
         core.sendPreset(sender, "teleportask.deny", List.of(targetRequest.name));
         core.sendPreset(sender, "teleportask.deny", List.of(sender.getName()));
-        playerData.denyRequest(target);
+        profile.denyRequest(target);
 
         return true;
     }

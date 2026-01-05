@@ -7,11 +7,14 @@ import org.bukkit.entity.Player;
 
 import com.wolfco.common.classes.ArgumentInterface;
 import com.wolfco.main.Core;
-import com.wolfco.main.classes.PlayerData;
+import com.wolfco.main.profiles.ProfileManager;
+import com.wolfco.main.profiles.classes.Profile;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 
 public class HomeArgument implements ArgumentInterface {
+    private final ProfileManager profileManager = Core.get().getScope().get(ProfileManager.class);
+
     private boolean required = true;
     private String name = "HOME";
 
@@ -37,28 +40,26 @@ public class HomeArgument implements ArgumentInterface {
 
     @Override
     public List<String> getOptions(CommandSourceStack commandStack, String[] args) {
-        Core plugin = Core.get();
         CommandSender sender = commandStack.getSender();
 
         if (!(sender instanceof Player))
             List.of();
 
-        PlayerData playerData = plugin.getPlayerManager().getPlayerData((Player) sender);
+        Profile profile = profileManager.getCachedProfile((Player) sender);
 
-        return playerData.homes.keySet().stream().toList();
+        return profile.homes.keySet().stream().toList();
     }
 
     @Override
     public Object getValue(CommandSourceStack commandStack,
             String searchValue) {
-        Core plugin = Core.get();
         CommandSender sender = commandStack.getSender();
 
         if (!(sender instanceof Player))
             return null;
 
-        PlayerData playerData = plugin.getPlayerManager().getPlayerData((Player) sender);
+        Profile profile = profileManager.getCachedProfile((Player) sender);
 
-        return playerData.homes.get(searchValue);
+        return profile.homes.get(searchValue);
     }
 }

@@ -10,8 +10,9 @@ import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.common.commands.arguments.PlayerArg;
 import com.wolfco.main.Core;
-import com.wolfco.main.classes.PlayerData;
 import com.wolfco.main.classes.Request;
+import com.wolfco.main.profiles.ProfileManager;
+import com.wolfco.main.profiles.classes.Profile;
 import com.wolfco.main.utility.FontUtil;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -34,12 +35,15 @@ public class TeleportAccept implements CoreCommand {
     @Inject
     Core core;
 
+    @Inject
+    ProfileManager profileManager;
+
     @Override
     public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
         CommandSender sender = commandStack.getSender();
         Player requestSender = (Player) argumentValues[0];
         Player receiver = (Player) sender;
-        PlayerData receiverData = core.getPlayerManager().getPlayerData(receiver);
+        Profile receiverData = profileManager.getCachedProfile(receiver);
 
         if (receiverData == null) {
             core.sendPreset(sender, "generic.invaliddata");

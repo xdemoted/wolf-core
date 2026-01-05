@@ -1,6 +1,5 @@
 package com.wolfco.main.commands;
 
-import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 
@@ -9,7 +8,6 @@ import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.common.commands.arguments.EnchantArg;
 import com.wolfco.common.commands.arguments.NumberArg;
-import com.wolfco.main.Core;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Singleton;

@@ -1,10 +1,7 @@
 package com.wolfco.main.commands.gamemode;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-
-import javax.annotation.Nonnull;
 
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;

@@ -87,18 +87,18 @@ public final class playerManager {
         }
     }
 
-    public PlayerData getPlayerData(UUID uuid) {
+    public PlayerData getCachedProfile(UUID uuid) {
         return players.get(uuid);
     }
 
-    public PlayerData getPlayerData(Player player) {
+    public PlayerData getCachedProfile(Player player) {
         return players.get(player.getUniqueId());
     }
 
     public OfflinePlayer getOfflinePlayer(UUID uuid) {
-        PlayerData playerData = getPlayerData(uuid);
-        if (playerData != null) {
-            return new OfflinePlayer(playerData.data);
+        PlayerData profile = getCachedProfile(uuid);
+        if (profile != null) {
+            return new OfflinePlayer(profile.data);
         }
         YamlDocument data = core.getConfig(uuid.toString(), core.dataDirectory.resolve("userdata"));
         if (data == null) {

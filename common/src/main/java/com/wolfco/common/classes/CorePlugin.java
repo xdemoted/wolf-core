@@ -158,8 +158,8 @@ public abstract class CorePlugin extends JavaPlugin {
         getComponentLogger().info(log);
     }
 
-    public void log(String log) {
-        getLogger().info(log);
+    public void log(String log, Object... args) {
+        getLogger().info(String.format(log, args));
     }
 
     public static CorePlugin get() {

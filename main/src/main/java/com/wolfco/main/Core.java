@@ -12,7 +12,6 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import com.wolfco.common.classes.CorePlugin;
 import com.wolfco.common.listeners.EventLoader;
 import com.wolfco.main.events.ChatManager;
-import com.wolfco.main.events.PlayerManager;
 import com.wolfco.main.events.RedisManager;
 import com.wolfco.main.handlers.MongoDatabase;
 import com.wolfco.main.handlers.WebhookManager;
@@ -95,10 +94,6 @@ public class Core extends CorePlugin implements Listener {
 
     public YamlDocument getWarps() {
         return warps;
-    }
-
-    public PlayerManager getPlayerManager() {
-        return getScope().get(PlayerManager.class);
     }
 
     public ChatManager getChatManager() {

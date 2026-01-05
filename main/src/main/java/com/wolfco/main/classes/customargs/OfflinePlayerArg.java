@@ -7,11 +7,12 @@ import org.bukkit.command.CommandSender;
 
 import com.wolfco.common.classes.ArgumentInterface;
 import com.wolfco.main.Core;
-import com.wolfco.main.events.PlayerManager;
+import com.wolfco.main.profiles.ProfileManager;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 
 public class OfflinePlayerArg implements ArgumentInterface {
+    private final ProfileManager profileManager = Core.get().getScope().get(ProfileManager.class);
     final boolean required;
     boolean self = false;
     String name = "PLAYER";
@@ -44,7 +45,7 @@ public class OfflinePlayerArg implements ArgumentInterface {
 
     @Override
     public List<String> getOptions(CommandSourceStack commandStack, String[] args) {
-        List<String> players = PlayerManager.getAllPlayerDataDocuments().stream()
+        List<String> players = profileManager.getAllProfiles().stream()
                 .map(p -> p.name)
                 .collect(Collectors.toList());
         CommandSender sender = commandStack.getSender();
@@ -58,11 +59,11 @@ public class OfflinePlayerArg implements ArgumentInterface {
 
     @Override
     public Object getValue(CommandSourceStack commandStack, String searchValue) {
-        List<PlayerManager.reducedPlayerInfo> allPlayers = PlayerManager.getAllPlayerDataDocuments();
+        List<ProfileManager.reducedPlayerInfo> players = profileManager.getAllProfiles();
 
-        for (PlayerManager.reducedPlayerInfo p : allPlayers) {
+        for (ProfileManager.reducedPlayerInfo p : players) {
             if (p.name.equalsIgnoreCase(searchValue)) {
-                return ((Core) Core.get()).getPlayerManager().getOfflinePlayer(p.uuid);
+                return profileManager.loadOfflineProfile(p.uuid);
             }
         }
 

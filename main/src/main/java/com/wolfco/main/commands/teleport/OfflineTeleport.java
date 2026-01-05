@@ -9,8 +9,8 @@ import org.bukkit.entity.Player;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.main.Core;
-import com.wolfco.main.classes.PlayerData;
 import com.wolfco.main.classes.customargs.OfflinePlayerArg;
+import com.wolfco.main.profiles.classes.Profile;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
@@ -34,7 +34,7 @@ public class OfflineTeleport implements CoreCommand {
     public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
         CommandSender sender = commandStack.getSender();
 
-        PlayerData player = (PlayerData) argumentValues[0];
+        Profile player = (Profile) argumentValues[0];
         Location logoutLocation = player.getLogoutLocation();
 
         if (logoutLocation == null) {

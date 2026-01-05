@@ -1,5 +1,6 @@
-package com.wolfco.main.classes;
+package com.wolfco.main.profiles.classes;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -7,17 +8,20 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.wolfco.common.Utilities;
 import com.wolfco.main.Core;
+import com.wolfco.main.classes.Home;
+import com.wolfco.main.classes.Request;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 import net.kyori.adventure.text.Component;
 import net.luckperms.api.model.user.User;
 
-public class PlayerData {
+public class Profile {
     public class timestamp {
         public long logout;
         public long login;
@@ -25,7 +29,7 @@ public class PlayerData {
     }
 
     public YamlDocument data;
-    public Player host;
+    public UUID uuid;
 
     public boolean afk;
     public boolean teleportEnabled;
@@ -47,20 +51,25 @@ public class PlayerData {
 
     public timestamp timestamp = new timestamp();
 
-    public PlayerData(Player host, YamlDocument data) {
-        this(host, data, false);
+    public Profile(UUID uuid, YamlDocument data) {
+        this(uuid, data, false);
     }
 
-    public PlayerData(Player host, YamlDocument data, Boolean offline) {
-        if (!offline) {
-            this.host = host;
-            this.username = host.getName();
-            InetSocketAddress tempHost = host.getAddress();
+    public Profile(UUID uuid, YamlDocument data, Boolean offline) {
+        this.uuid = uuid;
 
-            if (tempHost != null) {
-                this.ipaddress = tempHost.getAddress().getHostAddress();
-            } else {
-                this.ipaddress = null;
+        if (!offline) {
+            Player player = Bukkit.getPlayer(uuid);
+
+            if (player != null) {
+                this.username = player.getName();
+                InetSocketAddress tempHost = player.getAddress();
+
+                if (tempHost != null) {
+                    this.ipaddress = tempHost.getAddress().getHostAddress();
+                } else {
+                    this.ipaddress = null;
+                }
             }
         }
 
@@ -158,7 +167,19 @@ public class PlayerData {
         return lastPosition;
     }
 
-    public YamlDocument save() {
+    public void save() throws IOException{
+        Player player = Bukkit.getPlayer(uuid.toString());
+
+        if (player != null) {
+            if (logoutPosition == null) {
+                logoutPosition = player.getLocation();
+            }
+
+            if (lastPosition == null) {
+                lastPosition = player.getLocation();
+            }
+        }
+
         for (String key : homes.keySet()) {
             Home home = homes.get(key);
             data.set("home." + key + ".x", home.x);
@@ -172,20 +193,12 @@ public class PlayerData {
         data.set("ipaddress", this.ipaddress);
         data.set("username", this.username);
 
-        if (logoutPosition == null) {
-            logoutPosition = host.getLocation();
-        }
-
         data.set("lastPosition.x", logoutPosition.getX());
         data.set("lastPosition.y", logoutPosition.getY());
         data.set("lastPosition.z", logoutPosition.getZ());
         data.set("lastPosition.yaw", logoutPosition.getYaw());
         data.set("lastPosition.pitch", logoutPosition.getPitch());
         data.set("lastPosition.world", logoutPosition.getWorld().getUID().toString());
-
-        if (lastPosition == null) {
-            lastPosition = host.getLocation();
-        }
 
         data.set("lastTeleport.x", logoutPosition.getX());
         data.set("lastTeleport.y", logoutPosition.getY());
@@ -194,16 +207,16 @@ public class PlayerData {
         data.set("lastTeleport.pitch", logoutPosition.getPitch());
         data.set("lastTeleport.world", logoutPosition.getWorld().getUID().toString());
 
-        return data;
+        data.save();
     }
 
     public Component getDisplayName() {
-        User user = ((Core) Core.get()).getLuckPerms().getUserManager().getUser(host.getUniqueId());
-        return  Utilities.getDisplayName(user);
+        User user = ((Core) Core.get()).getLuckPerms().getUserManager().getUser(uuid);
+        return Utilities.getDisplayName(user);
     }
 
     public CompletableFuture<Component> getOfflineDisplayName() {
-        CompletableFuture<User> user = ((Core) Core.get()).getLuckPerms().getUserManager().loadUser(host.getUniqueId());
+        CompletableFuture<User> user = ((Core) Core.get()).getLuckPerms().getUserManager().loadUser(uuid);
         CompletableFuture<Component> displayNameFuture = new CompletableFuture<>();
 
         user.thenAcceptAsync(u -> {

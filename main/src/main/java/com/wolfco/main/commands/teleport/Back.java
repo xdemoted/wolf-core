@@ -8,7 +8,8 @@ import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.main.Core;
-import com.wolfco.main.classes.PlayerData;
+import com.wolfco.main.profiles.ProfileManager;
+import com.wolfco.main.profiles.classes.Profile;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
@@ -25,17 +26,19 @@ public class Back implements CoreCommand {
         return command;
     }
 
-
     @Inject
     Core core;
+
+    @Inject
+    ProfileManager profileManager;
 
     @Override
     public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
         CommandSender sender = commandStack.getSender();
-        PlayerData playerData = core.getPlayerManager().getPlayerData((Player) sender);
+        Profile profile = profileManager.getCachedProfile((Player) sender);
 
-        if (playerData != null) {
-            Location lastPosition = playerData.getLastLocation();
+        if (profile != null) {
+            Location lastPosition = profile.getLastLocation();
 
             if (lastPosition == null) {
                 core.sendPreset(sender, "back.noposition");

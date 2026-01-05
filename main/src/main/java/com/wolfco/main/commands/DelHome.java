@@ -10,8 +10,9 @@ import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.main.Core;
 import com.wolfco.main.classes.Home;
-import com.wolfco.main.classes.PlayerData;
 import com.wolfco.main.classes.customargs.HomeArgument;
+import com.wolfco.main.profiles.ProfileManager;
+import com.wolfco.main.profiles.classes.Profile;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
@@ -29,19 +30,21 @@ public class DelHome implements CoreCommand {
         return command;
     }
 
-
     @Inject
     Core core;
+
+    @Inject
+    ProfileManager profileManager;
 
     @Override
     public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
         CommandSender sender = commandStack.getSender();
         Home home = (Home) argumentValues[0];
 
-        PlayerData playerData = core.getPlayerManager().getPlayerData((Player) sender);
+        Profile profile = profileManager.getCachedProfile((Player) sender);
 
-        if (playerData != null) {
-            playerData.homes.remove(home.name);
+        if (profile != null) {
+            profile.homes.remove(home.name);
             core.sendPreset(sender, "home.deleted", List.of(home.name));
         }
         return true;

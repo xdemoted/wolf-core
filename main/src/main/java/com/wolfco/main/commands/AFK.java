@@ -1,15 +1,11 @@
 package com.wolfco.main.commands;
 
-import org.bukkit.command.CommandSender;
-
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
-import com.wolfco.main.Core;
 import com.wolfco.main.classes.customargs.HomeArgument;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
 @Singleton
