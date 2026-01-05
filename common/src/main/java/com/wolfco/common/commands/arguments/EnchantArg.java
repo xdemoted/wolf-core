@@ -4,12 +4,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
 import org.bukkit.enchantments.Enchantment;
 
 import com.wolfco.common.classes.ArgumentInterface;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.registry.RegistryAccess;
+import io.papermc.paper.registry.RegistryKey;
 
 public class EnchantArg implements ArgumentInterface {
 
@@ -38,12 +39,9 @@ public class EnchantArg implements ArgumentInterface {
 
     @Override
     public List<String> getOptions(CommandSourceStack commandStack, String[] args) {
-        List<String> enchantNames = new java.util.ArrayList<>();
-        for (Enchantment enchantment : Registry.ENCHANTMENT) {
-            NamespacedKey key = enchantment.getKey();
-            enchantNames.add(key.getKey());
-        }
-        return enchantNames;
+        return RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).stream()
+                .map(e -> e.getKey().getKey())
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -52,24 +50,20 @@ public class EnchantArg implements ArgumentInterface {
 
         if (key == null) {
             throw error("Argument %s requires a valid enchant. Possible values are: [%s]", name,
-                    Registry.ENCHANTMENT.stream()
-                            .map(e -> {
-                                return e.getKey().getKey();
-                            })
+                    RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).stream()
+                            .map(e -> e.getKey().getKey())
                             .collect(Collectors.joining(", ")));
         }
 
-        Enchantment enchant = Registry.ENCHANTMENT.get(key);
+        Enchantment enchant = RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).get(key);
 
-        if (enchant instanceof Enchantment) {
+        if (enchant != null) {
             return enchant;
         }
 
         throw error("Argument %s requires a valid enchant. Possible values are: [%s]", name,
-                Registry.ENCHANTMENT.stream()
-                        .map(e -> {
-                            return e.getKey().getKey();
-                        })
+                RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).stream()
+                        .map(e -> e.getKey().getKey())
                         .collect(Collectors.joining(", ")));
     }
 

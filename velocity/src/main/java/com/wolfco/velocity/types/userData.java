@@ -8,7 +8,6 @@ public class userData extends File {
 
     public userData(File parent, String child) {
         super(parent, child);
-        //TODO Auto-generated constructor stub
     }
     public File getUser(UUID uuid) {
         File userFile = new File(this, uuid.toString()+".yml");

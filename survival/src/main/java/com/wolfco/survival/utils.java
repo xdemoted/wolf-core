@@ -8,8 +8,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Damageable;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class utils {
@@ -81,6 +81,7 @@ public class utils {
             return;
 
         ItemMeta meta = item.getItemMeta();
+
         if (!(meta instanceof Damageable))
             return;
 

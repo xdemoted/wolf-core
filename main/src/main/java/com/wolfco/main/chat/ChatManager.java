@@ -4,7 +4,6 @@ import java.util.concurrent.CompletableFuture;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 
 import com.wolfco.common.Utilities;
 import com.wolfco.common.listeners.CoreListener;
@@ -14,7 +13,6 @@ import com.wolfco.main.redis.classes.AsyncGlobalMessageEvent;
 import com.wolfco.main.redis.classes.ChatMessage;
 import com.wolfco.main.utility.FontUtil;
 
-import io.papermc.paper.event.player.AsyncChatEvent;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;

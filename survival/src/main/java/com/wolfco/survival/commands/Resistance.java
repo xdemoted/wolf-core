@@ -8,10 +8,17 @@ import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.common.commands.arguments.StringArg;
 import com.wolfco.survival.Core;
 
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Singleton;
 
 @Singleton
 public class Resistance implements CoreCommand {
+    private final Core core;
+
+    public Resistance(Core core) {
+        this.core = core;
+    }
+
     @Override
     public Command getCommand() {
         Command command = new Command().setName("resistance");
@@ -21,12 +28,11 @@ public class Resistance implements CoreCommand {
         command.setAccessType(AccessType.ALL);
         return command;
     }
-
-
     
     @Override
-    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args,
+    public boolean onCommand(CommandSourceStack commandStack, String[] args,
             Object[] argumentValues) {
+        CommandSender sender = commandStack.getSender();
         String blockName = (String) argumentValues[0];
         Float resistance = core.blockMap.get(blockName);
 

@@ -49,6 +49,7 @@ public class Whitelist implements CoreCommand {
         return command;
     }
     
+    @SuppressWarnings("unchecked")
     @Override
     public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
         Command command = (Command) argumentValues[0];
@@ -61,9 +62,6 @@ public class Whitelist implements CoreCommand {
             case "remove" -> {
                 CompletableFuture<UUID> playerFuture = ((CompletableFuture<UUID>) argumentValues[1]);
                 return handleRemove(commandStack, playerFuture);
-            }
-            case "list" -> {
-                return handleList(commandStack);
             }
         }
 
@@ -93,10 +91,6 @@ public class Whitelist implements CoreCommand {
                 default -> core.sendPreset(commandStack.getSender(), "whitelist.remove.failure");
             }
         });
-        return false;
-    }
-
-    private boolean handleList(CommandSourceStack commandStack) {
         return false;
     }
 }

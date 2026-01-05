@@ -97,7 +97,7 @@ public final class playerManager {
 
     public OfflinePlayer getOfflinePlayer(UUID uuid) {
         PlayerData profile = getCachedProfile(uuid);
-        if (profile != null) {
+        if (profile != null && profile.data != null) {
             return new OfflinePlayer(profile.data);
         }
         YamlDocument data = core.getConfig(uuid.toString(), core.dataDirectory.resolve("userdata"));

@@ -36,7 +36,7 @@ public class InventorySee implements CoreCommand {
         Player target = (Player) argumentValues[0];
 
         PlayerInventory targetInventory = target.getInventory();
-        Inventory chestInventory = core.getServer().createInventory(null, 54, FontUtil.getPlayerTag(target) + "'s Inventory");
+        Inventory chestInventory = core.getServer().createInventory(null, 54, net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize(FontUtil.getPlayerTag(target) + "'s Inventory"));
         chestInventory.setContents(targetInventory.getContents());
 
         ((Player) sender).openInventory(chestInventory);

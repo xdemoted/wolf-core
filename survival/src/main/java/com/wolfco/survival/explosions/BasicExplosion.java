@@ -19,11 +19,9 @@ public class BasicExplosion {
     List<List<Block>> blockGroups = new ArrayList<>();
 
     Location center;
-    double intensity;
 
     public BasicExplosion(Location loc, int rayCount, double intensity) {
         this.center = loc;
-        this.intensity = intensity;
         Core.get().log("Creating explosion at " + loc.toString());
         createRays(rayCount, intensity);
         Core.get().log("Created " + rays.size() + " rays");
@@ -94,8 +92,6 @@ public class BasicExplosion {
     }
 
     private void doPreCalculation() {
-        Core core = (Core) Core.get();
-
         for (IterableRay ray : rays) {
             double rayIntensity = ray.getIntensity();
             List<Block> blocks = ray.getBlocks();
@@ -104,8 +100,8 @@ public class BasicExplosion {
             while (rayIntensity > 0&& i + 1 < blocks.size()) {
                 Block block = blocks.get(i++);
 
-                double resistance = (core.getResistance(block) + 0.3) * 0.3 + 0.225;
-                if (Math.random() < 0.01) Core.get().log("Block " + block.getType().name() + " has resistance " + core.getResistance(block)); 
+                double resistance = (block.getType().getBlastResistance() + 0.3) * 0.3 + 0.225;
+                if (Math.random() < 0.01) Core.get().log("Block " + block.getType().name() + " has resistance " + block.getType().getBlastResistance()); 
                 rayIntensity -= resistance;
 
                 List<Block> destroyedBlocks = new ArrayList<>();
@@ -125,7 +121,7 @@ public class BasicExplosion {
                         continue;
                     }
 
-                    resistance = core.getResistance(b);
+                    resistance = block.getType().getBlastResistance();
 
                     if (rayIntensity - resistance > 0) {
                         destroyedBlocks.add(b);

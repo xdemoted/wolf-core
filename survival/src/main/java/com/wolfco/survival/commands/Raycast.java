@@ -12,13 +12,19 @@ import com.wolfco.survival.Core;
 import com.wolfco.survival.explosions.BasicExplosion;
 import com.wolfco.survival.geometryUtils.shapeGeneration.ExplosionSphere;
 
-import jakarta.inject.Singleton;
-
-@Singleton
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
 @Singleton
 public class Raycast implements CoreCommand {
+    private final Core core;
+
+    @Inject
+    public Raycast(Core core) {
+        this.core = core;
+    }
+
     @Override
     public Command getCommand() {
         Command command = new Command().setName("raycast");
@@ -30,24 +36,23 @@ public class Raycast implements CoreCommand {
         return command;
     }
 
-
-    
     @Override
-    public boolean execute(CommandSender sender, org.bukkit.command.Command command, String alias, String[] args,
-            Object[] argumentValues) {
+    public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
         double power = (double) argumentValues[0];
         double rayCount = (double) argumentValues[1];
+        CommandSender sender = commandStack.getSender();
         sender.sendMessage(sender.getClass().getName());
 
         if (sender instanceof Entity player) {
-            fetchCore().log("Raycast Execute");
+            core.log("Raycast Execute");
             Location loc = player.getLocation();
 
             BasicExplosion explosion = new BasicExplosion(loc, (int) rayCount, power);
 
             double maxDistance = explosion.getMaxDistance();
 
-            ExplosionSphere sphere = new ExplosionSphere(loc, 0f, (float) maxDistance, (int) Math.round(maxDistance * 1.2));
+            ExplosionSphere sphere = new ExplosionSphere(loc, 0f, (float) maxDistance,
+                    (int) Math.round(maxDistance * 1.2));
 
             sphere.startInterpolation();
             explosion.start(1);

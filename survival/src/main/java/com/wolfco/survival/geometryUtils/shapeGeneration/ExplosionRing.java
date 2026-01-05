@@ -23,12 +23,8 @@ public class ExplosionRing extends InterpolatedShape {
             0.6f, Material.WHITE_STAINED_GLASS,
             0.9f, Material.AIR);
 
-    Location location;
-
     public ExplosionRing(Location location, float startRadius, float endRadius, int ticks) {
         super(location, startRadius, endRadius, ticks);
-
-        this.location = location;
 
         if (world == null) {
             throw new IllegalArgumentException("Location must have a world");

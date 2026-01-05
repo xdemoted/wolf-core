@@ -28,8 +28,8 @@ public class WhitelistListener implements CoreListener {
         int status = whitelistManager.isWhitelisted(event.getPlayer());
 
         if (status == 0) {
-            event.getPlayer().kickPlayer(
-                core.getMessage("whitelist.denied")
+            event.getPlayer().kick(
+                core.getComponentMessage("whitelist.denied")
             );
         } else if (status == 2) {
             event.getPlayer().sendMessage(

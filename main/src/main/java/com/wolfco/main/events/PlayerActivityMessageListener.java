@@ -54,7 +54,7 @@ public class PlayerActivityMessageListener implements CoreListener {
         User user = core.getLuckPerms().getUserManager().getUser(event.getPlayer().getUniqueId());
 
         if (user == null) {
-            core.log("LuckPerms user not found: " + user.getUsername());
+            core.log("LuckPerms user not found: " + event.getPlayer().getName());
             return;
         }
 

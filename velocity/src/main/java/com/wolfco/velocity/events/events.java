@@ -52,7 +52,14 @@ public class events {
         if (event.getIdentifier() != IDENTIFIER) {
             return;
         }
-        ByteArrayDataInput in = ByteStreams.newDataInput(event.getData());
+        byte[] data = event.getData();
+
+        if (data.length == 0) {
+            plugin.logger.warn("Received empty plugin message.");
+            return;
+        }
+
+        ByteArrayDataInput in = ByteStreams.newDataInput(data);
         String subChannel = in.readUTF();
         switch (subChannel) {
             case "globalchat" -> {

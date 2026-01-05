@@ -48,9 +48,6 @@ public abstract class CorePlugin extends JavaPlugin {
                 .bean(JavaPlugin.class, this)
                 .bean(Plugin.class, this)
                 .bean(CorePlugin.class, this)
-                // Register concrete plugin class (e.g., com.wolfco.main.Core) so @Inject Core
-                // works
-                .bean((Class<CorePlugin>) getClass(), this)
                 .classLoader(getClass().getClassLoader())
                 .build();
 
@@ -106,6 +103,10 @@ public abstract class CorePlugin extends JavaPlugin {
 
     public String getMessage(String key) {
         return messages.getString(key, key);
+    }
+
+    public Component getComponentMessage(String key) {
+        return MiniMessage.miniMessage().deserialize(getMessage(key));
     }
 
     public void sendPreset(CommandSender sender, String key) {

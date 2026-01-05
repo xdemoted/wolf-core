@@ -25,6 +25,8 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.spawner.BaseSpawner;
 
+import net.kyori.adventure.text.Component;
+
 public class Harvest implements Listener {
     final static List<Material> hoes = new ArrayList<>();
     static {
@@ -73,58 +75,61 @@ public class Harvest implements Listener {
     public void onEntitySpawn(EntitySpawnEvent event) {
         Entity entity = event.getEntity();
         if (entity.getType() == EntityType.CREEPER) {
-            if (entity.getCustomName() == null && Math.random() < 0.5) {
+            if (entity.customName() == null && Math.random() < 0.05) {
                 createBabyCreeper((Creeper) entity);
-                createBabyCreeper(entity.getLocation()).setCustomName("");
-                createBabyCreeper(entity.getLocation()).setCustomName("");
-                createBabyCreeper(entity.getLocation()).setCustomName("");
+                createBabyCreeper(entity.getLocation()).customName(null);
+                createBabyCreeper(entity.getLocation()).customName(null);
+                createBabyCreeper(entity.getLocation()).customName(null);
             }
         }
-        /*else if (entity.getType() == EntityType.ENDERMAN) {
-            Enderman enderman = (Enderman) entity;
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if (enderman.isDead()) {
-                        cancel();
-                        return;
-                    }
-                    BlockData carriedBlock = enderman.getCarriedBlock();
-                    if (carriedBlock != null && enderman.isValid()) {
-                        if (Math.random() > 1)
-                            return;
-                        Location loc = enderman.getLocation();
-                        List<Block> nearbyBlocks = utils.getBlocks(enderman.getWorld(),
-                                enderman.getLocation().subtract(2, 5, 2),
-                                enderman.getLocation().add(2, 5, 2));
-                        utils.randomizeListTowardsHeight(nearbyBlocks);
-                        for (Block b : nearbyBlocks) {
-                            if (b.getType() != Material.AIR && b.getRelative(0, 1, 0).getType() == Material.AIR) {
-                                b.getRelative(0, 1, 0).setType(carriedBlock.getMaterial());
-                                enderman.setCarriedBlock(null);
-                                if (Math.random() < 1) {
-                                    enderman.teleport(b.getLocation().add(0, 2, 0));
-                                }
-                                break;
-                            }
-                        }
-                    } else if (enderman.getCarriedBlock() == null && Math.random() < 1) {
-                        List<Block> nearbyBlocks = utils.getBlocks(enderman.getWorld(),
-                                enderman.getLocation().subtract(5, 5, 5),
-                                enderman.getLocation().add(5, 5, 5));
-                        utils.randomizeListAgainstHeight(nearbyBlocks);
-                        for (Block block : nearbyBlocks) {
-                            if (block.getType() != Material.AIR && block.getType().isSolid()) {
-                                enderman.setCarriedBlock(block.getBlockData());
-                                block.setType(Material.AIR);
-                                break;
-                            }
-                        }
-                    }
-                };
-            }.runTaskTimer((Core) Core.get(), 0L, 1L);
-        }
-            */
+        /*
+         * else if (entity.getType() == EntityType.ENDERMAN) {
+         * Enderman enderman = (Enderman) entity;
+         * new BukkitRunnable() {
+         * 
+         * @Override
+         * public void run() {
+         * if (enderman.isDead()) {
+         * cancel();
+         * return;
+         * }
+         * BlockData carriedBlock = enderman.getCarriedBlock();
+         * if (carriedBlock != null && enderman.isValid()) {
+         * if (Math.random() > 1)
+         * return;
+         * Location loc = enderman.getLocation();
+         * List<Block> nearbyBlocks = utils.getBlocks(enderman.getWorld(),
+         * enderman.getLocation().subtract(2, 5, 2),
+         * enderman.getLocation().add(2, 5, 2));
+         * utils.randomizeListTowardsHeight(nearbyBlocks);
+         * for (Block b : nearbyBlocks) {
+         * if (b.getType() != Material.AIR && b.getRelative(0, 1, 0).getType() ==
+         * Material.AIR) {
+         * b.getRelative(0, 1, 0).setType(carriedBlock.getMaterial());
+         * enderman.setCarriedBlock(null);
+         * if (Math.random() < 1) {
+         * enderman.teleport(b.getLocation().add(0, 2, 0));
+         * }
+         * break;
+         * }
+         * }
+         * } else if (enderman.getCarriedBlock() == null && Math.random() < 1) {
+         * List<Block> nearbyBlocks = utils.getBlocks(enderman.getWorld(),
+         * enderman.getLocation().subtract(5, 5, 5),
+         * enderman.getLocation().add(5, 5, 5));
+         * utils.randomizeListAgainstHeight(nearbyBlocks);
+         * for (Block block : nearbyBlocks) {
+         * if (block.getType() != Material.AIR && block.getType().isSolid()) {
+         * enderman.setCarriedBlock(block.getBlockData());
+         * block.setType(Material.AIR);
+         * break;
+         * }
+         * }
+         * }
+         * };
+         * }.runTaskTimer((Core) Core.get(), 0L, 1L);
+         * }
+         */
     }
 
     public Creeper createBabyCreeper(Location location) {
@@ -139,7 +144,7 @@ public class Harvest implements Listener {
     }
 
     public Creeper createBabyCreeper(Creeper creeper) {
-        creeper.setCustomName("a");
+        creeper.customName(Component.text("a"));
         creeper.getAttribute(Attribute.SCALE).setBaseValue(0.5);
         creeper.getAttribute(Attribute.MOVEMENT_SPEED).setBaseValue(0.5);
         creeper.getAttribute(Attribute.MAX_HEALTH).setBaseValue(5);

@@ -45,6 +45,5 @@ abstract class InterpolatedShape {
         }
     }
 
-    @SuppressWarnings("unused")
-    abstract void startInterpolation();
+    public abstract void startInterpolation();
 }
