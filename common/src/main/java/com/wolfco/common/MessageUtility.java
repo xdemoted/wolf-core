@@ -38,7 +38,7 @@ public class MessageUtility {
     }
 
     public void sendMessage(CommandSender sender, String message) {
-        CorePlugin.get().getAdventure().sender(sender).sendMessage(MiniMessage.miniMessage().deserialize(message));
+        sender.sendMessage(MiniMessage.miniMessage().deserialize(message));
     }
 
     public String getMessage(String key) {

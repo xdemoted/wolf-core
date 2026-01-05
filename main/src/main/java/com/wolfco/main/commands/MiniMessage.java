@@ -6,10 +6,8 @@ import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.common.commands.arguments.StringArg;
-import com.wolfco.main.Core;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
 @Singleton
@@ -22,15 +20,11 @@ public class MiniMessage implements CoreCommand {
 
         return command;
     }
-
-    @Inject
-    Core core;
-
     
     @Override
     public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
         CommandSender sender = commandStack.getSender();
-        core.getAdventure().sender(sender).sendMessage(net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize((String) argumentValues[0]));
+        sender.sendMessage(net.kyori.adventure.text.minimessage.MiniMessage.miniMessage().deserialize((String) argumentValues[0]));
         return true;
     }
 }

@@ -14,7 +14,6 @@ import dev.dejvokep.boostedyaml.YamlDocument;
 import io.avaje.inject.BeanScope;
 import io.avaje.inject.InjectModule;
 import jakarta.annotation.Nullable;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 
 @InjectModule(provides = { CorePlugin.class, JavaPlugin.class, Plugin.class })
@@ -25,7 +24,6 @@ public abstract class CorePlugin extends JavaPlugin {
 
     public String serverName;
     String icon = null;
-    BukkitAudiences adventure;
     YamlDocument config;
 
     @Override
@@ -53,14 +51,6 @@ public abstract class CorePlugin extends JavaPlugin {
 
     public BeanScope getScope() {
         return scope;
-    }
-
-    public BukkitAudiences getAdventure() {
-        if (this.adventure == null) {
-            this.adventure = BukkitAudiences.create(this);
-        }
-
-        return this.adventure;
     }
 
     public YamlDocument setMainConfig(YamlDocument config) {

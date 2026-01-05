@@ -95,7 +95,7 @@ public class ChatManager implements CoreListener {
                     ? chatSerializer.deserialize(chatPrefix + message + chatSuffix)
                     : Component.text(message);
 
-            core.getAdventure().players().sendMessage(nameText.append(messageText));
+            core.getServer().sendMessage(nameText.append(messageText));
         });
     }
 }

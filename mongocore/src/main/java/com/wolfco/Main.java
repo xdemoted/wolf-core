@@ -39,10 +39,6 @@ public class Main extends JavaPlugin {
         return mongoConnector;
     }
 
-    public BukkitAudiences getAdventure() {
-        return adventure;
-    }
-
     public void sendMessage(CommandSender sender, String text) {
         adventure.sender(sender).sendMessage(MiniMessage.miniMessage().deserialize(text));
     }
