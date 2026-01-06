@@ -26,8 +26,7 @@ public class Back implements CoreCommand {
         return command;
     }
 
-    @Inject
-    MessageUtility messageUtility;
+
 
     @Inject
     ProfileManager profileManager;
@@ -41,12 +40,12 @@ public class Back implements CoreCommand {
             Location lastPosition = profile.getLastLocation();
 
             if (lastPosition == null) {
-                messageUtility.sendPreset(sender, "back.noposition");
+                MessageUtility.sendPreset(sender, "back.noposition");
                 return false;
             }
 
             ((Player) sender).teleport(lastPosition);
-            messageUtility.sendPreset(sender, "back.success");
+            MessageUtility.sendPreset(sender, "back.success");
         }
         return true;
     }

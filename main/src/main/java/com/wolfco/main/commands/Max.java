@@ -8,6 +8,7 @@ import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.common.commands.arguments.StringArg;
 import com.wolfco.main.Core;
 import com.wolfco.main.utility.PermissionHandler;
+import com.wolfco.common.MessageUtility;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
@@ -38,7 +39,7 @@ public class Max implements CoreCommand {
     public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
         CommandSender sender = commandStack.getSender();
         User user = core.getLuckPerms().getUserManager().getUser(sender.getName());
-        getMessageUtility().sendMessage(sender, "Max is " + permissionHandler.getNumberValue(args[0], user));
+        MessageUtility.sendMessage(sender, "Max is " + permissionHandler.getNumberValue(args[0], user));
         return true;
     }
 

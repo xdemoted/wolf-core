@@ -19,7 +19,7 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import net.luckperms.api.model.user.User;
-
+import com.wolfco.common.MessageUtility;
 @Singleton
 public class SetHome implements CoreCommand {
     static final String NODE = "wolfcore.sethome";
@@ -59,15 +59,15 @@ public class SetHome implements CoreCommand {
             int allowedHomes = permissionHandler.getNumberValue(NODE, user);
 
             if (profile.homes.size() >= allowedHomes && !profile.homes.containsKey(home)) {
-                getMessageUtility().sendPreset(sender, "home.limit", List.of(Integer.toString(allowedHomes)));
+                MessageUtility.sendPreset(sender, "home.limit", List.of(Integer.toString(allowedHomes)));
                 return true;
             }
 
             profile.homes.put(home, new Home(home, ((Player) sender).getLocation()));
 
-            getMessageUtility().sendPreset(sender, "home.set", List.of(home));
+            MessageUtility.sendPreset(sender, "home.set", List.of(home));
         } else {
-            getMessageUtility().sendPreset(sender, "generic.invaliddata");
+            MessageUtility.sendPreset(sender, "generic.invaliddata");
         }
         return true;
     }

@@ -9,7 +9,7 @@ import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.common.commands.arguments.NumberArg;
-
+import com.wolfco.common.MessageUtility;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Singleton;
 
@@ -41,7 +41,7 @@ public class Reach implements CoreCommand {
             attInstance2.setBaseValue(distance);
         }
 
-        getMessageUtility().sendMessage(sender, "Reach set to " + distance);
+        MessageUtility.sendMessage(sender, "Reach set to " + distance);
         
         return true;
     }

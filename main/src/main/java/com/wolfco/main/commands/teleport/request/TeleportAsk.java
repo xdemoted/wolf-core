@@ -32,8 +32,7 @@ public class TeleportAsk implements CoreCommand {
         return command;
     }
 
-    @Inject
-    MessageUtility messageUtility;
+
 
     @Inject
     ProfileManager profileManager;
@@ -51,7 +50,7 @@ public class TeleportAsk implements CoreCommand {
         Profile receiverData = profileManager.getCachedProfile(receiver);
 
         if (receiverData == null) {
-            messageUtility.sendPreset(sender, "generic.playernotfound");
+            MessageUtility.sendPreset(sender, "generic.playernotfound");
             return false;
         }
 
@@ -59,7 +58,7 @@ public class TeleportAsk implements CoreCommand {
 
         if (existingRequest != null && existingRequest.type.equalsIgnoreCase(alias)
                 && System.currentTimeMillis() - existingRequest.startTime < 30000) {
-            messageUtility.sendPreset(sender, "teleportask.existing");
+            MessageUtility.sendPreset(sender, "teleportask.existing");
             return false;
         }
 
@@ -69,21 +68,21 @@ public class TeleportAsk implements CoreCommand {
         switch (alias) {
             case "tpahere", "teleportaskhere" -> {
                 requestType = TPAHERE;
-                message = messageUtility.getPreset("teleportask.receivedhere", Arrays.asList(FontUtil.getPlayerTag(sender)));
-                messageUtility.sendPreset(sender, "teleportask.receivedhere", Arrays.asList(FontUtil.getPlayerTag(sender)));
+                message = MessageUtility.getPreset("teleportask.receivedhere", Arrays.asList(FontUtil.getPlayerTag(sender)));
+                MessageUtility.sendPreset(sender, "teleportask.receivedhere", Arrays.asList(FontUtil.getPlayerTag(sender)));
             }
             case "tpa", "teleportask" -> {
                 requestType = TPA;
-                message = messageUtility.getPreset("teleportask.received", Arrays.asList(FontUtil.getPlayerTag(sender)));
-                messageUtility.sendPreset(sender, "teleportask.received", Arrays.asList(FontUtil.getPlayerTag(sender)));
+                message = MessageUtility.getPreset("teleportask.received", Arrays.asList(FontUtil.getPlayerTag(sender)));
+                MessageUtility.sendPreset(sender, "teleportask.received", Arrays.asList(FontUtil.getPlayerTag(sender)));
             }
             default -> {
             }
         }
 
         receiverData.sendRequest((Player) sender, requestType);
-        messageUtility.sendPreset(sender, "teleportask.sent", Arrays.asList(FontUtil.getPlayerTag(receiver)));
-        messageUtility.sendMessage(receiver, message);
+        MessageUtility.sendPreset(sender, "teleportask.sent", Arrays.asList(FontUtil.getPlayerTag(receiver)));
+        MessageUtility.sendMessage(receiver, message);
         return true;
     }
 }

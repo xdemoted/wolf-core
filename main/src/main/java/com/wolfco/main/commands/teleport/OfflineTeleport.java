@@ -27,8 +27,7 @@ public class OfflineTeleport implements CoreCommand {
         return command;
     }
 
-    @Inject
-    MessageUtility messageUtility;
+
     
     @Override
     public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
@@ -38,12 +37,12 @@ public class OfflineTeleport implements CoreCommand {
         Location logoutLocation = player.getLogoutLocation();
 
         if (logoutLocation == null) {
-            messageUtility.sendPreset(sender, "teleport.offline.nolocation", List.of(player.username));
+            MessageUtility.sendPreset(sender, "teleport.offline.nolocation", List.of(player.username));
             return false;
         }
 
         ((Player) sender).teleport(player.getLogoutLocation());
-        messageUtility.sendPreset(sender, "teleport.success", List.of(player.username));
+        MessageUtility.sendPreset(sender, "teleport.success", List.of(player.username));
         return true;
     }
 }

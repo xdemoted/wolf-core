@@ -25,8 +25,7 @@ public class WarpInfo implements CoreCommand {
         return command;
     }
 
-    @Inject
-    MessageUtility messageUtility;
+
 
     @Inject
     Core core;
@@ -44,7 +43,7 @@ public class WarpInfo implements CoreCommand {
             worldName = world.getName();
         }
         
-        messageUtility.sendPreset(sender, "warp.info", List.of(warp.name, worldName, String.valueOf(warp.x), String.valueOf(warp.y), String.valueOf(warp.z)));
+        MessageUtility.sendPreset(sender, "warp.info", List.of(warp.name, worldName, String.valueOf(warp.x), String.valueOf(warp.y), String.valueOf(warp.z)));
         return true;
     }
 }

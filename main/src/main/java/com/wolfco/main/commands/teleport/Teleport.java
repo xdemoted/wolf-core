@@ -9,7 +9,7 @@ import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.commands.arguments.PlayerArg;
 import com.wolfco.main.utility.FontUtil;
-
+import com.wolfco.common.MessageUtility;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Singleton;
 
@@ -42,26 +42,26 @@ public class Teleport implements CoreCommand {
 
         if (player2 == null) {
             if (console) {
-                getMessageUtility().sendPreset(sender, "generic.consoleargs", List.of("2"));
+                MessageUtility.sendPreset(sender, "generic.consoleargs", List.of("2"));
                 return false;
             }
 
             if (player1.getUniqueId() == ((Player) sender).getUniqueId()) {
-                getMessageUtility().sendPreset(sender, "teleport.self");
+                MessageUtility.sendPreset(sender, "teleport.self");
                 return false;
             }
 
             ((Player) sender).teleport(player1);
-            getMessageUtility().sendPreset(sender, "teleport.success", List.of(FontUtil.getPlayerTag(player1)));
+            MessageUtility.sendPreset(sender, "teleport.success", List.of(FontUtil.getPlayerTag(player1)));
         } else {
             if (player1.getUniqueId() == player2.getUniqueId()) {
-                getMessageUtility().sendPreset(sender, "teleport.self");
+                MessageUtility.sendPreset(sender, "teleport.self");
                 return false;
             } else {
                 player1.teleport(player2);
             }
 
-            getMessageUtility().sendPreset(sender, "teleport.othersuccess", List.of(FontUtil.getPlayerTag(player1), FontUtil.getPlayerTag(player2)));
+            MessageUtility.sendPreset(sender, "teleport.othersuccess", List.of(FontUtil.getPlayerTag(player1), FontUtil.getPlayerTag(player2)));
             return true;
         }
         return true;

@@ -14,6 +14,7 @@ import com.wolfco.main.Core;
 import com.wolfco.main.commands.arguments.HomeArgument;
 import com.wolfco.main.player.profiles.ProfileManager;
 import com.wolfco.main.player.profiles.classes.Profile;
+import com.wolfco.common.MessageUtility;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
@@ -46,26 +47,26 @@ public class Home implements CoreCommand {
             if (profile != null) {
                 home = profile.homes.get("home");
             } else {
-                getMessageUtility().sendPreset(sender, "generic.invaliddata");
+                MessageUtility.sendPreset(sender, "generic.invaliddata");
                 return true;
             }
         }
 
         if (home == null) {
-            getMessageUtility().sendPreset(sender, "home.notfound", List.of("home"));
+            MessageUtility.sendPreset(sender, "home.notfound", List.of("home"));
             return true;
         }
 
         World world = core.getServer().getWorld(home.world);
 
         if (world == null) {
-            getMessageUtility().sendPreset(sender, "home.worldinvalid", List.of(home.world.toString(), home.name));
+            MessageUtility.sendPreset(sender, "home.worldinvalid", List.of(home.world.toString(), home.name));
             return true;
         }
 
         Location location = new Location(world, home.x, home.y, home.z, home.yaw, home.pitch);
         ((Player) sender).teleport(location);
-        getMessageUtility().sendPreset(sender, "home.teleported", List.of(home.name));
+        MessageUtility.sendPreset(sender, "home.teleported", List.of(home.name));
 
         return true;
     }

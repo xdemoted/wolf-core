@@ -29,8 +29,7 @@ public class TeleportDeny implements CoreCommand {
         return command;
     }
 
-    @Inject
-    MessageUtility messageUtility;
+
 
     @Inject
     ProfileManager profileManager;
@@ -42,24 +41,24 @@ public class TeleportDeny implements CoreCommand {
         Profile profile = profileManager.getCachedProfile((Player) sender);
 
         if (profile == null) {
-            messageUtility.sendPreset(sender, "generic.invaliddata");
+            MessageUtility.sendPreset(sender, "generic.invaliddata");
             return false;
         }
 
         if (profile.pendingRequests.isEmpty()) {
-            messageUtility.sendPreset(sender, "teleportask.norequest");
+            MessageUtility.sendPreset(sender, "teleportask.norequest");
             return false;
         }
 
         Request targetRequest = profile.getRequest(target);
 
         if (targetRequest == null) {
-            messageUtility.sendPreset(sender, "teleportask.norequest");
+            MessageUtility.sendPreset(sender, "teleportask.norequest");
             return false;
         }
 
-        messageUtility.sendPreset(sender, "teleportask.deny", List.of(targetRequest.name));
-        messageUtility.sendPreset(sender, "teleportask.deny", List.of(sender.getName()));
+        MessageUtility.sendPreset(sender, "teleportask.deny", List.of(targetRequest.name));
+        MessageUtility.sendPreset(sender, "teleportask.deny", List.of(sender.getName()));
         profile.denyRequest(target);
 
         return true;

@@ -7,6 +7,7 @@ import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.common.commands.arguments.NumberArg;
 import com.wolfco.common.commands.arguments.PlayerArg;
+import com.wolfco.common.MessageUtility;
 
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Singleton;
@@ -34,7 +35,7 @@ public class FlySpeed implements CoreCommand {
         if (!(target instanceof Player)) {
             target = (Player) sender;
         } else if (!sender.hasPermission("wolfcore.speed.others")) {
-            getMessageUtility().sendPreset(sender, "generic.nopermission");
+            MessageUtility.sendPreset(sender, "generic.nopermission");
             return false;
         }
 

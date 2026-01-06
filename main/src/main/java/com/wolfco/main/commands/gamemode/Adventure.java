@@ -30,9 +30,6 @@ public class Adventure implements CoreCommand {
         return command;
     }
 
-    @Inject
-    MessageUtility messageUtility;
-
     @SuppressWarnings("unchecked")
     @Override
     public boolean onCommand(CommandSourceStack commandStack, String[] args,
@@ -46,20 +43,20 @@ public class Adventure implements CoreCommand {
             }
 
             if (target.size() > 1) {
-                messageUtility.sendPreset(sender, "gamemode.multisuccess",
+                MessageUtility.sendPreset(sender, "gamemode.multisuccess",
                         List.of(String.valueOf(target.size()), gamemode.toString()));
                 return true;
             }
 
-            messageUtility.sendPreset(sender, "gamemode.othersuccess", List.of(gamemode.toString()));
+            MessageUtility.sendPreset(sender, "gamemode.othersuccess", List.of(gamemode.toString()));
             return true;
         } else {
             if (sender instanceof Player player) {
                 player.setGameMode(gamemode);
-                messageUtility.sendPreset(sender, "gamemode.selfsuccess", List.of(gamemode.toString()));
+                MessageUtility.sendPreset(sender, "gamemode.selfsuccess", List.of(gamemode.toString()));
                 return false;
             } else if (sender instanceof ConsoleCommandSender) {
-                messageUtility.sendPreset(sender, "generic.consoleargs", List.of("1"));
+                MessageUtility.sendPreset(sender, "generic.consoleargs", List.of("1"));
                 return false;
             }
         }

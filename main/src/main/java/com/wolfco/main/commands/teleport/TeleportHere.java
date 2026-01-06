@@ -10,7 +10,7 @@ import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
 import com.wolfco.common.commands.arguments.PlayerArg;
 import com.wolfco.main.utility.FontUtil;
-
+import com.wolfco.common.MessageUtility;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Singleton;
 
@@ -31,7 +31,7 @@ public class TeleportHere implements CoreCommand {
         Player player = (Player) argumentValues[0];
 
         player.teleport(((Player) sender));
-        getMessageUtility().sendPreset(sender, "teleporthere.success", List.of(FontUtil.getPlayerTag(player)));
+        MessageUtility.sendPreset(sender, "teleporthere.success", List.of(FontUtil.getPlayerTag(player)));
         return true;
     }
 }

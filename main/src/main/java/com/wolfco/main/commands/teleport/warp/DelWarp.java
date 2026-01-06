@@ -3,7 +3,7 @@ package com.wolfco.main.commands.teleport.warp;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
-
+import com.wolfco.common.MessageUtility;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.main.commands.arguments.WarpArgument;
@@ -34,9 +34,9 @@ public class DelWarp implements CoreCommand {
         boolean result = warpManager.removeWarp(warp.name);
         
         if (result) {
-            getMessageUtility().sendPreset(sender, "warp.deleted", List.of(args[0]));
+            MessageUtility.sendPreset(sender, "warp.deleted", List.of(args[0]));
         } else {
-            getMessageUtility().sendPreset(sender, "warp.notfound", List.of(args[0]));
+            MessageUtility.sendPreset(sender, "warp.notfound", List.of(args[0]));
         }
 
         return result;

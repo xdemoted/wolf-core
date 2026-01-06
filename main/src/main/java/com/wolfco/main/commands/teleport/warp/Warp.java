@@ -37,8 +37,7 @@ public class Warp implements CoreCommand {
     @Inject
     Core core;
 
-    @Inject
-    MessageUtility messageUtility;
+
     
     @Override
     public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
@@ -50,22 +49,22 @@ public class Warp implements CoreCommand {
         World world = core.getServer().getWorld(warp.world);
 
         if (world == null) {
-            messageUtility.sendPreset(sender, "warp.invalidworld", List.of(warp.world.toString(), warp.name));
+            MessageUtility.sendPreset(sender, "warp.invalidworld", List.of(warp.world.toString(), warp.name));
 
             return false;
         }
 
         if (sender instanceof Player && args.length == 1) {
             ((Player) sender).teleport(new Location(world, warp.x, warp.y, warp.z));
-            messageUtility.sendPreset(sender, "warp.success.self", List.of(warp.name));
+            MessageUtility.sendPreset(sender, "warp.success.self", List.of(warp.name));
 
             return true;
         } else if (target != null) {
             if (target.size() > 1) {
-                messageUtility.sendPreset(sender, "warp.success.all");
+                MessageUtility.sendPreset(sender, "warp.success.all");
                 return false;
             } else {
-                messageUtility.sendPreset(sender, "warp.success.other", List.of(FontUtil.getPlayerTag(target.iterator().next()), warp.name));
+                MessageUtility.sendPreset(sender, "warp.success.other", List.of(FontUtil.getPlayerTag(target.iterator().next()), warp.name));
             }
 
             for (Player player : target) {

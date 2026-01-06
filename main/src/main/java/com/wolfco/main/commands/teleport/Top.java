@@ -8,7 +8,7 @@ import org.bukkit.entity.HumanEntity;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
-
+import com.wolfco.common.MessageUtility;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Singleton;
 
@@ -31,7 +31,7 @@ public class Top implements CoreCommand {
         Location highestBlock = world.getHighestBlockAt(location).getLocation();
         player.teleport(highestBlock.add(0, 1, 0));
 
-        getMessageUtility().sendMessage(sender,"<#ffaa00>Teleporting...");
+        MessageUtility.sendMessage(sender,"<#ffaa00>Teleporting...");
         return true;
     }
 

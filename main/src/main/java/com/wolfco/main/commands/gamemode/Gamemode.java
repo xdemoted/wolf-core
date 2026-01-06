@@ -32,9 +32,6 @@ public class Gamemode implements CoreCommand {
 
         return command;
     }
-
-    @Inject
-    MessageUtility messageUtility;
     
     @Override
     public boolean onCommand(CommandSourceStack commandStack, String[] args, Object[] argumentValues) {
@@ -47,25 +44,25 @@ public class Gamemode implements CoreCommand {
         Boolean console = (sender instanceof ConsoleCommandSender);
 
         if (console && args.length == 1) {
-            messageUtility.sendPreset(sender, "generic.consoleargs", List.of("2"));
+            MessageUtility.sendPreset(sender, "generic.consoleargs", List.of("2"));
             return false;
         }
 
         if (args.length == 1) {
 
             if (console) {
-                messageUtility.sendPreset(sender, "generic.consoleargs", List.of("2"));
+                MessageUtility.sendPreset(sender, "generic.consoleargs", List.of("2"));
                 return false;
             }
 
             ((Player) sender).setGameMode(mode);
-            messageUtility.sendPreset(sender, "gamemode.selfsuccess", List.of(mode.toString()));
+            MessageUtility.sendPreset(sender, "gamemode.selfsuccess", List.of(mode.toString()));
             return true;
         } else if (target instanceof Collection) {
             if (target.size() == 1) {
-                messageUtility.sendPreset(sender, "gamemode.othersuccess", List.of(FontUtil.getPlayerTag(target.iterator().next()), mode.toString()));
+                MessageUtility.sendPreset(sender, "gamemode.othersuccess", List.of(FontUtil.getPlayerTag(target.iterator().next()), mode.toString()));
             } else {
-                messageUtility.sendPreset(sender, "gamemode.multisuccess", List.of(String.valueOf(target.size()), mode.toString()));
+                MessageUtility.sendPreset(sender, "gamemode.multisuccess", List.of(String.valueOf(target.size()), mode.toString()));
             }
 
             for (Player p : target) {

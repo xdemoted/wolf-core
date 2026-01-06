@@ -25,7 +25,7 @@ public class CommandService {
     static CorePlugin core;
 
     @Inject
-    static MessageUtility messageUtility;
+    static MessageUtility MessageUtility;
 
     public static String getUsage(Command command) {
         List<String> result = new ArrayList<>();
@@ -103,20 +103,20 @@ public class CommandService {
         CommandSender sender = commandStack.getSender();
 
         if (sender instanceof Player player && !player.hasPermission(command.getNode())) { // Permission Check
-            messageUtility.sendPreset(sender, "generic.nopermission");
+            MessageUtility.sendPreset(sender, "generic.nopermission");
             return null;
         }
 
         if (accessType == AccessType.PLAYER && !(sender instanceof Player)) { // Access Check
-            messageUtility.sendPreset(sender, "generic.noconsole");
+            MessageUtility.sendPreset(sender, "generic.noconsole");
             return null;
         } else if (accessType == AccessType.CONSOLE && sender instanceof Player) {
-            messageUtility.sendPreset(sender, "generic.noplayer");
+            MessageUtility.sendPreset(sender, "generic.noplayer");
             return null;
         }
 
         if (result != null) { // Argument Check
-            messageUtility.sendMessage(sender, result);
+            MessageUtility.sendMessage(sender, result);
             return null;
         }
 
@@ -126,7 +126,7 @@ public class CommandService {
             argumentValues = command.getValues(commandStack, args);
         } catch (IllegalArgumentException e) {
             core.log(e.toString());
-            messageUtility.sendPreset(sender, "error.base", List.of(e.getMessage()));
+            MessageUtility.sendPreset(sender, "error.base", List.of(e.getMessage()));
             return null;
         }
 

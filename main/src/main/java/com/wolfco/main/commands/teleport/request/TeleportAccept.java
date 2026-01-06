@@ -32,8 +32,7 @@ public class TeleportAccept implements CoreCommand {
         return command;
     }
 
-    @Inject
-    MessageUtility messageUtility;
+
 
     @Inject
     ProfileManager profileManager;
@@ -46,7 +45,7 @@ public class TeleportAccept implements CoreCommand {
         Profile receiverData = profileManager.getCachedProfile(receiver);
 
         if (receiverData == null) {
-            messageUtility.sendPreset(sender, "generic.invaliddata");
+            MessageUtility.sendPreset(sender, "generic.invaliddata");
             return false;
         }
 
@@ -56,24 +55,24 @@ public class TeleportAccept implements CoreCommand {
             requestSender = receiverData.getRequestSender(targetRequest);
 
             if (requestSender == null) {
-                messageUtility.sendPreset(sender, "teleportask.norequest");
+                MessageUtility.sendPreset(sender, "teleportask.norequest");
                 return false;
             }
         }
 
         if (targetRequest == null) {
-            messageUtility.sendPreset(sender, "teleportask.norequest");
+            MessageUtility.sendPreset(sender, "teleportask.norequest");
             return false;
         }
 
         if (targetRequest.type.equalsIgnoreCase("tpa")) {
             requestSender.teleport(receiver);
-            messageUtility.sendPreset(sender, "teleportask.teleporting", List.of(FontUtil.getPlayerTag(receiver)));
-            messageUtility.sendPreset(sender, "teleportask.accept", List.of(FontUtil.getPlayerTag(requestSender)));
+            MessageUtility.sendPreset(sender, "teleportask.teleporting", List.of(FontUtil.getPlayerTag(receiver)));
+            MessageUtility.sendPreset(sender, "teleportask.accept", List.of(FontUtil.getPlayerTag(requestSender)));
         } else if (targetRequest.type.equalsIgnoreCase("tpahere")) {
             receiver.teleport(requestSender);
-            messageUtility.sendPreset(sender, "teleportask.accept", List.of(FontUtil.getPlayerTag(receiver)));
-            messageUtility.sendPreset(sender, "teleportask.teleporting", List.of(FontUtil.getPlayerTag(requestSender)));
+            MessageUtility.sendPreset(sender, "teleportask.accept", List.of(FontUtil.getPlayerTag(receiver)));
+            MessageUtility.sendPreset(sender, "teleportask.teleporting", List.of(FontUtil.getPlayerTag(requestSender)));
         }
         receiverData.pendingRequests.remove(requestSender);
         return true;

@@ -5,6 +5,7 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.wolfco.common.MessageUtility;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
@@ -41,7 +42,7 @@ public class DelHome implements CoreCommand {
 
         if (profile != null) {
             profile.homes.remove(home.name);
-            getMessageUtility().sendPreset(sender, "home.deleted", List.of(home.name));
+            MessageUtility.sendPreset(sender, "home.deleted", List.of(home.name));
         }
         return true;
     }

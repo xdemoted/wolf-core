@@ -14,7 +14,7 @@ import com.wolfco.main.utility.FontUtil;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
-
+import com.wolfco.common.MessageUtility;
 @Singleton
 public class TeleportAll implements CoreCommand {
     @Override
@@ -38,7 +38,7 @@ public class TeleportAll implements CoreCommand {
                 player.teleport((Player) sender)
             );
 
-            getMessageUtility().sendPreset(sender, "teleportall.success", List.of("you"));
+            MessageUtility.sendPreset(sender, "teleportall.success", List.of("you"));
 
             return true;
         } else if (player1 != null) {
@@ -46,7 +46,7 @@ public class TeleportAll implements CoreCommand {
                 p.teleport(player1)
             );
 
-            getMessageUtility().sendPreset(sender, "teleportall.success", List.of(FontUtil.getPlayerTag(player1)));
+            MessageUtility.sendPreset(sender, "teleportall.success", List.of(FontUtil.getPlayerTag(player1)));
             
             return true;
         }

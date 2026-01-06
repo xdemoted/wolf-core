@@ -23,16 +23,15 @@ public class Warps implements CoreCommand {
     @Inject
     WarpManager warpManager;
 
-    @Inject
-    MessageUtility messageUtility;
+
     
     @Override
     public boolean onCommand( CommandSourceStack commandStack,
             String[] args, Object[] argumentValues) {
         CommandSender sender = commandStack.getSender();
-        messageUtility.sendMessage(sender, "<#ffaa00>Warps:");
+        MessageUtility.sendMessage(sender, "<#ffaa00>Warps:");
         for (String key : warpManager.getWarps()) {
-            messageUtility.sendMessage(sender,
+            MessageUtility.sendMessage(sender,
                     "<#ffaa00> - <#ffff00><click:run_command:/warp " + key + ">" + key + "</click>");
         }
         return true;

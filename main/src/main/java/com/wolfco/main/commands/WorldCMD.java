@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
+import com.wolfco.common.MessageUtility;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.commands.arguments.MultiPlayerArg;
@@ -41,7 +41,7 @@ public class WorldCMD implements CoreCommand {
             }
         }
 
-        getMessageUtility().sendMessage(sender, "<#ffaa00>Teleported %s to world %s");
+        MessageUtility.sendMessage(sender, "<#ffaa00>Teleported %s to world %s");
         return true;
     }
 }

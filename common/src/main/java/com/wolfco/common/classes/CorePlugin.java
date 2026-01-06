@@ -9,10 +9,12 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.wolfco.common.commands.CommandLoader;
+import com.wolfco.common.listeners.EventLoader;
 
 import dev.dejvokep.boostedyaml.YamlDocument;
 import io.avaje.inject.BeanScope;
 import io.avaje.inject.InjectModule;
+import io.avaje.inject.PostConstruct;
 import jakarta.annotation.Nullable;
 import net.kyori.adventure.text.Component;
 

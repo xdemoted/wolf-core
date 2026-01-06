@@ -29,8 +29,7 @@ public class SetWarp implements CoreCommand {
         return command;
     }
 
-    @Inject
-    MessageUtility messageUtility;
+
 
     @Inject
     WarpManager warpManager;
@@ -43,7 +42,7 @@ public class SetWarp implements CoreCommand {
         Location location = player.getLocation();
 
         if (location == null) {
-            messageUtility.sendPreset(sender, "generic.invaliddata");
+            MessageUtility.sendPreset(sender, "generic.invaliddata");
             return true;
         }
 
@@ -51,9 +50,9 @@ public class SetWarp implements CoreCommand {
                 Warp.fromLocation(location, warpName));
 
         if (!result)
-            messageUtility.sendPreset(sender, "warp.setfail", List.of(warpName));
+            MessageUtility.sendPreset(sender, "warp.setfail", List.of(warpName));
 
-        messageUtility.sendPreset(sender, "warp.set", List.of(warpName));
+        MessageUtility.sendPreset(sender, "warp.set", List.of(warpName));
 
         return true;
     }

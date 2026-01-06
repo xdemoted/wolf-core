@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bukkit.entity.Player;
 
+import com.wolfco.common.MessageUtility;
 import com.wolfco.common.classes.Command;
 import com.wolfco.common.classes.CoreCommand;
 import com.wolfco.common.classes.types.AccessType;
@@ -36,7 +37,7 @@ public class Fly implements CoreCommand {
         if (!(target instanceof Player)) {
             target = sender;
         } else if (!sender.hasPermission("wolfcore.fly.others")) {
-            getMessageUtility().sendPreset(sender, "generic.nopermission");
+            MessageUtility.sendPreset(sender, "generic.nopermission");
             return false;
         }
 
@@ -52,11 +53,11 @@ public class Fly implements CoreCommand {
         target.setFlying(toggle);
 
         if (sender != target) {
-            getMessageUtility().sendPreset(sender, "fly.othersuccess",
+            MessageUtility.sendPreset(sender, "fly.othersuccess",
                     List.of(toggle ? "enabled" : "disabled", FontUtil.getPlayerTag(target)));
-            getMessageUtility().sendPreset(target, "fly.success", List.of(toggle ? "enabled" : "disabled"));
+            MessageUtility.sendPreset(target, "fly.success", List.of(toggle ? "enabled" : "disabled"));
         } else {
-            getMessageUtility().sendPreset(sender, "fly.success", List.of(toggle ? "enabled" : "disabled"));
+            MessageUtility.sendPreset(sender, "fly.success", List.of(toggle ? "enabled" : "disabled"));
         }
 
         return true;

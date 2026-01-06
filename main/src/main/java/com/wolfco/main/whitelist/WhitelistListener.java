@@ -15,12 +15,10 @@ import jakarta.inject.Singleton;
 @Singleton
 public class WhitelistListener implements CoreListener {
     private final WhitelistManager whitelistManager;
-    private final MessageUtility messageUtility;
 
     @Inject
-    public WhitelistListener(WhitelistManager manager, MessageUtility messageUtility) {
+    public WhitelistListener(WhitelistManager manager) {
         this.whitelistManager = manager;
-        this.messageUtility = messageUtility;
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -29,11 +27,11 @@ public class WhitelistListener implements CoreListener {
 
         if (status == 0) {
             event.getPlayer().kick(
-                messageUtility.getComponentMessage("whitelist.denied")
+                MessageUtility.getComponentMessage("whitelist.denied")
             );
         } else if (status == 2) {
             event.getPlayer().sendMessage(
-                messageUtility.getMessage("whitelist.bypass")
+                MessageUtility.getMessage("whitelist.bypass")
             );
         }
     }

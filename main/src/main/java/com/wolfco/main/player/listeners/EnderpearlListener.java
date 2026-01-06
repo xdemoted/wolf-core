@@ -30,8 +30,7 @@ public class EnderpearlListener {
                 && block.getType() != Material.CAVE_VINES_PLANT;
     }
 
-    @Inject
-    MessageUtility messageUtility;
+
 
     @EventHandler
     public void onPlayerTeleport(PlayerTeleportEvent event) {
@@ -63,7 +62,7 @@ public class EnderpearlListener {
             Block upperBlock = block.getRelative(0, 1, 0);
             if (block.getType().isSolid() && upperBlock.getType().isSolid()) {
                 player.getInventory().addItem(new ItemStack(Material.ENDER_PEARL));
-                messageUtility.sendPreset(player, "enderpearl.blocked", List.of("from"));
+                MessageUtility.sendPreset(player, "enderpearl.blocked", List.of("from"));
                 event.setCancelled(true);
                 return;
             }
@@ -80,7 +79,7 @@ public class EnderpearlListener {
                 }
                 if (iterations >= 11) {
                     player.getInventory().addItem(new ItemStack(Material.ENDER_PEARL));
-                    messageUtility.sendPreset(player, "enderpearl.blocked", List.of("to"));
+                    MessageUtility.sendPreset(player, "enderpearl.blocked", List.of("to"));
                     event.setCancelled(true);
                     return;
                 }
